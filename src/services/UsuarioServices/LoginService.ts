@@ -1,8 +1,8 @@
 import { getRepository } from "typeorm";
 import { compareSync } from "bcryptjs";
 import{ sign } from 'jsonwebtoken';
-import authConfig from "../config/auth.config";
-import { Usuario } from "../entities/Usuario";
+import authConfig from "../../config/auth.config";
+import { Usuario } from "../../entities/Usuario";
 
 interface Request {
     email: string;

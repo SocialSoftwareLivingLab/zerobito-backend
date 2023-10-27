@@ -1,10 +1,10 @@
 import { Router} from "express";
-import { CreateUsuarioController } from "./controllers/CreateUsuarioController";
-import { GetallUsuariosController } from "./controllers/GettAllUsuariosController";
-import { DeleteUsuarioController } from "./controllers/DeleteUsuarioController";
+import { CreateUsuarioController } from "./controllers/UsuarioController/CreateUsuarioController";
+import { GetallUsuariosController } from "./controllers/UsuarioController/GettAllUsuariosController";
+import { DeleteUsuarioController } from "./controllers/UsuarioController/DeleteUsuarioController";
 import { UpdateDateColumn } from "typeorm";
-import { UpdateUsuarioController } from "./controllers/UpdateUsuarioController";
-import loginController from "./controllers/LoginController";
+import { UpdateUsuarioController } from "./controllers/UsuarioController/UpdateUsuarioController";
+import loginController from "./controllers/UsuarioController/LoginController";
 const routes = Router();
 
 

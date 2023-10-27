@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { Usuario } from '../entities/Usuario';
+import { Usuario } from '../../entities/Usuario';
 
 export class GetallUsuariosService {
     async execute() {
