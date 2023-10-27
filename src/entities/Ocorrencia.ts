@@ -6,6 +6,11 @@ export class Ocorrencia{
 @PrimaryColumn()
 id: string;
 
+@Column()
+denuncia: string;
+
+@Column()
+local: string;
 
 @Column()
 data: Date;
