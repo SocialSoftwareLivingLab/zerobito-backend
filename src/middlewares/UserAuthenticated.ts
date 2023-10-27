@@ -46,7 +46,6 @@ function deserializeJwt(req: Request, res: Response) : BackofficeUserJWT | null{
     }
 }
 
-
 /*
 1) Chama a função deserializeJwt() para obter as informações do usuário autenticado.
 2) Verifica se o usuário autenticado é um administrador. Se não for, a função retorna um erro 403 com a mensagem "You are not authorized to perform this action.".

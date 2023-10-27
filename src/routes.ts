@@ -14,5 +14,4 @@ routes.post("/register", new CreateUsuarioController().handle);
 routes.get("/users", new GetallUsuariosController().handle);
 routes.delete("/users/:id", new DeleteUsuarioController().handle);
 routes.put("/users/:id", new UpdateUsuarioController().handle);
-
 export {routes};

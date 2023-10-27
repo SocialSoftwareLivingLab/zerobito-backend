@@ -8,7 +8,7 @@ export const env = {
     DB_PORT: Number(process.env.DB_PORT) || 5432,
     DB_USERNAME: process.env.DB_USERNAME || 'postgres',
     DB_PASSWORD: process.env.DB_PASSWORD || 'docker',
-    DB_NAME: process.env.DB_NAME || 'covid_app',
+    DB_NAME: process.env.DB_NAME || 'zerobito',
   },
   keycloak: {
     KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
