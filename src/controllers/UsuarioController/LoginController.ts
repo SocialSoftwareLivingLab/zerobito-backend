@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import LoginService from '../../services/UsuarioServices/LoginService';
 
+
 const loginController = Router();
 
 loginController.post('/login', async (request, response) => {

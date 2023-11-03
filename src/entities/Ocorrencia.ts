@@ -1,6 +1,12 @@
 import { Entity , Column , PrimaryColumn} from "typeorm";
+import { SelectQuery } from "typeorm/query-builder/SelectQuery";
+import { Gravidade } from "../enums/GravidadeEnum";
+import { Status } from "../enums/OcorrenciaEnum";
+import { CondicaoAcidentado } from "../enums/CondicaoAcidantadoEnum";
+import {v4 as uuid} from "uuid";
+ 
 
-@Entity("ocorrencia")
+@Entity("ocorrencias")
 export class Ocorrencia{
 
 @PrimaryColumn()
@@ -16,12 +22,34 @@ local: string;
 data: Date;
 
 @Column()
-condicao:string;
+nomeVitima: string;
+
+@Column({
+    type: "enum",
+    enum: CondicaoAcidentado,
+})
+condicaoAcidentado: CondicaoAcidentado;
 
 @Column()
-gravidade:string;
+nomeEmpresaEmpregadora:string;
 
-@Column()
-status:string;//Andamento do Caso
+@Column({
+    type: "enum",
+    enum: Gravidade,
+})
+gravidade: Gravidade;
+
+@Column({ 
+    type: "enum",
+    enum: Status,
+  })
+  status: Status;
+
+  constructor() {
+    if (!this.id) {
+        this.id = uuid();
+    }
+}
 
 }
+

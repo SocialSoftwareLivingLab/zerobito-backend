@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import{verify} from "jsonwebtoken";
 import logger from "../shared/logger";
-import{BackofficeUserRole} from '../enums/BackOfficieUser_Role';
+import{BackofficeUserRole} from '../enums/BackofficeUserRole';
 import authConfig from "../config/auth.config";
 
 const log = logger({context: "UserAuthenticated"});
@@ -68,7 +68,7 @@ export function ensureBackofficeUserIsAdmin(
         res
         .status(403)
         .json({message: 'You are not authorized to perform this action.'});
-        return;
+        return null;
     }
 
     log.info(

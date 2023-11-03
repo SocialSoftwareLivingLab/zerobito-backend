@@ -1,35 +1,51 @@
-import { getRepository } from "typeorm";
+import { getCustomRepository } from "typeorm";
 import { Ocorrencia } from "../../entities/Ocorrencia";
-
+import OcorrenciaRepository from "../../repositories/OcorrenciaRepositorie";
+import { CondicaoAcidentado } from "../../enums/CondicaoAcidantadoEnum";
+import { Gravidade } from "../../enums/GravidadeEnum";
+import { Status } from "../../enums/OcorrenciaEnum";
 
 type OcorrenciaRequest = {
-    denuncia: string;
-    local: string;
-    data: Date;
-    condicao: string;
-    gravidade: string;
-    status: string;
-  };
-  
+  denuncia: string;
+  local: string;
+  data: Date;
+  nomeVitima: string;
+  condicaoAcidentado: CondicaoAcidentado;
+  nomeEmpresaEmpregadora: string;
+  gravidade: Gravidade;
+  status: Status;
+};
 
 export class CreateOcorrenciaService {
-    async execute({data, condicao, gravidade, status}: OcorrenciaRequest) : Promise<Ocorrencia | Error>{
-        const repo = getRepository(Ocorrencia);
-    
-        //Verificar se o nome já existe
-        if(await repo.findOne({data})){
-            return new Error("Data já cadastrada");
-        }
+  async execute({
+    denuncia,
+    local,
+    data,
+    nomeVitima,
+    condicaoAcidentado,
+    nomeEmpresaEmpregadora,
+    gravidade,
+    status,
+  }: OcorrenciaRequest): Promise<Ocorrencia | Error> {
+    const repo = getCustomRepository(OcorrenciaRepository);
 
-        const ocorrencia = repo.create({
-            data,
-            condicao,
-            gravidade,
-            status
-        });
+    try {
+      const ocorrencias = repo.create({
+        denuncia,
+        local,
+        data,
+        nomeVitima,
+        condicaoAcidentado,
+        nomeEmpresaEmpregadora,
+        gravidade,
+        status,
+      });
 
-        await repo.save(ocorrencia);
-        return ocorrencia;
+      await repo.save(ocorrencias);
+      return ocorrencias;
+    } catch (error) {
+      console.log(error);
+      return new Error("Não foi possível salvar a ocorrência.");
     }
-
+  }
 }

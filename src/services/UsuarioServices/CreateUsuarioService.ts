@@ -1,11 +1,13 @@
 import { getRepository } from "typeorm";
 import { Usuario } from "../../entities/Usuario";
 import { hashSync } from "bcryptjs";
+import { BackofficeUserJWT } from "../../middlewares/UserAuthenticated";
 
 type UsuarioResquest = {
     nome: string;
     email: string;
     senha: string;
+    role?: BackofficeUserJWT;
 };
 
 

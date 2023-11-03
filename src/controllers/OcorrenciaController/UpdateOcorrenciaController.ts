@@ -4,11 +4,11 @@ import { UpdateOcorrenciaService } from "../../services/OcorrenciaServices/Updat
 export class UpdateOcorrenciaController {
     async handle(request: Request, response: Response) {
         const { id } = request.params;
-        const { condicao, gravidade, status } = request.body;
+        const { denuncia, local, data, nomeVitima, condicaoAcidentado, nomeEmpresaEmpregadora, gravidade , status } = request.body;
 
         const service = new UpdateOcorrenciaService();
 
-        const result = await service.execute({ id, condicao, gravidade, status });
+        const result = await service.execute({id, denuncia, local, data, nomeVitima, condicaoAcidentado, nomeEmpresaEmpregadora , gravidade, status });
 
         if (result instanceof Error) {
             return response.status(400).json(result.message);
