@@ -24,6 +24,18 @@ data: Date;
 @Column()
 nomeVitima: string;
 
+@Column()
+tipoOcorrencia: string;
+
+@Column()
+nomeContato: string;
+
+@Column()
+emailContato: string;
+
+@Column()
+telefoneContato: string;
+
 @Column({
     type: "enum",
     enum: CondicaoAcidentado,

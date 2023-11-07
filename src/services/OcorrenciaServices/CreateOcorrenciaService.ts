@@ -10,6 +10,10 @@ type OcorrenciaRequest = {
   local: string;
   data: Date;
   nomeVitima: string;
+  tipoOcorrencia: string;
+  nomeContato: string;
+  emailContato: string;
+  telefoneContato: string;
   condicaoAcidentado: CondicaoAcidentado;
   nomeEmpresaEmpregadora: string;
   gravidade: Gravidade;
@@ -22,6 +26,10 @@ export class CreateOcorrenciaService {
     local,
     data,
     nomeVitima,
+    tipoOcorrencia,
+    nomeContato,
+    emailContato,
+    telefoneContato,
     condicaoAcidentado,
     nomeEmpresaEmpregadora,
     gravidade,
@@ -35,6 +43,10 @@ export class CreateOcorrenciaService {
         local,
         data,
         nomeVitima,
+        tipoOcorrencia,
+        nomeContato,
+        emailContato,
+        telefoneContato,
         condicaoAcidentado,
         nomeEmpresaEmpregadora,
         gravidade,

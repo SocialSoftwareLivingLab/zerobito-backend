@@ -5,11 +5,12 @@ import { DeleteUsuarioController } from "./controllers/UsuarioController/DeleteU
 import { UpdateDateColumn } from "typeorm";
 import { UpdateUsuarioController } from "./controllers/UsuarioController/UpdateUsuarioController";
 import loginController from "./controllers/UsuarioController/LoginController";
-const routes = Router();
 import { CreateOcorrenciaController } from "./controllers/OcorrenciaController/CreateOcorrenciaController";
 import { GettOcorrenciaController } from "./controllers/OcorrenciaController/GettOcorrenciaController";
 import { DeleteOcorrenciaController } from "./controllers/OcorrenciaController/DeleteOcorrenciaController";
 import { UpdateOcorrenciaController } from "./controllers/OcorrenciaController/UpdateOcorrenciaController";
+
+const routes = Router();
 
 
 //CRUD USUARIO
