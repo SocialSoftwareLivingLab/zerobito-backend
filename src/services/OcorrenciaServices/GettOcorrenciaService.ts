@@ -13,4 +13,4 @@ export class GettOcorrenciaService{
 
         return ocorrencia;
     }
-}
+}   
