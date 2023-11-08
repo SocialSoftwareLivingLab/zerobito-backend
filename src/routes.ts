@@ -8,6 +8,7 @@ import loginController from "./controllers/UsuarioController/LoginController";
 const routes = Router();
 import { CreateOcorrenciaController } from "./controllers/OcorrenciaController/CreateOcorrenciaController";
 import { GettOcorrenciaController } from "./controllers/OcorrenciaController/GettOcorrenciaController";
+import { GetAllOcorrenciaController } from "./controllers/OcorrenciaController/GetAllOcorrenciaController";
 import { DeleteOcorrenciaController } from "./controllers/OcorrenciaController/DeleteOcorrenciaController";
 import { UpdateOcorrenciaController } from "./controllers/OcorrenciaController/UpdateOcorrenciaController";
 
@@ -24,7 +25,7 @@ routes.put("/users/:id", new UpdateUsuarioController().handle);
 //CRUD OCORRENCIA
 routes.post("/ocorrencias", new CreateOcorrenciaController().handle);
 routes.get("/ocorrencias/:id", new GettOcorrenciaController().handle);
-routes.get("/ocorrencias", new GettOcorrenciaController().handle);
+routes.get("/ocorrencias", new GetAllOcorrenciaController().handle);
 routes.delete("/ocorrencias/:id", new DeleteOcorrenciaController().handle);
 routes.put("/ocorrencias/:id", new UpdateOcorrenciaController().handle);
 
