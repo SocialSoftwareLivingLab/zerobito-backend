@@ -18,7 +18,7 @@ denuncia: string;
 @Column()
 local: string;
 
-@Column()
+@Column({ type: 'date' })
 data: Date;
 
 @Column()
@@ -43,7 +43,7 @@ telefoneContato: string;
 condicaoAcidentado: CondicaoAcidentado;
 
 @Column()
-nomeEmpresaEmpregadora:string;
+nomeEmpresaEmpregadora: string;
 
 @Column({
     type: "enum",
