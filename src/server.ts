@@ -6,10 +6,12 @@ import { routes } from "./routes";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 
 app.use(express.json());
 
 app.use(routes);
 
-app.listen(3001, () => console.log("Server is running on 3001"));
+app.listen(4000, () => console.log("Server is running on 3001"));
