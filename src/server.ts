@@ -8,7 +8,7 @@ const app = express();
 
 // Configure o CORS antes de qualquer outra middleware
 app.use(cors({
-    origin: 'http://localhost:3000/', // Substitua pelo domínio do seu site
+    origin: 'http://143.106.73.48:3000/', // Substitua pelo domínio do seu site
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true, // Se você precisa de suporte a credenciais (cookies, autenticação)
 }));
