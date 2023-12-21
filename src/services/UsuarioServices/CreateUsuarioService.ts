@@ -1,36 +1,40 @@
 import { getRepository } from "typeorm";
 import { Usuario } from "../../entities/Usuario";
 import { hashSync } from "bcryptjs";
-import { BackofficeUserJWT } from "../../middlewares/UserAuthenticated";
+import { UserRole } from "../../enums/UserRole";
 
-type UsuarioResquest = {
+interface UsuarioResquest  {
     nome: string;
     email: string;
     senha: string;
-    role?: BackofficeUserJWT;
+    role?: UserRole;
 };
 
+export interface UsuarioResponse {
+    nome: string;
+    email: string;
+    role: UserRole;
+};
 
 export class CreateUsuarioService {
-    async execute({nome, email, senha}: UsuarioResquest) : Promise<Usuario | Error>{
+    async execute({nome, email, senha , role }: UsuarioResquest) : Promise<UsuarioResponse>{
      const repo = getRepository(Usuario);
 
-     //Verificar se o nome já existe
-   if (await repo.findOne({ nome })){
-   
-    return new Error("Nome já cadastrado");
-}
+     if (await repo.findOne({ where: { email } })) {
+        throw new Error("Email já cadastrado");
+    }
 
     const hashedPassword = hashSync(senha, 8);
-    const usuario = repo.create({
-         nome,
-         email,
-        senha: hashedPassword
-    });
 
+    const usuarioRole = role ?? UserRole.USER;
+
+    const usuario = repo.create({nome, email, senha: hashedPassword, role :usuarioRole});
+    
     await repo.save(usuario);
+    
     return usuario;
-}
+
+    }
 
 }
 
