@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import LoginService from '../services/UsuarioServices/LoginService';
+
 const sessionsRouter = Router();
 
 sessionsRouter.post('/login', async (request, response) => {

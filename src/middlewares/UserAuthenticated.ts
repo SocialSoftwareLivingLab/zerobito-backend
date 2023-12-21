@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import{verify} from "jsonwebtoken";
 import logger from "../shared/logger";
-import{BackofficeUserRole} from '../enums/BackofficeUserRole';
+import{UserRole} from '../enums/UserRole';
 import authConfig from "../config/auth.config";
 
 const log = logger({context: "UserAuthenticated"});
 
 export interface BackofficeUserJWT{
     identity: string; //O identificador do usuário que está autenticado pelo token JWT.
-    role: BackofficeUserRole;// O papel do usuário que está autenticado pelo token JWT.
+    role: UserRole;// O papel do usuário que está autenticado pelo token JWT.
     iat: number;//O tempo de emissão do token JWT.
     exp: number;//O tempo de expiração do token JWT.
 }
@@ -52,7 +52,7 @@ function deserializeJwt(req: Request, res: Response) : BackofficeUserJWT | null{
 3) Registra uma mensagem de log indicando que um administrador realizou uma solicitação.
 4) Chama o próximo middleware na cadeia.
 */
-export function ensureBackofficeUserIsAdmin(
+export function UserIsAdmin(
     req: Request,
     res: Response,
     next: NextFunction,
@@ -61,7 +61,7 @@ export function ensureBackofficeUserIsAdmin(
     deserializeJwt(req, res);
     const user = res.locals.user as BackofficeUserJWT;
 
-    if(user.role !==BackofficeUserRole.ADMIN){
+    if(user.role !==UserRole.ADMIN){
         log.warn(
             `Non admin user ${user.identity} tried to perform a ${req.method} request to ${req.originalUrl};`,
         );
@@ -86,7 +86,7 @@ export function ensureBackofficeUserIsAdmin(
 4) Chama o próximo middleware na cadeia.
 */
 
-export function ensureBackofficeUserIsAuthenticated(
+export function UserIsAuthenticated(
 
     req: Request,
     res: Response,

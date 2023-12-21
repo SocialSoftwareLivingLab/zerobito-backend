@@ -1,6 +1,6 @@
 import { Router} from "express";
 import { CreateUsuarioController } from "./controllers/UsuarioController/CreateUsuarioController";
-import { GetallUsuariosController } from "./controllers/UsuarioController/GettAllUsuariosController";
+import { GetAllUsuariosController } from "./controllers/UsuarioController/GettAllUsuariosController";
 import { DeleteUsuarioController } from "./controllers/UsuarioController/DeleteUsuarioController";
 import { UpdateDateColumn } from "typeorm";
 import { UpdateUsuarioController } from "./controllers/UsuarioController/UpdateUsuarioController";
@@ -11,16 +11,22 @@ import { GetAllOcorrenciaController } from "./controllers/OcorrenciaController/G
 import { DeleteOcorrenciaController } from "./controllers/OcorrenciaController/DeleteOcorrenciaController";
 import { UpdateOcorrenciaController } from "./controllers/OcorrenciaController/UpdateOcorrenciaController";
 
+import { UserIsAuthenticated , UserIsAdmin } from './middlewares/UserAuthenticated'
+
+
 const routes = Router();
 
 
 //CRUD USUARIO
 routes.post("/login", loginController);
 routes.post("/register", new CreateUsuarioController().handle);
-routes.get("/users", new GetallUsuariosController().handle);
-routes.delete("/users/:id", new DeleteUsuarioController().handle);
-routes.put("/users/:id", new UpdateUsuarioController().handle);
 
+// Apenas usuários autenticados podem listar todos os usuários
+routes.get("/users", UserIsAuthenticated, new GetAllUsuariosController().handle);
+
+// Apenas administradores podem deletar ou atualizar usuários
+routes.delete("/users/:id", UserIsAuthenticated, UserIsAdmin, new DeleteUsuarioController().handle);
+routes.put("/users/:id", UserIsAuthenticated, UserIsAdmin, new UpdateUsuarioController().handle);
 
 
 //CRUD OCORRENCIA
