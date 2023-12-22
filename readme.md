@@ -64,3 +64,6 @@ Registro de Usuário
 }
 
 ```
+
+## Listar Usuários
+
