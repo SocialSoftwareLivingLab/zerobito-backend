@@ -26,3 +26,8 @@ typeorm migration:run
 ```
 
 
+
+## Insomnia ou Postman
+
+
+
