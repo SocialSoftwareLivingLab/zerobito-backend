@@ -30,4 +30,9 @@ typeorm migration:run
 ## Insomnia ou Postman
 
 
+## Autenticação de Usuários
 
+### Login (/login)
+O Método utilizado : POST
+Descrição: Autentica um usuário e retorna um token JWT.
+Corpo da Requisição (JSON):
