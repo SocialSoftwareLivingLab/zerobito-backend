@@ -7,7 +7,7 @@ export const env = {
     DB_HOST: process.env.DB_HOST || 'localhost',
     DB_PORT: Number(process.env.DB_PORT) || 5432,
     DB_USERNAME: process.env.DB_USERNAME || 'postgres',
-    DB_PASSWORD: process.env.DB_PASSWORD || '445544',
+    DB_PASSWORD: process.env.DB_PASSWORD || 'unicampzero445544',
     DB_NAME: process.env.DB_NAME || 'zerobito',
   },
   keycloak: {
@@ -42,8 +42,8 @@ export const env = {
     API_KEY: process.env.API_KEY || 'local',
     DEFAULT_ADMIN: {
       email: process.env.DEFAULT_ADMIN_EMAIL || 'admin@admin.com.br',
-      name: process.env.DEFAULT_ADMIN_NAME || 'Admin Admin',
-      password: process.env.DEFAULT_ADMIN_PASSWORD || 'AdminPassword',
+      nome: process.env.DEFAULT_ADMIN_NAME || 'Admin Admin',
+      senha: process.env.DEFAULT_ADMIN_PASSWORD || 'AdminPassword',
     },
   },
 };

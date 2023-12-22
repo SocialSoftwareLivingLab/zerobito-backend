@@ -1,12 +1,19 @@
 import { Request, Response } from "express";
-import { GetallUsuariosService } from "../../services/UsuarioServices/GettAllUsuariosService";
+import { GetAllUsuariosService } from "../../services/UsuarioServices/GettAllUsuariosService";
 
-export class GetallUsuariosController{
-    async handle(request:Request,response:Response){
-        const service = new GetallUsuariosService();
+export class GetAllUsuariosController {
+    async handle(request: Request, response: Response) {
+        const service = new GetAllUsuariosService();
 
-        const usuarios = await service.execute();
+        try {
+            const usuarios = await service.execute();
+            return response.json(usuarios);
+        } catch (error) {
+            // Aqui você pode logar o erro ou tratar de forma específica se necessário
+            console.error("Erro ao obter usuários:", error);
 
-        return response.json(usuarios);
+            // Enviar uma resposta genérica de erro
+            return response.status(500).json({ message: "Erro interno do servidor" });
+        }
     }
 }
