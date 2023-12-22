@@ -7,8 +7,8 @@ export const env = {
     DB_HOST: process.env.DB_HOST || 'localhost',
     DB_PORT: Number(process.env.DB_PORT) || 5432,
     DB_USERNAME: process.env.DB_USERNAME || 'postgres',
-    DB_PASSWORD: process.env.DB_PASSWORD || '445544',
-    DB_NAME: process.env.DB_NAME || 'zero_obito',
+    DB_PASSWORD: process.env.DB_PASSWORD || 'unicampzero445544',
+    DB_NAME: process.env.DB_NAME || 'zerobito',
   },
   keycloak: {
     KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
