@@ -33,6 +33,14 @@ typeorm migration:run
 ## Autenticação de Usuários
 
 ### Login (/login)
-O Método utilizado : POST
-Descrição: Autentica um usuário e retorna um token JWT.
-Corpo da Requisição (JSON):
+- O Método utilizado : POST
+- Descrição: Autentica um usuário e retorna um token JWT.
+- Corpo da Requisição (JSON):
+
+```bash
+
+{
+  "email": "usuario@email.com",
+  "senha": "senha123"
+}
+```
