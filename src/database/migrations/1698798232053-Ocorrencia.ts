@@ -46,6 +46,19 @@ export class Ocorrencia1698798232053 implements MigrationInterface {
                             name: "status",
                             type: "varchar",
                         },
+                        {
+                            name: "tipoOcorrencia",
+                            type: "varchar",
+                        },{
+                            name: "nomeContato",
+                            type: "varchar",
+                        },{
+                            name: "emailContato",
+                            type: "varchar",
+                        },{
+                            name: "telefoneContato",
+                            type: "varchar",
+                        }
                     ],
                 })
             );
