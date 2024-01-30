@@ -1,0 +1,100 @@
+{
+    "openapi": "3.1.0",
+    "zerobito-backend": "0.0.1",
+    "info": {
+        "title": "Zerobito - Backend",
+        "version": "0.0.1",
+        "description": "Documentação do projeto ZerObito, sistema para mapear ocorrências e acidentes de trabalho do Ministério Público",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "defaultContentType": "application/json",
+    "tags": [
+        {
+            "name": "Autenticacao",
+            "description": "Operações relacionadas à autenticação de usuários"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Autenticacao"
+                ],
+                "summary": "Efetua login de um usuário",
+                "description": "Este endpoint autentica um usuário com base no email e senha fornecidos e retorna o nome do usuário, email e um token de acesso.",
+                "requestBody": {
+                    "description": "Dados de login do usuário",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login bem-sucedido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida, dados de login ausentes ou incorretos."
+                    },
+                    "401": {
+                        "description": "Autenticação falhou, credenciais inválidas."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "O email do usuário utilizado para fazer login."
+                    },
+                    "senha": {
+                        "type": "string",
+                        "description": "A senha do usuário utilizada para fazer login."
+                    }
+                },
+                "required": [
+                    "email",
+                    "senha"
+                ]
+            },
+            "LoginResponse": {
+                "type": "object",
+                "properties": {
+                    "nome": {
+                        "type": "string",
+                        "description": "O nome completo do usuário."
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "O email do usuário, igual ao fornecido na requisição de login."
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "Um token de autenticação que pode ser usado para acessar endpoints protegidos."
+                    }
+                }
+            }
+        }
+    }
+}
