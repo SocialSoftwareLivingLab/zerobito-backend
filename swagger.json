@@ -22,7 +22,11 @@
         },
         {
             "name": "Administracao",
-            "description": "Endpoints e funcionalidades que só podem ser utilizadas por usuários administradores da plataforma"
+            "description": "Funcionalidades que só podem ser utilizadas por usuários administradores da plataforma"
+        },
+        {
+            "name": "Ocorrencias",
+            "description": "Registro e gerenciamento das ocorrências recebidas na aplicação"
         }
     ],
     "paths": {
@@ -211,6 +215,36 @@
                     },
                     "403": {
                         "$ref": "#/components/responses/ForbiddenError"
+                    }
+                }
+            }
+        },
+        "/ocorrencias": {
+            "post": {
+                "summary": "Registra uma nova ocorrência",
+                "description": "Endpoint para registro de novas ocorrências com detalhes relevantes.",
+                "tags": ["Ocorrencias"],
+                "requestBody": {
+                    "description": "Dados da ocorrência",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OcorrenciaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ocorrência registrada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CriarOcorrenciaResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -407,6 +441,186 @@
                     "nome",
                     "email",
                     "senha"
+                ]
+            },
+            "CriarOcorrenciaResponse": {
+                "type": "object",
+                "properties": {
+                    "denuncia": {
+                        "type": "string"
+                    },
+                    "local": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "nomeVitima": {
+                        "type": "string"
+                    },
+                    "tipoOcorrencia": {
+                        "type": "string"
+                    },
+                    "nomeContato": {
+                        "type": "string"
+                    },
+                    "emailContato": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "telefoneContato": {
+                        "type": "string"
+                    },
+                    "condicaoAcidentado": {
+                        "type": "string",
+                        "enum": [
+                            "Óbito",
+                            "Incidente com Alto Potencial"
+                        ]
+                    },
+                    "nomeEmpresaEmpregadora": {
+                        "type": "string"
+                    },
+                    "gravidade": {
+                        "type": "string",
+                        "enum": [
+                            "Emergencial",
+                            "Muito Urgente",
+                            "Urgência",
+                            "Pouca Urgência"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "Aguardando análisie",
+                            "Monitorar 7 dias",
+                            "Monitorar 30 dias",
+                            "Monitorar 60 dias",
+                            "Monitorar 90 dias",
+                            "Urgência",
+                            "Pouca Urgência"
+                        ]
+                    }
+                },
+                "required": [
+                    "denuncia",
+                    "local",
+                    "data",
+                    "nomeVitima",
+                    "tipoOcorrencia",
+                    "nomeContato",
+                    "emailContato",
+                    "telefoneContato",
+                    "condicaoAcidentado",
+                    "nomeEmpresaEmpregadora",
+                    "gravidade",
+                    "status"
+                ]
+            },
+            "CondicaoAcidentado": {
+                "type": "string",
+                "enum": [
+                    "Óbito",
+                    "Incidente com Alto Potencial"
+                ]
+            },
+            "Gravidade": {
+                "type": "string",
+                "enum": [
+                    "Emergencial",
+                    "Muito Urgente",
+                    "Urgência",
+                    "Pouca Urgência"
+                ]
+            },
+            "Status": {
+                "type": "string",
+                "enum": [
+                    "Aguardando análisie",
+                    "Monitorar 7 dias",
+                    "Monitorar 30 dias",
+                    "Monitorar 60 dias",
+                    "Monitorar 90 dias",
+                    "Urgência",
+                    "Pouca Urgência"
+                ]
+            },
+            "OcorrenciaRequest": {
+                "type": "object",
+                "properties": {
+                    "denuncia": {
+                        "type": "string"
+                    },
+                    "local": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "nomeVitima": {
+                        "type": "string"
+                    },
+                    "tipoOcorrencia": {
+                        "type": "string"
+                    },
+                    "nomeContato": {
+                        "type": "string"
+                    },
+                    "emailContato": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "telefoneContato": {
+                        "type": "string"
+                    },
+                    "condicaoAcidentado": {
+                        "type": "string",
+                        "enum": [
+                            "Obito",
+                            "IncidentecomAltoPotencial"
+                        ]
+                    },
+                    "nomeEmpresaEmpregadora": {
+                        "type": "string"
+                    },
+                    "gravidade": {
+                        "type": "string",
+                        "enum": [
+                            "Emergencial",
+                            "MuitoUrgente",
+                            "Urgencia",
+                            "PoucaUrgencia"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "AguardandoAnalisie",
+                            "MonitorarSetedias",
+                            "MonitorarTrintaDias",
+                            "MonitorarSessentaDias",
+                            "MonitorarNoventaDias",
+                            "Urgencia",
+                            "PoucaUrgencia"
+                        ]
+                    }
+                },
+                "required": [
+                    "denuncia",
+                    "local",
+                    "data",
+                    "nomeVitima",
+                    "tipoOcorrencia",
+                    "nomeContato",
+                    "emailContato",
+                    "telefoneContato",
+                    "condicaoAcidentado",
+                    "nomeEmpresaEmpregadora",
+                    "gravidade",
+                    "status"
                 ]
             }
         }
