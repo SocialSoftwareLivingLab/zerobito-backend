@@ -220,10 +220,47 @@
             }
         },
         "/ocorrencias": {
+            "get": {
+                "summary": "Busca todas as ocorrências",
+                "description": "Retorna a relação de ocorrências cadastradas na plataforma",
+                "tags": [
+                    "Ocorrencias"
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Relação de ocorrências obtida com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ConsultarOcorrenciaResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErroNaoAutorizado"
+                    }
+                }
+            },
             "post": {
                 "summary": "Registra uma nova ocorrência",
                 "description": "Endpoint para registro de novas ocorrências com detalhes relevantes.",
-                "tags": ["Ocorrencias"],
+                "tags": [
+                    "Ocorrencias"
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "requestBody": {
                     "description": "Dados da ocorrência",
                     "required": true,
@@ -245,6 +282,64 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/ocorrencias/{id}": {
+            "get": {
+                "summary": "Retorna uma ocorrência específica",
+                "description": "Obtém detalhes de uma ocorrência específica pelo seu ID",
+                "operationId": "getOcorrenciaById",
+                "tags": [
+                    "Ocorrencias"
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID único da ocorrência",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados da ocorrência encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConsultarOcorrenciaResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ForbiddenError"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Excluir uma ocorrência",
+                "description": "Realiza a exclusão de uma ocorrência na plataforma. Ação irreversível",
+                "tags": [
+                    "Ocorrencias"
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Ocorrência excluída com sucesso"                        
                     }
                 }
             }
@@ -286,6 +381,22 @@
             },
             "ErroAcessoNegado": {
                 "description": "Acesso negado, o usuário não tem permissão suficiente para executar esta ação.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Mensagem de erro detalhando o problema ocorrido"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ErroNaoEncontrado": {
+                "description": "Não encontrado",
                 "content": {
                     "application/json": {
                         "schema": {
@@ -444,6 +555,82 @@
                 ]
             },
             "CriarOcorrenciaResponse": {
+                "type": "object",
+                "properties": {
+                    "denuncia": {
+                        "type": "string"
+                    },
+                    "local": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "nomeVitima": {
+                        "type": "string"
+                    },
+                    "tipoOcorrencia": {
+                        "type": "string"
+                    },
+                    "nomeContato": {
+                        "type": "string"
+                    },
+                    "emailContato": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "telefoneContato": {
+                        "type": "string"
+                    },
+                    "condicaoAcidentado": {
+                        "type": "string",
+                        "enum": [
+                            "Óbito",
+                            "Incidente com Alto Potencial"
+                        ]
+                    },
+                    "nomeEmpresaEmpregadora": {
+                        "type": "string"
+                    },
+                    "gravidade": {
+                        "type": "string",
+                        "enum": [
+                            "Emergencial",
+                            "Muito Urgente",
+                            "Urgência",
+                            "Pouca Urgência"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "Aguardando análisie",
+                            "Monitorar 7 dias",
+                            "Monitorar 30 dias",
+                            "Monitorar 60 dias",
+                            "Monitorar 90 dias",
+                            "Urgência",
+                            "Pouca Urgência"
+                        ]
+                    }
+                },
+                "required": [
+                    "denuncia",
+                    "local",
+                    "data",
+                    "nomeVitima",
+                    "tipoOcorrencia",
+                    "nomeContato",
+                    "emailContato",
+                    "telefoneContato",
+                    "condicaoAcidentado",
+                    "nomeEmpresaEmpregadora",
+                    "gravidade",
+                    "status"
+                ]
+            },
+            "ConsultarOcorrenciaResponse": {
                 "type": "object",
                 "properties": {
                     "denuncia": {
