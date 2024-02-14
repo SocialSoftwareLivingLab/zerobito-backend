@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import{verify} from "jsonwebtoken";
 import logger from "../shared/logger";
 import{UserRole} from '../enums/UserRole';
-import authConfig from "../config/auth.config";
+import { env } from "../config/configs";
 
 const log = logger({context: "UserAuthenticated"});
 
@@ -34,7 +34,7 @@ function deserializeJwt(req: Request, res: Response) : BackofficeUserJWT | null{
     
     const[, token] = authHeader.split(' ');
     try {
-    const jwt = verify(token, authConfig.jwt.secret) as BackofficeUserJWT;
+    const jwt = verify(token, env.jwt.secret) as BackofficeUserJWT;
 
     res.locals.user = jwt;
 

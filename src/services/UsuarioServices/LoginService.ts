@@ -1,7 +1,7 @@
 import { getRepository } from "typeorm";
 import { compareSync } from "bcryptjs";
 import{ sign } from 'jsonwebtoken';
-import authConfig from "../../config/auth.config";
+import { env } from "../../config/configs";
 import { Usuario } from "../../entities/Usuario";
 
 interface Request {
@@ -32,7 +32,7 @@ class LoginService {
 
         if(!matched) throw new Error("Email ou senha incorretos");
 
-        const {expiresIn, secret} = authConfig.jwt;
+        const {expiresIn, secret} = env.jwt;
 
         const token = sign (
             {
