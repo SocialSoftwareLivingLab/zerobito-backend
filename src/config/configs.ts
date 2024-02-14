@@ -10,6 +10,10 @@ export const env = {
     DB_PASSWORD: process.env.DB_PASSWORD || 'unicampzero445544',
     DB_NAME: process.env.DB_NAME || 'zerobito',
   },
+  jwt: {
+    secret: process.env.JWT_SECRET || '40b780965fc28ec715f0e322711ae24e',
+    expiresIn: process.env.JWT_EXPIRES_IN || '8h',
+  },
   keycloak: {
     KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
     KEYCLOAK_AUTH_SERVER_URL: process.env.KEYCLOAK_AUTH_SERVER_URL,
