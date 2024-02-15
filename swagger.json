@@ -32,9 +32,7 @@
     "paths": {
         "/login": {
             "post": {
-                "tags": [
-                    "Autenticacao"
-                ],
+                "tags": ["Autenticacao"],
                 "summary": "Efetua login de um usuário",
                 "description": "Este endpoint autentica um usuário com base no email e senha fornecidos e retorna o nome do usuário, email e um token de acesso.",
                 "requestBody": {
@@ -70,9 +68,7 @@
         },
         "/register": {
             "post": {
-                "tags": [
-                    "Autenticacao"
-                ],
+                "tags": ["Autenticacao"],
                 "summary": "Registra um novo usuário",
                 "description": "Este endpoint registra um novo usuário com os dados fornecidos e retorna informações básicas sobre o usuário registrado.",
                 "requestBody": {
@@ -105,9 +101,7 @@
         },
         "/users": {
             "get": {
-                "tags": [
-                    "Usuarios"
-                ],
+                "tags": ["Usuarios"],
                 "summary": "Lista todos os usuários cadastrados",
                 "description": "Este endpoint retorna uma lista de todos os usuários cadastrados, requerendo autenticação via token JWT.",
                 "security": [
@@ -137,10 +131,7 @@
         },
         "/users/{id}": {
             "delete": {
-                "tags": [
-                    "Usuarios",
-                    "Administracao"
-                ],
+                "tags": ["Usuarios", "Administracao"],
                 "summary": "Exclui um usuário especificado",
                 "description": "Este endpoint exclui um usuário com base no ID fornecido. Requer privilégios de administrador.",
                 "parameters": [
@@ -169,10 +160,7 @@
                 }
             },
             "put": {
-                "tags": [
-                    "Usuarios",
-                    "Administracao"
-                ],
+                "tags": ["Usuarios", "Administracao"],
                 "summary": "Atualiza os dados de um usuário",
                 "description": "Este endpoint atualiza os dados de um usuário especificado pelo ID, incluindo nome, email e senha. Requer privilégios de administrador.",
                 "parameters": [
@@ -223,9 +211,7 @@
             "get": {
                 "summary": "Busca todas as ocorrências",
                 "description": "Retorna a relação de ocorrências cadastradas na plataforma",
-                "tags": [
-                    "Ocorrencias"
-                ],
+                "tags": ["Ocorrencias"],
                 "security": [
                     {
                         "BearerAuth": []
@@ -253,9 +239,7 @@
             "post": {
                 "summary": "Registra uma nova ocorrência",
                 "description": "Endpoint para registro de novas ocorrências com detalhes relevantes.",
-                "tags": [
-                    "Ocorrencias"
-                ],
+                "tags": ["Ocorrencias"],
                 "security": [
                     {
                         "BearerAuth": []
@@ -291,9 +275,7 @@
                 "summary": "Retorna uma ocorrência específica",
                 "description": "Obtém detalhes de uma ocorrência específica pelo seu ID",
                 "operationId": "getOcorrenciaById",
-                "tags": [
-                    "Ocorrencias"
-                ],
+                "tags": ["Ocorrencias"],
                 "security": [
                     {
                         "BearerAuth": []
@@ -329,9 +311,7 @@
             "delete": {
                 "summary": "Excluir uma ocorrência",
                 "description": "Realiza a exclusão de uma ocorrência na plataforma. Ação irreversível",
-                "tags": [
-                    "Ocorrencias"
-                ],
+                "tags": ["Ocorrencias"],
                 "security": [
                     {
                         "BearerAuth": []
@@ -339,7 +319,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Ocorrência excluída com sucesso"                        
+                        "description": "Ocorrência excluída com sucesso"
                     }
                 }
             }
@@ -434,10 +414,7 @@
                         "description": "A senha do usuário utilizada para fazer login."
                     }
                 },
-                "required": [
-                    "email",
-                    "senha"
-                ]
+                "required": ["email", "senha"]
             },
             "LoginResponse": {
                 "type": "object",
@@ -479,12 +456,7 @@
                         "example": "USER"
                     }
                 },
-                "required": [
-                    "nome",
-                    "email",
-                    "senha",
-                    "role"
-                ]
+                "required": ["nome", "email", "senha", "role"]
             },
             "CriarUsuarioResponse": {
                 "type": "object",
@@ -548,11 +520,7 @@
                         "description": "A nova senha do usuário."
                     }
                 },
-                "required": [
-                    "nome",
-                    "email",
-                    "senha"
-                ]
+                "required": ["nome", "email", "senha"]
             },
             "CriarOcorrenciaResponse": {
                 "type": "object",
@@ -585,10 +553,7 @@
                     },
                     "condicaoAcidentado": {
                         "type": "string",
-                        "enum": [
-                            "Óbito",
-                            "Incidente com Alto Potencial"
-                        ]
+                        "enum": ["Óbito", "Incidente com Alto Potencial"]
                     },
                     "nomeEmpresaEmpregadora": {
                         "type": "string"
@@ -661,10 +626,7 @@
                     },
                     "condicaoAcidentado": {
                         "type": "string",
-                        "enum": [
-                            "Óbito",
-                            "Incidente com Alto Potencial"
-                        ]
+                        "enum": ["Óbito", "Incidente com Alto Potencial"]
                     },
                     "nomeEmpresaEmpregadora": {
                         "type": "string"
@@ -708,10 +670,7 @@
             },
             "CondicaoAcidentado": {
                 "type": "string",
-                "enum": [
-                    "Óbito",
-                    "Incidente com Alto Potencial"
-                ]
+                "enum": ["Óbito", "Incidente com Alto Potencial"]
             },
             "Gravidade": {
                 "type": "string",
@@ -765,10 +724,7 @@
                     },
                     "condicaoAcidentado": {
                         "type": "string",
-                        "enum": [
-                            "Obito",
-                            "IncidentecomAltoPotencial"
-                        ]
+                        "enum": ["Obito", "IncidentecomAltoPotencial"]
                     },
                     "nomeEmpresaEmpregadora": {
                         "type": "string"
