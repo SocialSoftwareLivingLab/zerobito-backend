@@ -1,21 +1,19 @@
-import { Request , Response } from "express";
-import { UpdateUsuarioService } from "../../services/UsuarioServices/UpdateUsuarioService";
+import { Request, Response } from 'express'
+import { UpdateUsuarioService } from '../../services/UsuarioServices/UpdateUsuarioService'
 
-export class UpdateUsuarioController{
-    async handle(request: Request, response: Response){
-        const {id} = request.params
-        const {nome , email , senha} = request.body;
-        
-        const service = new UpdateUsuarioService();
-        
-        const result = await service.execute(id , nome , email , senha);
+export class UpdateUsuarioController {
+    async handle(request: Request, response: Response) {
+        const { id } = request.params
+        const { nome, email, senha } = request.body
 
-        if(result instanceof Error){
-            return response.status(400).json(result.message);
+        const service = new UpdateUsuarioService()
+
+        const result = await service.execute(id, nome, email, senha)
+
+        if (result instanceof Error) {
+            return response.status(400).json(result.message)
         }
 
-
-
-        return response.json(result);
+        return response.json(result)
     }
 }

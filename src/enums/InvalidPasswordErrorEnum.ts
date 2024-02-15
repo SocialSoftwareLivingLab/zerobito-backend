@@ -6,6 +6,4 @@ export enum InvalidPasswordErrorEnum {
     MISSING_UPPERCASE_CHAR = 'A senha deve conter pelo menos uma letra maiúscula',
     PASSWORDS_SHOULD_MATCH = 'As senhas devem ser iguais',
     NEW_AND_OLD_MUST_DIFFER = 'A nova senha deve ser diferente da antiga',
-  }
-  
-  
+}

@@ -1,18 +1,17 @@
-import { NextFunction, Request, Response } from "express";
-import{verify} from "jsonwebtoken";
-import logger from "../shared/logger";
-import{UserRole} from '../enums/UserRole';
-import { env } from "../config/configs";
+import { NextFunction, Request, Response } from 'express'
+import { verify } from 'jsonwebtoken'
+import logger from '../shared/logger'
+import { UserRole } from '../enums/UserRole'
+import { env } from '../config/configs'
 
-const log = logger({context: "UserAuthenticated"});
+const log = logger({ context: 'UserAuthenticated' })
 
-export interface BackofficeUserJWT{
-    identity: string; //O identificador do usuário que está autenticado pelo token JWT.
-    role: UserRole;// O papel do usuário que está autenticado pelo token JWT.
-    iat: number;//O tempo de emissão do token JWT.
-    exp: number;//O tempo de expiração do token JWT.
+export interface BackofficeUserJWT {
+    identity: string //O identificador do usuário que está autenticado pelo token JWT.
+    role: UserRole // O papel do usuário que está autenticado pelo token JWT.
+    iat: number //O tempo de emissão do token JWT.
+    exp: number //O tempo de expiração do token JWT.
 }
-
 
 /* 
 1) Obtem o cabeçalho de autorização da requisição.
@@ -24,25 +23,25 @@ export interface BackofficeUserJWT{
 5)  Armazena o objeto BackofficeUserJWT no objeto req.locals.
 */
 
-function deserializeJwt(req: Request, res: Response) : BackofficeUserJWT | null{
-    const authHeader = req.headers.authorization;
-    
-    if(!authHeader){
-        res.status(403).json({message: 'No token provided.'});
-        return null;
+function deserializeJwt(req: Request, res: Response): BackofficeUserJWT | null {
+    const authHeader = req.headers.authorization
+
+    if (!authHeader) {
+        res.status(403).json({ message: 'No token provided.' })
+        return null
     }
-    
-    const[, token] = authHeader.split(' ');
+
+    const [, token] = authHeader.split(' ')
     try {
-    const jwt = verify(token, env.jwt.secret) as BackofficeUserJWT;
+        const jwt = verify(token, env.jwt.secret) as BackofficeUserJWT
 
-    res.locals.user = jwt;
+        res.locals.user = jwt
 
-    return jwt;
-} catch (err){
-    log.error(err);
-    res.status(401).json({message: 'Token expired or invalid.'});
-    return null;    
+        return jwt
+    } catch (err) {
+        log.error(err)
+        res.status(401).json({ message: 'Token expired or invalid.' })
+        return null
     }
 }
 
@@ -55,29 +54,27 @@ function deserializeJwt(req: Request, res: Response) : BackofficeUserJWT | null{
 export function UserIsAdmin(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
 ): void {
+    deserializeJwt(req, res)
+    const user = res.locals.user as BackofficeUserJWT
 
-    deserializeJwt(req, res);
-    const user = res.locals.user as BackofficeUserJWT;
-
-    if(user.role !==UserRole.ADMIN){
+    if (user.role !== UserRole.ADMIN) {
         log.warn(
-            `Non admin user ${user.identity} tried to perform a ${req.method} request to ${req.originalUrl};`,
-        );
-        res
-        .status(403)
-        .json({message: 'You are not authorized to perform this action.'});
-        return null;
+            `Non admin user ${user.identity} tried to perform a ${req.method} request to ${req.originalUrl};`
+        )
+        res.status(403).json({
+            message: 'You are not authorized to perform this action.',
+        })
+        return null
     }
 
     log.info(
-        `Admin ${user.identity} performed a ${req.method} request to ${req.originalUrl};`,
-    );
+        `Admin ${user.identity} performed a ${req.method} request to ${req.originalUrl};`
+    )
 
-    next();
+    next()
 }
-
 
 /*
 1) Chama a função deserializeJwt() para obter as informações do usuário autenticado.
@@ -87,19 +84,15 @@ export function UserIsAdmin(
 */
 
 export function UserIsAuthenticated(
-
     req: Request,
     res: Response,
-    next: NextFunction,
-
-
+    next: NextFunction
 ): void {
-    deserializeJwt(req, res);
-    const user = res.locals.user as BackofficeUserJWT;
+    deserializeJwt(req, res)
+    const user = res.locals.user as BackofficeUserJWT
     log.info(
-        `User ${user.identity} performed a ${req.method} request to ${req.originalUrl};`,
-    );  
-    
-    next();
+        `User ${user.identity} performed a ${req.method} request to ${req.originalUrl};`
+    )
 
+    next()
 }
