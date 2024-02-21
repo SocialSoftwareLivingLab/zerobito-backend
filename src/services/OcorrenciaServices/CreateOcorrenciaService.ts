@@ -5,6 +5,8 @@ import { CondicaoAcidentado } from '../../enums/CondicaoAcidantadoEnum'
 import { Gravidade } from '../../enums/GravidadeEnum'
 import { Status } from '../../enums/OcorrenciaEnum'
 
+import { log } from "../../shared/logger"
+
 type OcorrenciaRequest = {
     denuncia: string
     local: string
@@ -56,7 +58,7 @@ export class CreateOcorrenciaService {
             await repo.save(ocorrencias)
             return ocorrencias
         } catch (error) {
-            console.log(error)
+            log.error("Falha ao criar a ocorrência.", error);
             return new Error('Não foi possível salvar a ocorrência.')
         }
     }
