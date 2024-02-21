@@ -1,5 +1,9 @@
 import { Router } from 'express'
 import LoginService from '../services/UsuarioServices/LoginService'
+import logger from '../shared/logger'
+import { log } from 'winston'
+
+log = logger({ context: 'loginRoutes' })
 
 const sessionsRouter = Router()
 
@@ -13,7 +17,7 @@ sessionsRouter.post('/login', async (request, response) => {
             senha,
         })
 
-        console.log(response.json(data))
+        log.info("Autenticando o usuário {}", email)
         return response.json(data)
     } catch (error) {
         return response.status(400).json({ error: error.message })
