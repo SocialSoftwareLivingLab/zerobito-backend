@@ -7,10 +7,10 @@ import { env } from '../config/configs'
 const log = logger({ context: 'UserAuthenticated' })
 
 export interface BackofficeUserJWT {
-    identity: string //O identificador do usuário que está autenticado pelo token JWT.
-    role: UserRole // O papel do usuário que está autenticado pelo token JWT.
-    iat: number //O tempo de emissão do token JWT.
-    exp: number //O tempo de expiração do token JWT.
+  identity: string // O identificador do usuário que está autenticado pelo token JWT.
+  role: UserRole // O papel do usuário que está autenticado pelo token JWT.
+  iat: number // O tempo de emissão do token JWT.
+  exp: number // O tempo de expiração do token JWT.
 }
 
 /* 
@@ -24,25 +24,25 @@ export interface BackofficeUserJWT {
 */
 
 function deserializeJwt(req: Request, res: Response): BackofficeUserJWT | null {
-    const authHeader = req.headers.authorization
+  const authHeader = req.headers.authorization
 
-    if (!authHeader) {
-        res.status(403).json({ message: 'No token provided.' })
-        return null
-    }
+  if (!authHeader) {
+    res.status(403).json({ message: 'No token provided.' })
+    return null
+  }
 
-    const [, token] = authHeader.split(' ')
-    try {
-        const jwt = verify(token, env.jwt.secret) as BackofficeUserJWT
+  const [, token] = authHeader.split(' ')
+  try {
+    const jwt = verify(token, env.jwt.secret) as BackofficeUserJWT
 
-        res.locals.user = jwt
+    res.locals.user = jwt
 
-        return jwt
-    } catch (err) {
-        log.error(err)
-        res.status(401).json({ message: 'Token expired or invalid.' })
-        return null
-    }
+    return jwt
+  } catch (err) {
+    log.error(err)
+    res.status(401).json({ message: 'Token expired or invalid.' })
+    return null
+  }
 }
 
 /*
@@ -52,28 +52,28 @@ function deserializeJwt(req: Request, res: Response): BackofficeUserJWT | null {
 4) Chama o próximo middleware na cadeia.
 */
 export function UserIsAdmin(
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ): void {
-    deserializeJwt(req, res)
-    const user = res.locals.user as BackofficeUserJWT
+  deserializeJwt(req, res)
+  const user = res.locals.user as BackofficeUserJWT
 
-    if (user.role !== UserRole.ADMIN) {
-        log.warn(
-            `Non admin user ${user.identity} tried to perform a ${req.method} request to ${req.originalUrl};`
-        )
-        res.status(403).json({
-            message: 'You are not authorized to perform this action.',
-        })
-        return null
-    }
-
-    log.info(
-        `Admin ${user.identity} performed a ${req.method} request to ${req.originalUrl};`
+  if (user.role !== UserRole.ADMIN) {
+    log.warn(
+      `Non admin user ${user.identity} tried to perform a ${req.method} request to ${req.originalUrl};`,
     )
+    res.status(403).json({
+      message: 'You are not authorized to perform this action.',
+    })
+    return null
+  }
 
-    next()
+  log.info(
+    `Admin ${user.identity} performed a ${req.method} request to ${req.originalUrl};`,
+  )
+
+  next()
 }
 
 /*
@@ -84,15 +84,15 @@ export function UserIsAdmin(
 */
 
 export function UserIsAuthenticated(
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ): void {
-    deserializeJwt(req, res)
-    const user = res.locals.user as BackofficeUserJWT
-    log.info(
-        `User ${user.identity} performed a ${req.method} request to ${req.originalUrl};`
-    )
+  deserializeJwt(req, res)
+  const user = res.locals.user as BackofficeUserJWT
+  log.info(
+    `User ${user.identity} performed a ${req.method} request to ${req.originalUrl};`,
+  )
 
-    next()
+  next()
 }

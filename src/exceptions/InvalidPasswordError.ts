@@ -1,12 +1,12 @@
 import { InvalidPasswordErrorEnum } from '../enums/InvalidPasswordErrorEnum'
 
 export class InvalidPasswordError extends Error {
-    key: string
+  key: string
 
-    constructor(message: InvalidPasswordErrorEnum) {
-        super(message.toString())
-        this.key = Object.keys(InvalidPasswordErrorEnum)[
-            Object.values(InvalidPasswordErrorEnum).indexOf(message)
-        ]
-    }
+  constructor(message: InvalidPasswordErrorEnum) {
+    super(message.toString())
+    this.key = Object.keys(InvalidPasswordErrorEnum)[
+      Object.values(InvalidPasswordErrorEnum).indexOf(message)
+    ]
+  }
 }

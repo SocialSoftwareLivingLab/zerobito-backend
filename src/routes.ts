@@ -2,7 +2,6 @@ import { Router } from 'express'
 import { CreateUsuarioController } from './controllers/UsuarioController/CreateUsuarioController'
 import { GetAllUsuariosController } from './controllers/UsuarioController/GettAllUsuariosController'
 import { DeleteUsuarioController } from './controllers/UsuarioController/DeleteUsuarioController'
-import { UpdateDateColumn } from 'typeorm'
 import { UpdateUsuarioController } from './controllers/UsuarioController/UpdateUsuarioController'
 import loginController from './controllers/UsuarioController/LoginController'
 import { CreateOcorrenciaController } from './controllers/OcorrenciaController/CreateOcorrenciaController'
@@ -12,13 +11,13 @@ import { DeleteOcorrenciaController } from './controllers/OcorrenciaController/D
 import { UpdateOcorrenciaController } from './controllers/OcorrenciaController/UpdateOcorrenciaController'
 
 import {
-    UserIsAuthenticated,
-    UserIsAdmin,
+  UserIsAuthenticated,
+  UserIsAdmin,
 } from './middlewares/UserAuthenticated'
 
 const routes = Router()
 
-//CRUD USUARIO
+// CRUD USUARIO
 routes.post('/login', loginController)
 routes.post('/register', new CreateUsuarioController().handle)
 
@@ -27,19 +26,19 @@ routes.get('/users', UserIsAuthenticated, new GetAllUsuariosController().handle)
 
 // Apenas administradores podem deletar ou atualizar usuários
 routes.delete(
-    '/users/:id',
-    UserIsAuthenticated,
-    UserIsAdmin,
-    new DeleteUsuarioController().handle
+  '/users/:id',
+  UserIsAuthenticated,
+  UserIsAdmin,
+  new DeleteUsuarioController().handle,
 )
 routes.put(
-    '/users/:id',
-    UserIsAuthenticated,
-    UserIsAdmin,
-    new UpdateUsuarioController().handle
+  '/users/:id',
+  UserIsAuthenticated,
+  UserIsAdmin,
+  new UpdateUsuarioController().handle,
 )
 
-//CRUD OCORRENCIA
+// CRUD OCORRENCIA
 routes.post('/ocorrencias', new CreateOcorrenciaController().handle)
 routes.get('/ocorrencias/:id', new GettOcorrenciaController().handle)
 routes.get('/ocorrencias', new GetAllOcorrenciaController().handle)
