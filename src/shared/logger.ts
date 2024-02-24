@@ -1,4 +1,4 @@
-import { createLogger, format, Logger, transport } from 'winston'
+import { createLogger, format, Logger } from 'winston'
 import { TransformableInfo } from 'logform'
 import DailyRotateFile from 'winston-daily-rotate-file'
 import moment from 'moment'
@@ -8,11 +8,11 @@ import 'moment-timezone'
 const { combine, printf, label, colorize } = format // usadas para formatar a mensagem do log
 
 const transports = new DailyRotateFile({
-    dirname: './logs',
-    filename: 'application-%DATE%.log',
-    datePattern: 'YYYY-MM-DD-HH-MM',
-    zippedArchive: true,
-    maxSize: '10m',
+  dirname: './logs',
+  filename: 'application-%DATE%.log',
+  datePattern: 'YYYY-MM-DD-HH-MM',
+  zippedArchive: true,
+  maxSize: '10m',
 })
 
 /*
@@ -21,32 +21,28 @@ O código neste evento imprime uma mensagem no console informando que o arquivo 
 */
 
 transports.on('rotate', (oldFilename, newFilename) => {
-    console.log(
-        `${moment
-            .tz(moment(), env.general.TIMEZONE)
-            .format()} [Info] Rotating log file ${oldFilename} into ${newFilename}`
-    )
+  console.log(
+    `${moment
+      .tz(moment(), env.general.TIMEZONE)
+      .format()} [Info] Rotating log file ${oldFilename} into ${newFilename}`,
+  )
 })
 
 const msgTemplate = printf((info: TransformableInfo) => {
-    const date = moment.tz(moment(), env.general.TIMEZONE).format()
-    return `=> ${date} [${info.level}] ${info.label as string}: ${info.message}`
+  const date = moment.tz(moment(), env.general.TIMEZONE).format()
+  return `=> ${date} [${info.level}] ${info.label as string}: ${info.message}`
 })
 
 type LoggerConfig = {
-    context: string
+  context: string
 }
 
 const logger = (config: LoggerConfig): Logger => {
-    return createLogger({
-        level: 'info',
-        format: combine(
-            colorize(),
-            label({ label: config.context }),
-            msgTemplate
-        ),
-        transports,
-    })
+  return createLogger({
+    level: 'info',
+    format: combine(colorize(), label({ label: config.context }), msgTemplate),
+    transports,
+  })
 }
 
 export default logger

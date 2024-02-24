@@ -3,7 +3,9 @@
         "es2021": true,
         "node": true
     },
-    "extends": ["standard-with-typescript", "prettier"],
+    "extends": [
+        "@rocketseat/eslint-config/node"
+    ],
     "root": true,
     "parserOptions": {
         "ecmaVersion": 12,
