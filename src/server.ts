@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import 'express-async-errors'
 import express from 'express'
 import cors from 'cors'
 import './database'
@@ -25,4 +26,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.use(routes)
 
-app.listen(3001, () => console.log('Server is running on 3001'))
+app.listen(3001, () => {
+  console.log('Server is running on 3001')
+})
