@@ -5,7 +5,9 @@ import { type CondicaoAcidentado } from '../../enums/CondicaoAcidantadoEnum'
 import { type Gravidade } from '../../enums/GravidadeEnum'
 import { type Status } from '../../enums/OcorrenciaEnum'
 
-import { log } from '../../shared/logger'
+import logger from '../../shared/logger'
+
+const log = logger({ context: 'CreateOcorrenciaService' })
 
 interface OcorrenciaRequest {
   denuncia: string
