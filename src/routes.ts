@@ -14,4 +14,6 @@ routes.use(loginRouter)
 routes.use(usersRouter)
 routes.use(ocorrenciasRouter)
 
+routes.get('/hello', (req, res) => res.send('Hello!'))
+
 export { routes }
