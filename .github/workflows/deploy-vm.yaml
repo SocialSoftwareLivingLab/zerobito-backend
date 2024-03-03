@@ -66,6 +66,4 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          sudo mv /opt/apps/backend/dist/* /opt/apps/backend
-          sudo rm -r /opt/apps/backend/dist
-          sudo pm2 restart server
+          pm2 restart server
