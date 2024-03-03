@@ -14,10 +14,10 @@ jobs:
       - name: Executar backup da última versão do backend
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USERNAME }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: ${{ secrets.VM_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             CURRENT_DATE_FRONT=$(date +"%Y%m%d%H%M%S")
             sudo mkdir -p /opt/backup/backend/${CURRENT_DATE_FRONT}
@@ -50,13 +50,13 @@ jobs:
     - name: Enviar build final para a VM
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USERNAME }}
-        key: ${{ secrets.VM_SSH_KEY }}
-        port: ${{ secrets.VM_PORT }}
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
+        port: ${{ secrets.SSH_PORT }}
         timeout: 240s
         source: "dist/*"
-        target: ${{ secrets.VM_OUTPUT_APP_FOLDER }}
+        target: ${{ secrets.SSH_OUTPUT_APP_FOLDER }}
 
     - name: Reinicializar o backend
       uses: appleboy/ssh-action@v1.0.3
