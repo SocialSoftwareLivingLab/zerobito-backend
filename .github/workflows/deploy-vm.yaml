@@ -66,4 +66,5 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
         port: ${{ secrets.SSH_PORT }}
         script: |
+          source ~/.nvm/nvm.sh
           pm2 restart server
