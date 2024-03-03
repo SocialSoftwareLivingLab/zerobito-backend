@@ -61,10 +61,10 @@ jobs:
     - name: Reinicializar o backend
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USERNAME }}
-        key: ${{ secrets.VM_SSH_KEY }}
-        port: ${{ secrets.VM_PORT }}
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
+        port: ${{ secrets.SSH_PORT }}
         script: |
           sudo mv /opt/apps/backend/dist/* /opt/apps/backend
           sudo rm -r /opt/apps/backend/dist
