@@ -68,8 +68,8 @@ jobs:
         script: |
           cd /opt/apps/backend  
           ls -la
-          sudo cp -i package.json /dist/package.json
-          sudo cp -i .env /dist/.env
+          sudo cp -i package.json ./dist/package.json
+          sudo cp -i .env ./dist/.env
           cd /dist
           source ~/.nvm/nvm.sh
           npm install
