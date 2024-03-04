@@ -55,7 +55,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
         port: ${{ secrets.SSH_PORT }}
         timeout: 240s
-        source: "dist/*,package.json,swagger.json"
+        source: "dist/*,package.json"
         target: ${{ secrets.SSH_OUTPUT_APP_FOLDER }}
 
     - name: Reinicializar o backend
@@ -66,5 +66,10 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
         port: ${{ secrets.SSH_PORT }}
         script: |
+          cd /opt/apps/backend  
+          sudo cp -i package.json /dist/package.json
+          sudo cp -i .env /dist/.env
+          cd /dist
           source ~/.nvm/nvm.sh
+          npm install
           pm2 restart server
