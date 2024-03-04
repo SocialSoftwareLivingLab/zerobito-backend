@@ -67,6 +67,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /opt/apps/backend  
+          ls -la
           sudo cp -i package.json /dist/package.json
           sudo cp -i .env /dist/.env
           cd /dist
