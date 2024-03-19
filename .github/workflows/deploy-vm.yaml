@@ -73,4 +73,4 @@ jobs:
           cd /dist
           source ~/.nvm/nvm.sh
           yarn
-          pm2 restart server
+          pm2 restart all
