@@ -1,20 +1,14 @@
 import { UsuariosService } from '@/app/usuarios/usuarios.service';
-import { Protegido } from '@/auth/decorators/protegido.decorator';
 import { Body, Controller, Post } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import { Perfil } from './decorators/perfil.decorator';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CriarUsuarioRequestDto,
   CriarUsuarioResponseDto,
 } from './dtos/criar-usuario.dto';
 import { PerfilUsuario } from './enums/perfil-usuario.enum';
 
-@ApiBearerAuth()
+// TODO: Adicionar funcionalidade de cadastro quando o admin conseguir criar usuários na plataforma
+// @ApiBearerAuth()
 @ApiTags('Usuarios')
 @Controller('/api/v1/usuarios')
 export class UsuariosController {
@@ -29,8 +23,8 @@ export class UsuariosController {
     type: CriarUsuarioResponseDto,
     description: 'Usuário criado',
   })
-  @Protegido()
-  @Perfil(PerfilUsuario.ADMIN)
+  // @Protegido()
+  // @Perfil(PerfilUsuario.ADMIN)
   public async adicionar(
     @Body() body: CriarUsuarioRequestDto,
   ): Promise<CriarUsuarioResponseDto> {

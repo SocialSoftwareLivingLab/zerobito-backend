@@ -43,7 +43,6 @@ export class OcorrenciasService {
     });
 
     return resultado.map((ocorrencia) => {
-      console.log(ocorrencia);
       const resultado = new OcorrenciaDto();
       resultado.data = ocorrencia.data;
       resultado.descricao = ocorrencia.descricao;
