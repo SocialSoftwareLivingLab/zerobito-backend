@@ -2,6 +2,7 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import { RegexHelper } from '@/helpers/regex.helper';
 import { ApiProperty } from '@nestjs/swagger';
 import { Matches } from 'class-validator';
+import { TomadoraServicoDto } from './tomadora-servico.dto';
 
 export class EmpresaDto {
   @ApiProperty({ description: 'Nome da empresa', example: 'Empresa X' })
@@ -15,4 +16,10 @@ export class EmpresaDto {
     message: MensagensHelper.Documentos.CNPJ_INVALIDO,
   })
   cnpj: string;
+
+  @ApiProperty({
+    description: 'Informações da empresa tomadora de serviço',
+    type: () => TomadoraServicoDto,
+  })
+  tomadoraServico: TomadoraServicoDto;
 }
