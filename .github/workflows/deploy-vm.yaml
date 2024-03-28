@@ -39,10 +39,10 @@ jobs:
         node-version: '18'
 
     - name: Instalar Dependências
-      run: npm install
+      run: yarn install
 
     - name: Realizar o build do backend
-      run: npm run build
+      run: yarn build
 
     - name: Verificar output do build
       run: ls
@@ -72,5 +72,5 @@ jobs:
           sudo cp -i .env ./dist/.env
           cd /dist
           source ~/.nvm/nvm.sh
-          npm install
-          pm2 restart server
+          yarn
+          pm2 restart all
