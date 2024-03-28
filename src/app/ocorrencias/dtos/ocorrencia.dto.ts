@@ -1,0 +1,56 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { FonteOcorrenciaDto } from './info/fonte.dto';
+import { EmpresaDto } from './info/empresa.dto';
+import { VitimaDto } from './info/vitima.dto';
+import { LocalOcorrenciaDto } from './info/local.dto';
+import { StatusOcorrenciaEnum } from '../enums/status-ocorrencia.enum';
+
+export class OcorrenciaDto {
+  @ApiProperty({ description: 'ID da ocorrência' })
+  id: number;
+
+  @ApiProperty({
+    example: 'Descrição da ocorrência',
+    description: 'Descrição da ocorrência',
+  })
+  descricao: string;
+
+  @ApiProperty({
+    description: 'Data que aconteceu a ocorrência',
+    example: '2021-10-10T00:00:00',
+    type: Date,
+    format: 'date-time',
+  })
+  data: Date;
+
+  @ApiProperty({
+    description: 'Status da ocorrência',
+    example: 'AGUARDANDO_ANALISE',
+    enum: StatusOcorrenciaEnum,
+  })
+  status: StatusOcorrenciaEnum;
+
+  @ApiProperty({ description: 'Local da ocorrência' })
+  local: LocalOcorrenciaDto;
+
+  @ApiProperty({ description: 'Vítima da ocorrência' })
+  vitima: VitimaDto;
+
+  @ApiProperty({ description: 'Empresa que houve a ocorrência' })
+  empresa: EmpresaDto;
+
+  @ApiProperty({ description: 'Fonte da ocorrência' })
+  fonte: FonteOcorrenciaDto;
+
+  @ApiProperty({
+    description: 'Data de criação da ocorrência',
+    format: 'date-time',
+  })
+  dataCriacao: Date;
+
+  @ApiProperty({
+    description: 'Data de alteração da ocorrência',
+    format: 'date-time',
+  })
+  dataAlteracao: Date;
+}

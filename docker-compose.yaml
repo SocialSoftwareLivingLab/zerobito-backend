@@ -2,18 +2,18 @@ version: '3.8'
 services:
     postgres:
         image: postgres:16-alpine
-        container_name: my_postgres
+        container_name: database
         environment:
             POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: unicampzero445544
-            POSTGRES_DB: zerobito_database
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: zerobito
         ports:
             - '5432:5432'
         networks:
-            - bom-consultorio-network
+            - zerobito-network
 
 networks:
-    bom-consultorio-network:
+    zerobito-network:
         driver: bridge
 
 volumes:
