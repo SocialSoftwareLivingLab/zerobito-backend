@@ -50,7 +50,10 @@ export class OcorrenciasService {
       resultado.fonte = ocorrencia.fonte;
       resultado.id = ocorrencia.id;
       resultado.local = ocorrencia.local;
-      resultado.status = StatusOcorrenciaEnum[ocorrencia.status.sigla];
+      resultado.status = {
+        descricao: ocorrencia.status.descricao,
+        sigla: StatusOcorrenciaEnum[ocorrencia.status.sigla],
+      };
       resultado.vitima = ocorrencia.vitima;
       resultado.dataAlteracao = ocorrencia.dataAlteracao;
       resultado.dataCriacao = ocorrencia.dataCriacao;

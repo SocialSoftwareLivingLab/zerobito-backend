@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FonteOcorrenciaDto } from './info/fonte.dto';
 import { EmpresaDto } from './info/empresa.dto';
-import { VitimaDto } from './info/vitima.dto';
+import { FonteOcorrenciaDto } from './info/fonte.dto';
 import { LocalOcorrenciaDto } from './info/local.dto';
-import { StatusOcorrenciaEnum } from '../enums/status-ocorrencia.enum';
+import { VitimaDto } from './info/vitima.dto';
+import StatusOcorrencia from './status.dto';
 
 export class OcorrenciaDto {
   @ApiProperty({ description: 'ID da ocorrência' })
@@ -23,12 +23,8 @@ export class OcorrenciaDto {
   })
   data: Date;
 
-  @ApiProperty({
-    description: 'Status da ocorrência',
-    example: 'AGUARDANDO_ANALISE',
-    enum: StatusOcorrenciaEnum,
-  })
-  status: StatusOcorrenciaEnum;
+  @ApiProperty({ description: 'Status da ocorrência' })
+  status: StatusOcorrencia;
 
   @ApiProperty({ description: 'Local da ocorrência' })
   local: LocalOcorrenciaDto;
