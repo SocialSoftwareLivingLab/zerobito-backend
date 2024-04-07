@@ -7,6 +7,7 @@ import { UsuariosModule } from './app/usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
 import { PerfilGuard } from './auth/guards/perfil.guard';
 import { ProtegidoGuard } from './auth/guards/protegido.guard';
+import AppService from './app.service';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ProtegidoGuard } from './auth/guards/protegido.guard';
   providers: [
     { provide: APP_GUARD, useClass: ProtegidoGuard },
     { provide: APP_GUARD, useClass: PerfilGuard },
+    AppService,
   ],
 })
 export class AppModule {}
