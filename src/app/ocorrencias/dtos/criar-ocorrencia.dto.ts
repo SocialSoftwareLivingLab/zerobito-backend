@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { VitimaDto } from './info/vitima.dto';
-import { LocalOcorrenciaDto } from './info/local.dto';
 import { EmpresaDto } from './info/empresa.dto';
 import { FonteOcorrenciaDto } from './info/fonte.dto';
+import { LocalOcorrenciaDto } from './info/local.dto';
+import { VitimaDto } from './info/vitima.dto';
 
 export class CriarOcorrenciaRequest {
   @ApiProperty({

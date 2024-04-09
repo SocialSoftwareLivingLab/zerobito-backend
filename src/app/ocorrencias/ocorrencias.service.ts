@@ -7,6 +7,8 @@ import { OcorrenciaDto } from './dtos/ocorrencia.dto';
 import { OcorrenciaEntity } from './entities/ocorrencias.entity';
 import { StatusOcorrenciaEntity } from './entities/status-ocorrencias.entity';
 import { StatusOcorrenciaEnum } from './enums/status-ocorrencia.enum';
+import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
+import { CondicaoVitimaOcorrenciaEnum } from './enums/condicao-vitima-ocorrencia.enum';
 
 @Injectable()
 export class OcorrenciasService {
@@ -15,16 +17,27 @@ export class OcorrenciasService {
     private readonly ocorrenciaRepository: Repository<OcorrenciaEntity>,
     @InjectRepository(StatusOcorrenciaEntity)
     private readonly statusOcorrenciaRepository: Repository<StatusOcorrenciaEntity>,
+    @InjectRepository(CondicaoVitimaEntity)
+    private readonly condicaoVitimaRepository: Repository<CondicaoVitimaEntity>,
   ) {}
 
   public async registrar(dados: CriarOcorrenciaRequest): Promise<void> {
-    const ocorrencia = this.ocorrenciaRepository.create(dados);
-
     const status = await this.statusOcorrenciaRepository.findOneBy({
       sigla: StatusOcorrenciaEnum.AGUARDANDO_ANALISE,
     });
 
-    ocorrencia.status = status;
+    const condicaoVitima = await this.condicaoVitimaRepository.findOneBy({
+      sigla: dados.vitima.condicao,
+    });
+
+    const ocorrencia = this.ocorrenciaRepository.create({
+      ...dados,
+      status,
+      vitima: {
+        ...dados.vitima,
+        condicao: condicaoVitima,
+      },
+    });
 
     await this.ocorrenciaRepository.save(ocorrencia);
   }
@@ -54,9 +67,13 @@ export class OcorrenciasService {
         descricao: ocorrencia.status.descricao,
         sigla: StatusOcorrenciaEnum[ocorrencia.status.sigla],
       };
-      resultado.vitima = ocorrencia.vitima;
+      resultado.vitima = {
+        condicao:
+          CondicaoVitimaOcorrenciaEnum[ocorrencia.vitima.condicao.sigla],
+        nome: ocorrencia.vitima.nome,
+        vinculo: ocorrencia.vitima.vinculo,
+      };
       resultado.dataAlteracao = ocorrencia.dataAlteracao;
-      resultado.dataCriacao = ocorrencia.dataCriacao;
       return resultado;
     });
   }

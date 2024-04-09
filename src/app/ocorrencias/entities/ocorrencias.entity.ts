@@ -8,11 +8,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { StatusOcorrenciaEntity } from './status-ocorrencias.entity';
-import { LocalOcorrencia } from './local.entity';
-import { InformacoesVitima } from './info-vitima.entity';
 import { InformacoesEmpresa } from './info-empresa.entity';
 import { InformacoesFonte } from './info-fonte.entity';
+import { LocalOcorrencia } from './local.entity';
+import { StatusOcorrenciaEntity } from './status-ocorrencias.entity';
+import { InformacoesVitima } from './vitima/info-vitima.entity';
+import { UsuarioEntity } from '@/app/usuarios/usuarios.entity';
 
 @Entity({ name: 'ocorrencia' })
 export class OcorrenciaEntity {
@@ -24,6 +25,10 @@ export class OcorrenciaEntity {
 
   @Column({ name: 'data', nullable: false })
   data: Date;
+
+  @JoinColumn({ name: 'id_usuario_relator' })
+  @ManyToOne(() => UsuarioEntity)
+  relator: UsuarioEntity;
 
   @JoinColumn({ name: 'id_status' })
   @ManyToOne(() => StatusOcorrenciaEntity)
