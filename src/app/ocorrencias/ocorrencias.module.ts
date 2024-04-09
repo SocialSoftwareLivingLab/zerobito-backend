@@ -5,10 +5,15 @@ import { StatusOcorrenciaEntity } from './entities/status-ocorrencias.entity';
 import { OcorrenciasController } from './ocorrencias.controller';
 import { OcorrenciasService } from './ocorrencias.service';
 import OcorrenciaSeeds from './seeds/ocorrencias.seeds';
+import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([StatusOcorrenciaEntity, OcorrenciaEntity]),
+    TypeOrmModule.forFeature([
+      StatusOcorrenciaEntity,
+      CondicaoVitimaEntity,
+      OcorrenciaEntity,
+    ]),
   ],
   providers: [OcorrenciasService, OcorrenciaSeeds],
   controllers: [OcorrenciasController],

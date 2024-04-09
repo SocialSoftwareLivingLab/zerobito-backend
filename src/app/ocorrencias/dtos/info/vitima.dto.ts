@@ -1,8 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  CondicaoVitimaEnum,
-  GravidadeCondicaoEnum,
-} from '../../entities/info-vitima.entity';
+import { CondicaoVitimaOcorrenciaEnum } from '../../enums/condicao-vitima-ocorrencia.enum';
 
 export class VitimaDto {
   @ApiProperty({ description: 'Nome da vítima', example: 'João da Silva' })
@@ -17,14 +14,7 @@ export class VitimaDto {
   @ApiProperty({
     description: 'Condição da vítima',
     example: 'OBITO',
-    enum: CondicaoVitimaEnum,
+    enum: CondicaoVitimaOcorrenciaEnum,
   })
-  condicao: CondicaoVitimaEnum;
-
-  @ApiProperty({
-    description: 'Gravidade da condição da vítima',
-    example: 'EMERGENCIAL',
-    enum: GravidadeCondicaoEnum,
-  })
-  gravidade: GravidadeCondicaoEnum;
+  condicao: CondicaoVitimaOcorrenciaEnum;
 }
