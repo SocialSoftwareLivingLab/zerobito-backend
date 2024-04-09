@@ -6,6 +6,7 @@ export class LoginDto {
     example: 'fulano@email.com',
   })
   email: string;
+  @IsEmail({}, { message: 'E-mail inválido' })
 
   @ApiProperty({ description: 'Senha do usuário', example: 'Senh@Dificil1*' })
   senha: string;
