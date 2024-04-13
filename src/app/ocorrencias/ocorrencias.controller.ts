@@ -1,5 +1,5 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -8,9 +8,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
-import { OcorrenciasService } from './ocorrencias.service';
 import { FiltroConsultarOcorrenciasDto } from './dtos/filtro-ocorrencias.dto';
 import { OcorrenciaDto } from './dtos/ocorrencia.dto';
+import { OcorrenciasService } from './ocorrencias.service';
 
 @Protegido()
 @ApiBearerAuth()
@@ -58,7 +58,7 @@ export class OcorrenciasController {
     description: 'Ocorrência encontrada',
   })
   @Get('/:id')
-  public consultarPorId(@Query('id') id: number): Promise<OcorrenciaDto> {
+  public consultarPorId(@Param('id') id: number): Promise<OcorrenciaDto> {
     return this.ocorrenciasService.consultarPorId(id);
   }
 }
