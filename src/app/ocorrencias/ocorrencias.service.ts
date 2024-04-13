@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
@@ -9,6 +9,8 @@ import { StatusOcorrenciaEntity } from './entities/status-ocorrencias.entity';
 import { StatusOcorrenciaEnum } from './enums/status-ocorrencia.enum';
 import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
 import { CondicaoVitimaOcorrenciaEnum } from './enums/condicao-vitima-ocorrencia.enum';
+import { entityToOcorrenciaResponse } from './mappers/ocorrencia-mapper';
+import { MensagensHelper } from '@/helpers/mensagens.helper';
 
 @Injectable()
 export class OcorrenciasService {
@@ -42,6 +44,24 @@ export class OcorrenciasService {
     await this.ocorrenciaRepository.save(ocorrencia);
   }
 
+  public async consultarPorId(id: number): Promise<OcorrenciaDto> {
+    try {
+      const ocorrencia = await this.ocorrenciaRepository.findOneOrFail({
+        where: {
+          id,
+          dataExclusao: IsNull(),
+        },
+        relations: ['status'],
+      });
+
+      return entityToOcorrenciaResponse(ocorrencia);
+    } catch (error) {
+      throw new NotFoundException(
+        MensagensHelper.Ocorrencias.OCORRENCIA_NAO_ENCONTRADA,
+      );
+    }
+  }
+
   public async consultarComFiltro(
     filtro: FiltroConsultarOcorrenciasDto,
   ): Promise<OcorrenciaDto[]> {
@@ -55,26 +75,8 @@ export class OcorrenciasService {
       relations: ['status'],
     });
 
-    return resultado.map((ocorrencia) => {
-      const resultado = new OcorrenciaDto();
-      resultado.data = ocorrencia.data;
-      resultado.descricao = ocorrencia.descricao;
-      resultado.empresa = ocorrencia.empresa;
-      resultado.fonte = ocorrencia.fonte;
-      resultado.id = ocorrencia.id;
-      resultado.local = ocorrencia.local;
-      resultado.status = {
-        descricao: ocorrencia.status.descricao,
-        sigla: StatusOcorrenciaEnum[ocorrencia.status.sigla],
-      };
-      resultado.vitima = {
-        condicao:
-          CondicaoVitimaOcorrenciaEnum[ocorrencia.vitima.condicao.sigla],
-        nome: ocorrencia.vitima.nome,
-        vinculo: ocorrencia.vitima.vinculo,
-      };
-      resultado.dataAlteracao = ocorrencia.dataAlteracao;
-      return resultado;
-    });
+    return resultado.map((ocorrencia) =>
+      entityToOcorrenciaResponse(ocorrencia),
+    );
   }
 }

@@ -48,4 +48,17 @@ export class OcorrenciasController {
   ): Promise<OcorrenciaDto[]> {
     return this.ocorrenciasService.consultarComFiltro(filtro);
   }
+
+  @ApiOperation({
+    summary: 'Consulta ocorrência por ID',
+    description: 'Consulta uma ocorrência por ID',
+  })
+  @ApiOkResponse({
+    type: OcorrenciaDto,
+    description: 'Ocorrência encontrada',
+  })
+  @Get('/:id')
+  public consultarPorId(@Query('id') id: number): Promise<OcorrenciaDto> {
+    return this.ocorrenciasService.consultarPorId(id);
+  }
 }

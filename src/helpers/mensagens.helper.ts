@@ -13,8 +13,13 @@ enum Contatos {
   EMAIL_INVALIDO = 'E-mail inválido',
 }
 
+enum Ocorrencias {
+  OCORRENCIA_NAO_ENCONTRADA = 'Ocorrência não encontrada',
+}
+
 export const MensagensHelper = {
   Usuario,
   Documentos,
   Contatos,
+  Ocorrencias,
 };
