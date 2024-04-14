@@ -7,6 +7,7 @@ import { UsuariosModule } from './app/usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
 import { PerfilGuard } from './auth/guards/perfil.guard';
 import { ProtegidoGuard } from './auth/guards/protegido.guard';
+import { CoordenadoresModule } from './app/coordenadores/coordenadores.module';
 import AppService from './app.service';
 
 @Module({
@@ -25,6 +26,7 @@ import AppService from './app.service';
     UsuariosModule,
     AuthModule,
     OcorrenciasModule,
+    CoordenadoresModule,
   ],
   controllers: [],
   providers: [
