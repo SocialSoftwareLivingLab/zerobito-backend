@@ -1,20 +1,19 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { CoordenadoresService } from '@/app/coordenadores/coordenadores.service';
+import { MensagensHelper } from '@/helpers/mensagens.helper';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import CasoEntity from '../../entities/caso.entity';
 import {
   RegistrarCasoRequest,
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
-import { Repository } from 'typeorm';
-import CasoEntity from '../../entities/caso.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CoordenadoresService } from '@/app/coordenadores/coordenadores.service';
-import { MensagensHelper } from '@/helpers/mensagens.helper';
 
 @Injectable()
 export class RegistrarCasoUseCase {
   constructor(
     @InjectRepository(CasoEntity)
     private readonly casosRepository: Repository<CasoEntity>,
-    @Inject()
     private readonly coordenadoresService: CoordenadoresService,
   ) {}
 
