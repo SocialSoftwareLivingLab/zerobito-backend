@@ -1,3 +1,4 @@
+import { MensagensHelper } from '@/helpers/mensagens.helper';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
@@ -6,11 +7,9 @@ import { FiltroConsultarOcorrenciasDto } from './dtos/filtro-ocorrencias.dto';
 import { OcorrenciaDto } from './dtos/ocorrencia.dto';
 import { OcorrenciaEntity } from './entities/ocorrencias.entity';
 import { StatusOcorrenciaEntity } from './entities/status-ocorrencias.entity';
-import { StatusOcorrenciaEnum } from './enums/status-ocorrencia.enum';
 import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
-import { CondicaoVitimaOcorrenciaEnum } from './enums/condicao-vitima-ocorrencia.enum';
+import { StatusOcorrenciaEnum } from './enums/status-ocorrencia.enum';
 import { entityToOcorrenciaResponse } from './mappers/ocorrencia-mapper';
-import { MensagensHelper } from '@/helpers/mensagens.helper';
 
 @Injectable()
 export class OcorrenciasService {

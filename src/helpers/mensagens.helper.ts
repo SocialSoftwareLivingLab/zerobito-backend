@@ -17,9 +17,14 @@ enum Ocorrencias {
   OCORRENCIA_NAO_ENCONTRADA = 'Ocorrência não encontrada',
 }
 
+enum Coordenadores {
+  COORDENADOR_NAO_ENCONTRADO = 'Coordenador não encontrado',
+}
+
 export const MensagensHelper = {
   Usuario,
   Documentos,
   Contatos,
   Ocorrencias,
+  Coordenadores,
 };

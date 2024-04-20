@@ -8,5 +8,6 @@ import { CoordenadoresService } from './coordenadores.service';
   imports: [TypeOrmModule.forFeature([UsuarioEntity])],
   controllers: [CoordenadoresController],
   providers: [CoordenadoresService],
+  exports: [CoordenadoresService],
 })
 export class CoordenadoresModule {}
