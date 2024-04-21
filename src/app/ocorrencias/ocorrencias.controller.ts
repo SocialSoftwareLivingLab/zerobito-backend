@@ -1,5 +1,5 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -7,10 +7,14 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
 import { FiltroConsultarOcorrenciasDto } from './dtos/filtro-ocorrencias.dto';
 import { OcorrenciaDto } from './dtos/ocorrencia.dto';
 import { OcorrenciasService } from './ocorrencias.service';
+import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
+import { Request } from 'express';
+import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { AceitarOcorrenciaRequest } from './dtos/aceitar/aceitar-ocorrencia.dto';
 
 @Protegido()
 @ApiBearerAuth()
@@ -29,8 +33,9 @@ export class OcorrenciasController {
   @Post()
   public async criarOcorrencia(
     @Body() ocorrencia: CriarOcorrenciaRequest,
+    @UsuarioAutenticado() usuarioAutenticado: UsuarioAutenticadoDto,
   ): Promise<void> {
-    this.ocorrenciasService.registrar(ocorrencia);
+    this.ocorrenciasService.registrar(ocorrencia, usuarioAutenticado);
   }
 
   @ApiOperation({
@@ -60,5 +65,18 @@ export class OcorrenciasController {
   @Get('/:id')
   public consultarPorId(@Param('id') id: number): Promise<OcorrenciaDto> {
     return this.ocorrenciasService.consultarPorId(id);
+  }
+
+  @ApiOperation({
+    summary: 'Aceitar ocorrência',
+    description: 'Aceita uma ocorrência',
+  })
+  @Post('/:id/aceitar')
+  public aceitar(
+    @Param('id') id: number,
+    @UsuarioAutenticado() usuario: UsuarioAutenticadoDto,
+    @Body() dados: AceitarOcorrenciaRequest,
+  ) {
+    return this.ocorrenciasService.aceitar(id, dados, usuario);
   }
 }

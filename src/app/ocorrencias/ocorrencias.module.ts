@@ -6,6 +6,10 @@ import { OcorrenciasController } from './ocorrencias.controller';
 import { OcorrenciasService } from './ocorrencias.service';
 import OcorrenciaSeeds from './seeds/ocorrencias.seeds';
 import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
+import { AceitarOcorrenciaUseCase } from './usecases/aceitar-ocorrencia/aceitar-ocorrencia.usecase';
+import { CasosModule } from '../casos/casos.module';
+import { BuscarOcorrenciaUseCase } from './usecases/buscar-ocorrencia/buscar-ocorrencia.usecase';
+import { TrocarStatusOcorrenciaUseCase } from './usecases/trocar-status-ocorrencia/trocar-status-ocorrencia.usecase';
 
 @Module({
   imports: [
@@ -14,8 +18,15 @@ import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
       CondicaoVitimaEntity,
       OcorrenciaEntity,
     ]),
+    CasosModule,
   ],
-  providers: [OcorrenciasService, OcorrenciaSeeds],
+  providers: [
+    OcorrenciasService,
+    OcorrenciaSeeds,
+    AceitarOcorrenciaUseCase,
+    BuscarOcorrenciaUseCase,
+    TrocarStatusOcorrenciaUseCase,
+  ],
   controllers: [OcorrenciasController],
   exports: [OcorrenciaSeeds],
 })

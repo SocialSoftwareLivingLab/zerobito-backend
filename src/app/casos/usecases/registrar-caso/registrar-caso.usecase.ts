@@ -20,7 +20,7 @@ export class RegistrarCasoUseCase {
   public async executar(
     request: RegistrarCasoRequest,
   ): Promise<RegistrarCasoResponse> {
-    const { nome, coordenador: idCoordenador } = request;
+    const { nome, coordenador: idCoordenador, criador } = request;
 
     const encontrarCoordenador =
       await this.coordenadoresService.buscarCoordenadorPorId(idCoordenador);
@@ -35,6 +35,7 @@ export class RegistrarCasoUseCase {
     const casoCriado = this.casosRepository.create({
       nome,
       coordenador,
+      criador,
       dataCriacao: new Date(),
     });
 

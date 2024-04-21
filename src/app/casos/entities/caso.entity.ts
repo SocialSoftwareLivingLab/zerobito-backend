@@ -21,6 +21,10 @@ export default class CasoEntity {
   @JoinColumn({ name: 'id_usuario_coordenador' })
   coordenador: UsuarioEntity;
 
+  @ManyToOne(() => UsuarioEntity, { eager: true })
+  @JoinColumn({ name: 'id_usuario_criador' })
+  criador: UsuarioEntity;
+
   @Column(() => InformacoesBasicas, { prefix: false })
   informacoesBasicas: InformacoesBasicas;
 

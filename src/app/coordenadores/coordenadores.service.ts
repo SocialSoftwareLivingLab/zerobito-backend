@@ -13,6 +13,6 @@ export class CoordenadoresService {
   }
 
   public async buscarCoordenadorPorId(id: number) {
-    this.buscarCoordenadorUseCase.buscarPorId(id);
+    return this.buscarCoordenadorUseCase.buscarPorId(id);
   }
 }

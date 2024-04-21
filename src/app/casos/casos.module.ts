@@ -8,5 +8,6 @@ import { RegistrarCasoUseCase } from './usecases/registrar-caso/registrar-caso.u
 @Module({
   imports: [TypeOrmModule.forFeature([CasoEntity]), CoordenadoresModule],
   providers: [CasosService, RegistrarCasoUseCase],
+  exports: [CasosService],
 })
 export class CasosModule {}

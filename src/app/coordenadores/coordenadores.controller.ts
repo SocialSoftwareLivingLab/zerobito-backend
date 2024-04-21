@@ -9,6 +9,7 @@ import {
 import { Perfil } from '../usuarios/decorators/perfil.decorator';
 import { PerfilUsuario } from '../usuarios/enums/perfil-usuario.enum';
 import { CoordenadoresService } from './coordenadores.service';
+import ConsultarCoordenadoresResponseDto from './payloads/consulta/consultar-coordenadores.response';
 
 @Protegido()
 @ApiBearerAuth()
@@ -32,6 +33,12 @@ export class CoordenadoresController {
     @Query('nome')
     nome: string,
   ) {
-    return this.coordenadoresService.buscarCoordenadores({ nome });
+    const result = await this.coordenadoresService.buscarCoordenadores({
+      nome,
+    });
+
+    return result.map((coordenador) =>
+      ConsultarCoordenadoresResponseDto.fromEntity(coordenador),
+    );
   }
 }

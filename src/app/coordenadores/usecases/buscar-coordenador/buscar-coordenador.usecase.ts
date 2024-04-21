@@ -4,10 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { Optional } from 'typescript-optional';
-import {
-  BuscarCoordenadorInput,
-  BuscarCoordenadorOutput,
-} from './buscar-coordenador.dtos';
+import { BuscarCoordenadorInput } from './buscar-coordenador.dtos';
 
 @Injectable()
 export class BuscarCoordenadorUseCase {
@@ -26,28 +23,15 @@ export class BuscarCoordenadorUseCase {
       take: 20,
     });
 
-    return result.map((coordenador) => this.mapToOutput(coordenador));
+    return result;
   }
 
-  public async buscarPorId(
-    id: number,
-  ): Promise<Optional<BuscarCoordenadorOutput>> {
+  public async buscarPorId(id: number) {
     const result = await this.usuarioRepository.findOneBy({
       id,
       permissao: PerfilUsuario.COORDENADOR,
     });
 
-    return Optional.ofNullable(result).map((coordenador) =>
-      this.mapToOutput(coordenador),
-    );
-  }
-
-  private mapToOutput(coordenador: UsuarioEntity): BuscarCoordenadorOutput {
-    return {
-      id: coordenador.id,
-      nome: coordenador.nome,
-      email: coordenador.email,
-      dataCriacao: coordenador.dataCriacao,
-    };
+    return Optional.ofNullable(result);
   }
 }

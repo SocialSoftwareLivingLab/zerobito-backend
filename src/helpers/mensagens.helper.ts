@@ -15,6 +15,7 @@ enum Contatos {
 
 enum Ocorrencias {
   OCORRENCIA_NAO_ENCONTRADA = 'Ocorrência não encontrada',
+  OCORRENCIA_NAO_PODE_SER_ACEITA = 'Ocorrência não pode ser aceita',
 }
 
 enum Coordenadores {
