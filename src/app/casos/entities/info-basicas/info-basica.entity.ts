@@ -3,18 +3,18 @@ import CausaEntity from './causa.entity';
 import DiagnosticoEntity from './diagnostico.entity';
 
 export default class InformacoesBasicas {
-  @ManyToOne(() => CausaEntity)
+  @ManyToOne(() => CausaEntity, { nullable: true })
   @JoinColumn({ name: 'id_causa_primaria' })
   causaPrimaria: CausaEntity;
 
-  @ManyToOne(() => CausaEntity)
+  @ManyToOne(() => CausaEntity, { nullable: true })
   @JoinColumn({ name: 'id_causa_secundaria' })
   causaSecundaria: CausaEntity;
 
-  @ManyToOne(() => DiagnosticoEntity)
+  @ManyToOne(() => DiagnosticoEntity, { nullable: true })
   @JoinColumn({ name: 'id_diagnostico' })
   diagnostico: DiagnosticoEntity;
 
-  @Column({ name: 'comentario', type: 'text' })
+  @Column({ name: 'comentario', type: 'text', nullable: true })
   comentario: string;
 }

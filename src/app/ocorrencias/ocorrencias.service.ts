@@ -2,7 +2,10 @@ import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
+import { CasosService } from '../casos/casos.service';
+import { AceitarOcorrenciaRequest } from './dtos/aceitar/aceitar-ocorrencia.dto';
 import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
 import { FiltroConsultarOcorrenciasDto } from './dtos/filtro-ocorrencias.dto';
 import { OcorrenciaDto } from './dtos/ocorrencia.dto';
@@ -11,10 +14,8 @@ import { StatusOcorrenciaEntity } from './entities/status-ocorrencias.entity';
 import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
 import { StatusOcorrenciaEnum } from './enums/status-ocorrencia.enum';
 import { entityToOcorrenciaResponse } from './mappers/ocorrencia-mapper';
-import { BuscarOcorrenciaUseCase } from './usecases/buscar-ocorrencia/buscar-ocorrencia.usecase';
 import { AceitarOcorrenciaUseCase } from './usecases/aceitar-ocorrencia/aceitar-ocorrencia.usecase';
-import { CasosService } from '../casos/casos.service';
-import { AceitarOcorrenciaRequest } from './dtos/aceitar/aceitar-ocorrencia.dto';
+import { BuscarOcorrenciaUseCase } from './usecases/buscar-ocorrencia/buscar-ocorrencia.usecase';
 
 @Injectable()
 export class OcorrenciasService {
@@ -82,6 +83,7 @@ export class OcorrenciasService {
     );
   }
 
+  @Transactional()
   public async aceitar(
     id: number,
     dadosAceite: AceitarOcorrenciaRequest,
