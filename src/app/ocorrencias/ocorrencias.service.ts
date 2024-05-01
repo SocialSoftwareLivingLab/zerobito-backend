@@ -58,7 +58,7 @@ export class OcorrenciasService {
     await this.ocorrenciaRepository.save(ocorrencia);
   }
 
-  public async consultarPorId(id: number): Promise<OcorrenciaDto> {
+  public async consultarPorIdAsEntity(id: number): Promise<OcorrenciaEntity> {
     const response = await this.buscarOcorrenciaUseCase.buscar(id);
 
     const ocorrenciaEncontrada = response.orElseThrow(
@@ -68,6 +68,11 @@ export class OcorrenciasService {
         ),
     );
 
+    return ocorrenciaEncontrada;
+  }
+
+  public async consultarPorId(id: number): Promise<OcorrenciaDto> {
+    const ocorrenciaEncontrada = await this.consultarPorIdAsEntity(id);
     return entityToOcorrenciaResponse(ocorrenciaEncontrada);
   }
 
@@ -91,14 +96,13 @@ export class OcorrenciasService {
   ) {
     const { nome, coordenador } = dadosAceite.novoCaso;
 
-    await this.aceitarOcorrenciaUseCase.aceitar({ id });
+    const ocorrencia = await this.aceitarOcorrenciaUseCase.aceitar({ id });
     const casoCriado = await this.casoService.registrarCaso({
       nome,
       coordenador,
       criador: usuarioAutenticado,
+      ocorrencias: [ocorrencia],
     });
-
-    // this.casoService.vincularOcorrencia(casoCriado.id, id);
 
     return casoCriado;
   }

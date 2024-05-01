@@ -26,6 +26,6 @@ export class TrocarStatusOcorrenciaUseCase {
     ocorrencia.status = novoStatusEntity;
     ocorrencia.dataAlteracao = new Date();
 
-    await this.ocorrenciaRepository.save(ocorrencia);
+    return await this.ocorrenciaRepository.save(ocorrencia);
   }
 }

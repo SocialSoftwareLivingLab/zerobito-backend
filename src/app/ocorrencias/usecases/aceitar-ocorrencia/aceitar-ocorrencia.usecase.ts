@@ -32,6 +32,9 @@ export class AceitarOcorrenciaUseCase {
       );
     }
 
-    await this.trocarStatus.trocar(ocorrencia, StatusOcorrenciaEnum.ACEITO);
+    return await this.trocarStatus.trocar(
+      ocorrencia,
+      StatusOcorrenciaEnum.ACEITO,
+    );
   }
 }
