@@ -85,9 +85,9 @@ export class OcorrenciasController {
     summary: 'Vincular ocorrência a um caso',
     description: 'Vincula uma ocorrência a um caso existente',
   })
-  @Post('/:idOcorrencia/vincular')
+  @Post('/:id/vincular')
   public async vincular(
-    @Param('idOcorrencia') idOcorrencia: number,
+    @Param('id') idOcorrencia: number,
     @Body() payload: VincularOcorrenciaCasoPayload,
   ) {
     return this.ocorrenciasService.vincular(idOcorrencia, payload.idCaso);
