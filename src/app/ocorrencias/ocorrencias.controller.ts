@@ -7,14 +7,15 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { FiltroConsultarOcorrenciasDto } from './dtos/filtro-ocorrencias.dto';
-import { OcorrenciaDto } from './dtos/ocorrencia.dto';
+import { FiltroConsultarOcorrenciasDto } from './payloads/filtro-ocorrencias.dto';
+import { OcorrenciaDto } from './payloads/ocorrencia.dto';
 import { OcorrenciasService } from './ocorrencias.service';
-import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
+import { CriarOcorrenciaRequest } from './payloads/criar-ocorrencia.dto';
 import { Request } from 'express';
 import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
-import { AceitarOcorrenciaRequest } from './dtos/aceitar/aceitar-ocorrencia.dto';
+import { AceitarOcorrenciaRequest } from './payloads/aceitar/aceitar-ocorrencia.dto';
+import { VincularOcorrenciaCasoPayload } from './payloads/vincular/vincular-ocorrencia-caso.payload';
 
 @Protegido()
 @ApiBearerAuth()
@@ -78,5 +79,17 @@ export class OcorrenciasController {
     @Body() dados: AceitarOcorrenciaRequest,
   ) {
     return this.ocorrenciasService.aceitar(id, dados, usuario);
+  }
+
+  @ApiOperation({
+    summary: 'Vincular ocorrência a um caso',
+    description: 'Vincula uma ocorrência a um caso existente',
+  })
+  @Post('/:idOcorrencia/vincular')
+  public async vincular(
+    @Param('idOcorrencia') idOcorrencia: number,
+    @Body() payload: VincularOcorrenciaCasoPayload,
+  ) {
+    return this.ocorrenciasService.vincular(idOcorrencia, payload.idCaso);
   }
 }

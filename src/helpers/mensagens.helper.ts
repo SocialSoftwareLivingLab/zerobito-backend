@@ -22,10 +22,15 @@ enum Coordenadores {
   COORDENADOR_NAO_ENCONTRADO = 'Coordenador não encontrado',
 }
 
+enum Casos {
+  CASO_NAO_ENCONTRADO = 'Caso não encontrado',
+}
+
 export const MensagensHelper = {
   Usuario,
   Documentos,
   Contatos,
   Ocorrencias,
   Coordenadores,
+  Casos,
 };

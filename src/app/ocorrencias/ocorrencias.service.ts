@@ -5,15 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 import { CasosService } from '../casos/casos.service';
-import { AceitarOcorrenciaRequest } from './dtos/aceitar/aceitar-ocorrencia.dto';
-import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
-import { FiltroConsultarOcorrenciasDto } from './dtos/filtro-ocorrencias.dto';
-import { OcorrenciaDto } from './dtos/ocorrencia.dto';
 import { OcorrenciaEntity } from './entities/ocorrencias.entity';
 import { StatusOcorrenciaEntity } from './entities/status-ocorrencias.entity';
 import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';
 import { StatusOcorrenciaEnum } from './enums/status-ocorrencia.enum';
 import { entityToOcorrenciaResponse } from './mappers/ocorrencia-mapper';
+import { AceitarOcorrenciaRequest } from './payloads/aceitar/aceitar-ocorrencia.dto';
+import { CriarOcorrenciaRequest } from './payloads/criar-ocorrencia.dto';
+import { FiltroConsultarOcorrenciasDto } from './payloads/filtro-ocorrencias.dto';
+import { OcorrenciaDto } from './payloads/ocorrencia.dto';
 import { AceitarOcorrenciaUseCase } from './usecases/aceitar-ocorrencia/aceitar-ocorrencia.usecase';
 import { BuscarOcorrenciaUseCase } from './usecases/buscar-ocorrencia/buscar-ocorrencia.usecase';
 
@@ -26,6 +26,7 @@ export class OcorrenciasService {
     private readonly statusOcorrenciaRepository: Repository<StatusOcorrenciaEntity>,
     @InjectRepository(CondicaoVitimaEntity)
     private readonly condicaoVitimaRepository: Repository<CondicaoVitimaEntity>,
+
     private readonly buscarOcorrenciaUseCase: BuscarOcorrenciaUseCase,
     private readonly aceitarOcorrenciaUseCase: AceitarOcorrenciaUseCase,
     private readonly casoService: CasosService,
@@ -105,5 +106,19 @@ export class OcorrenciasService {
     });
 
     return casoCriado;
+  }
+
+  @Transactional()
+  public async vincular(idOcorrencia: number, idCaso: number) {
+    this.buscarOcorrenciaUseCase.buscar(idOcorrencia);
+
+    const ocorrencia = await this.aceitarOcorrenciaUseCase.aceitar({
+      id: idOcorrencia,
+    });
+
+    await this.casoService.adicionarOcorrenciaAoCaso({
+      caso: idCaso,
+      ocorrencia,
+    });
   }
 }

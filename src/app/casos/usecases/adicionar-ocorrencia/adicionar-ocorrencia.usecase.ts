@@ -1,29 +1,32 @@
-import { OcorrenciasService } from '@/app/ocorrencias/ocorrencias.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 import CasoEntity from '../../entities/caso.entity';
 import { AdicionarOcorrenciaAoCasoUseCaseInput } from './adicionar-ocorrencia.dto';
+import AppException from '@/shared/exceptions/app-exception';
+import { MensagensHelper } from '@/helpers/mensagens.helper';
 
 @Injectable()
 export class AdicionarOcorrenciaAoCasoUseCase {
   constructor(
     @InjectRepository(CasoEntity)
     private readonly casoRepository: Repository<CasoEntity>,
-    private readonly ocorrenciasService: OcorrenciasService,
   ) {}
 
-  async execute({
+  @Transactional()
+  async adicionar({
     caso: casoId,
-    ocorrencia: ocorrenciaId,
+    ocorrencia,
   }: AdicionarOcorrenciaAoCasoUseCaseInput): Promise<void> {
-    const ocorrencia =
-      await this.ocorrenciasService.consultarPorIdAsEntity(ocorrenciaId);
-
     const caso = await this.casoRepository.findOne({
       where: { id: casoId },
       relations: ['ocorrencias'],
     });
+
+    if (!caso) {
+      throw new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO);
+    }
 
     caso.ocorrencias.push(ocorrencia);
 

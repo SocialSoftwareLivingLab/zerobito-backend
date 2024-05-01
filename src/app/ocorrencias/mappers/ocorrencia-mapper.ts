@@ -1,4 +1,4 @@
-import { OcorrenciaDto } from '../dtos/ocorrencia.dto';
+import { OcorrenciaDto } from '../payloads/ocorrencia.dto';
 import { OcorrenciaEntity } from '../entities/ocorrencias.entity';
 import { CondicaoVitimaOcorrenciaEnum } from '../enums/condicao-vitima-ocorrencia.enum';
 import { StatusOcorrenciaEnum } from '../enums/status-ocorrencia.enum';
