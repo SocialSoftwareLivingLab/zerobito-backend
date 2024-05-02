@@ -20,11 +20,11 @@ export default class CasoEntity {
   @Column({ name: 'nome', type: 'varchar', length: 255 })
   nome: string;
 
-  @ManyToOne(() => UsuarioEntity, { eager: true })
+  @ManyToOne(() => UsuarioEntity)
   @JoinColumn({ name: 'id_usuario_coordenador' })
   coordenador: UsuarioEntity;
 
-  @ManyToOne(() => UsuarioEntity, { eager: true })
+  @ManyToOne(() => UsuarioEntity)
   @JoinColumn({ name: 'id_usuario_criador' })
   criador: UsuarioEntity;
 

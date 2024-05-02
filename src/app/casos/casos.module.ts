@@ -6,6 +6,7 @@ import { CasosService } from './casos.service';
 import CasoEntity from './entities/caso.entity';
 import { RegistrarCasoUseCase } from './usecases/registrar-caso/registrar-caso.usecase';
 import { AdicionarOcorrenciaAoCasoUseCase } from './usecases/adicionar-ocorrencia/adicionar-ocorrencia.usecase';
+import { ConsultarCasoUseCase } from './usecases/consultar-casos/consultar-caso.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CasoEntity]), CoordenadoresModule],
@@ -13,6 +14,7 @@ import { AdicionarOcorrenciaAoCasoUseCase } from './usecases/adicionar-ocorrenci
     CasosService,
     RegistrarCasoUseCase,
     AdicionarOcorrenciaAoCasoUseCase,
+    ConsultarCasoUseCase,
   ],
   exports: [CasosService],
   controllers: [CasosController],
