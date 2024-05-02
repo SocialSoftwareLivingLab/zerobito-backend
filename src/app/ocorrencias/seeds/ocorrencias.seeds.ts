@@ -3,9 +3,10 @@ import { StatusOcorrenciaEntity } from '../entities/status-ocorrencias.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CondicaoVitimaEntity } from '../entities/vitima/condicao-vitima.entity';
+import SeedRunner from '@/shared/seeds/seed-runner';
 
 @Injectable()
-export default class OcorrenciaSeeds {
+export default class OcorrenciaSeeds implements SeedRunner {
   private readonly logger = new Logger(OcorrenciaSeeds.name);
 
   constructor(
