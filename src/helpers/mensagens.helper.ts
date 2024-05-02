@@ -13,8 +13,24 @@ enum Contatos {
   EMAIL_INVALIDO = 'E-mail inválido',
 }
 
+enum Ocorrencias {
+  OCORRENCIA_NAO_ENCONTRADA = 'Ocorrência não encontrada',
+  OCORRENCIA_NAO_PODE_SER_ACEITA = 'Ocorrência não pode ser aceita',
+}
+
+enum Coordenadores {
+  COORDENADOR_NAO_ENCONTRADO = 'Coordenador não encontrado',
+}
+
+enum Casos {
+  CASO_NAO_ENCONTRADO = 'Caso não encontrado',
+}
+
 export const MensagensHelper = {
   Usuario,
   Documentos,
   Contatos,
+  Ocorrencias,
+  Coordenadores,
+  Casos,
 };

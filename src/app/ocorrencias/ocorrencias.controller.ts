@@ -1,5 +1,5 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -7,10 +7,15 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CriarOcorrenciaRequest } from './dtos/criar-ocorrencia.dto';
+import { FiltroConsultarOcorrenciasDto } from './payloads/filtro-ocorrencias.dto';
+import { OcorrenciaDto } from './payloads/ocorrencia.dto';
 import { OcorrenciasService } from './ocorrencias.service';
-import { FiltroConsultarOcorrenciasDto } from './dtos/filtro-ocorrencias.dto';
-import { OcorrenciaDto } from './dtos/ocorrencia.dto';
+import { CriarOcorrenciaRequest } from './payloads/criar-ocorrencia.dto';
+import { Request } from 'express';
+import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { AceitarOcorrenciaRequest } from './payloads/aceitar/aceitar-ocorrencia.dto';
+import { VincularOcorrenciaCasoPayload } from './payloads/vincular/vincular-ocorrencia-caso.payload';
 
 @Protegido()
 @ApiBearerAuth()
@@ -29,8 +34,9 @@ export class OcorrenciasController {
   @Post()
   public async criarOcorrencia(
     @Body() ocorrencia: CriarOcorrenciaRequest,
+    @UsuarioAutenticado() usuarioAutenticado: UsuarioAutenticadoDto,
   ): Promise<void> {
-    this.ocorrenciasService.registrar(ocorrencia);
+    this.ocorrenciasService.registrar(ocorrencia, usuarioAutenticado);
   }
 
   @ApiOperation({
@@ -47,5 +53,43 @@ export class OcorrenciasController {
     @Query() filtro: FiltroConsultarOcorrenciasDto,
   ): Promise<OcorrenciaDto[]> {
     return this.ocorrenciasService.consultarComFiltro(filtro);
+  }
+
+  @ApiOperation({
+    summary: 'Consulta ocorrência por ID',
+    description: 'Consulta uma ocorrência por ID',
+  })
+  @ApiOkResponse({
+    type: OcorrenciaDto,
+    description: 'Ocorrência encontrada',
+  })
+  @Get('/:id')
+  public consultarPorId(@Param('id') id: number): Promise<OcorrenciaDto> {
+    return this.ocorrenciasService.consultarPorId(id);
+  }
+
+  @ApiOperation({
+    summary: 'Aceitar ocorrência',
+    description: 'Aceita uma ocorrência',
+  })
+  @Post('/:id/aceitar')
+  public aceitar(
+    @Param('id') id: number,
+    @UsuarioAutenticado() usuario: UsuarioAutenticadoDto,
+    @Body() dados: AceitarOcorrenciaRequest,
+  ) {
+    return this.ocorrenciasService.aceitar(id, dados, usuario);
+  }
+
+  @ApiOperation({
+    summary: 'Vincular ocorrência a um caso',
+    description: 'Vincula uma ocorrência a um caso existente',
+  })
+  @Post('/:id/vincular')
+  public async vincular(
+    @Param('id') idOcorrencia: number,
+    @Body() payload: VincularOcorrenciaCasoPayload,
+  ) {
+    return this.ocorrenciasService.vincular(idOcorrencia, payload.idCaso);
   }
 }
