@@ -4,6 +4,7 @@ import { FonteOcorrenciaDto } from './info/fonte.dto';
 import { LocalOcorrenciaDto } from './info/local.dto';
 import { VitimaDto } from './info/vitima.dto';
 import StatusOcorrencia from './status.dto';
+import { UsuarioApiResponse } from '@/app/usuarios/dtos/usuario.dto';
 
 export class OcorrenciaDto {
   @ApiProperty({ description: 'ID da ocorrência' })
@@ -22,6 +23,9 @@ export class OcorrenciaDto {
     format: 'date-time',
   })
   data: Date;
+
+  @ApiProperty({ description: 'Usuário que criou a ocorrência' })
+  relator: UsuarioApiResponse;
 
   @ApiProperty({ description: 'Status da ocorrência' })
   status: StatusOcorrencia;

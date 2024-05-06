@@ -11,6 +11,11 @@ export function entityToOcorrenciaResponse(entity: OcorrenciaEntity) {
   resultado.fonte = entity.fonte;
   resultado.id = entity.id;
   resultado.local = entity.local;
+  resultado.relator = {
+    id: entity.relator.id,
+    nome: entity.relator.nome,
+    email: entity.relator.email,
+  };
   resultado.status = {
     descricao: entity.status.descricao,
     sigla: StatusOcorrenciaEnum[entity.status.sigla],
