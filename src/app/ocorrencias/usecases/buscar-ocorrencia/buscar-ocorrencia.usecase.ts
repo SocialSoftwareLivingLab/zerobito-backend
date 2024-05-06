@@ -5,7 +5,7 @@ import { Optional } from 'typescript-optional';
 import { OcorrenciaEntity } from '../../entities/ocorrencias.entity';
 import { BuscarOcorrenciaFiltroInput } from './buscar-ocorrencia.dto';
 
-const RELATIONS_PADROES = ['status'];
+const RELATIONS_PADROES = ['status', 'relator'];
 
 @Injectable()
 export class BuscarOcorrenciaUseCase {
