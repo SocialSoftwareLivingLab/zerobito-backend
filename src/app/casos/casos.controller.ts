@@ -1,8 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CasosService } from './casos.service';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CriarPalavraChaveApiRequest } from './payloads/palavra-chave/criar-palavra-chave.payload';
 import { PalavraChaveService } from './palavra-chave.service';
+import { CasoResponse } from './payloads/caso/caso.payload';
 
 @ApiBearerAuth()
 @ApiTags('Casos')
@@ -19,6 +25,11 @@ export class CasosController {
       'Retorna a listagem atual de casos sem paginação e com dados básicos',
   })
   @Get()
+  @ApiOkResponse({
+    description: 'Casos encontrados',
+    type: CasoResponse,
+    isArray: true,
+  })
   public async buscarTodosSumarizados() {
     return this.casosService.buscarTodosSumarizado();
   }
