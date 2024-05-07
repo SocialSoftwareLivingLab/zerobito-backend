@@ -24,6 +24,7 @@ enum Coordenadores {
 
 enum Casos {
   CASO_NAO_ENCONTRADO = 'Caso não encontrado',
+  PALAVRA_CHAVE_NAO_ENCONTRADA = 'Palavra-chave não encontrada',
 }
 
 export const MensagensHelper = {

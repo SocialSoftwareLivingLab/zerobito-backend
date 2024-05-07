@@ -1,5 +1,7 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -7,14 +9,11 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { OcorrenciasService } from './ocorrencias.service';
+import { AceitarOcorrenciaRequest } from './payloads/aceitar/aceitar-ocorrencia.dto';
+import { CriarOcorrenciaRequest } from './payloads/criar-ocorrencia.dto';
 import { FiltroConsultarOcorrenciasDto } from './payloads/filtro-ocorrencias.dto';
 import { OcorrenciaDto } from './payloads/ocorrencia.dto';
-import { OcorrenciasService } from './ocorrencias.service';
-import { CriarOcorrenciaRequest } from './payloads/criar-ocorrencia.dto';
-import { Request } from 'express';
-import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
-import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
-import { AceitarOcorrenciaRequest } from './payloads/aceitar/aceitar-ocorrencia.dto';
 import { VincularOcorrenciaCasoPayload } from './payloads/vincular/vincular-ocorrencia-caso.payload';
 
 @Protegido()
