@@ -9,8 +9,10 @@ import {
 import { CriarPalavraChaveApiRequest } from './payloads/palavra-chave/criar-palavra-chave.payload';
 import { PalavraChaveService } from './palavra-chave.service';
 import { CasoResponse } from './payloads/caso/caso.payload';
+import { Protegido } from '@/auth/decorators/protegido.decorator';
 
 @ApiBearerAuth()
+@Protegido()
 @ApiTags('Casos')
 @Controller('/api/v1/casos')
 export class CasosController {
@@ -32,6 +34,19 @@ export class CasosController {
   })
   public async buscarTodosSumarizados() {
     return this.casosService.buscarTodosSumarizado();
+  }
+
+  @ApiOperation({
+    summary: 'Buscar caso específico',
+    description: 'Retorna um caso específico',
+  })
+  @ApiOkResponse({
+    description: 'Caso encontrado',
+    type: CasoResponse,
+  })
+  @Get('/:id')
+  public async buscarCasoEspecifico(@Param('id') id: number) {
+    return this.casosService.buscarCasoEspecifico(id);
   }
 
   @ApiOperation({

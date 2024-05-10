@@ -6,6 +6,9 @@ import { RegistrarCasoUseCase } from './usecases/registrar-caso/registrar-caso.u
 import { ConsultarCasoUseCase } from './usecases/consultar-casos/consultar-caso.usecase';
 import CasoEntity from './entities/caso.entity';
 import { CasoResponse } from './payloads/caso/caso.payload';
+import ConsultarCasoPorIdUsecase from './usecases/consultar-casos/consultar-caso-by-id.usecase';
+import AppException from '@/shared/exceptions/app-exception';
+import { MensagensHelper } from '@/helpers/mensagens.helper';
 
 @Injectable()
 export class CasosService {
@@ -13,6 +16,7 @@ export class CasosService {
     private readonly registrarCasoUseCase: RegistrarCasoUseCase,
     private readonly adicionarOcorrenciaAoCasoUseCase: AdicionarOcorrenciaAoCasoUseCase,
     private readonly consultarCasoUseCase: ConsultarCasoUseCase,
+    private readonly consultarCasoPorIdUsecase: ConsultarCasoPorIdUsecase,
   ) {}
 
   public async registrarCaso(request: RegistrarCasoRequest) {
@@ -28,6 +32,17 @@ export class CasosService {
   public async buscarTodosSumarizado() {
     const resultado = await this.consultarCasoUseCase.buscarTodosSumarizado();
     return resultado.map((caso) => this.toResponse(caso));
+  }
+
+  public async buscarCasoEspecifico(id: number) {
+    const resultadoConsulta =
+      await this.consultarCasoPorIdUsecase.buscarPorId(id);
+
+    const casoEncontrado = resultadoConsulta.orElseThrow(
+      () => new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO),
+    );
+
+    return this.toResponse(casoEncontrado);
   }
 
   private toResponse(caso: CasoEntity) {
