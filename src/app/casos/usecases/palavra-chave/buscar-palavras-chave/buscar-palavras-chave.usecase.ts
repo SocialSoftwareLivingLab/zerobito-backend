@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import PalavraChaveEntity from '../../entities/palavra-chave.entity';
+import PalavraChaveEntity from '../../../entities/palavra-chave.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import ConsultarCasoPorIdUsecase from '../consultar-casos/consultar-caso-by-id.usecase';
+import ConsultarCasoPorIdUsecase from '../../caso/consultar-casos/consultar-caso-by-id.usecase';
 import AppException from '@/shared/exceptions/app-exception';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 

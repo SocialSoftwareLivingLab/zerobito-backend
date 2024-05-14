@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
-import { CasosService } from '../casos/casos.service';
+import { CasosService } from '../casos/services/casos.service';
 import { OcorrenciaEntity } from './entities/ocorrencias.entity';
 import { StatusOcorrenciaEntity } from './entities/status-ocorrencias.entity';
 import { CondicaoVitimaEntity } from './entities/vitima/condicao-vitima.entity';

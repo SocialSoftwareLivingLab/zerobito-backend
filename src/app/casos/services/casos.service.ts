@@ -1,22 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { AdicionarOcorrenciaAoCasoUseCaseInput } from './usecases/adicionar-ocorrencia/adicionar-ocorrencia.dto';
-import { AdicionarOcorrenciaAoCasoUseCase } from './usecases/adicionar-ocorrencia/adicionar-ocorrencia.usecase';
-import { RegistrarCasoRequest } from './usecases/registrar-caso/registrar-caso.dto';
-import { RegistrarCasoUseCase } from './usecases/registrar-caso/registrar-caso.usecase';
-import { ConsultarCasoUseCase } from './usecases/consultar-casos/consultar-caso.usecase';
-import CasoEntity from './entities/caso.entity';
-import { CasoResponse } from './payloads/caso/caso.payload';
-import ConsultarCasoPorIdUsecase from './usecases/consultar-casos/consultar-caso-by-id.usecase';
-import AppException from '@/shared/exceptions/app-exception';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
+import AppException from '@/shared/exceptions/app-exception';
+import { Injectable } from '@nestjs/common';
+import CasoEntity from '../entities/caso.entity';
+import { CasoResponse } from '../payloads/caso/caso.payload';
+import { EditarInformacoesBasicasRequest } from '../payloads/caso/informacoes-basicas.payload';
+import { AdicionarOcorrenciaAoCasoUseCaseInput } from '../usecases/caso/adicionar-ocorrencia/adicionar-ocorrencia.dto';
+import { AdicionarOcorrenciaAoCasoUseCase } from '../usecases/caso/adicionar-ocorrencia/adicionar-ocorrencia.usecase';
+import AtualizarInformacoesBasicasCasoUsecase from '../usecases/caso/atualizar-informacoes-basicas/atualizar-informacoes-basicas.usecase';
+import ConsultarCasoPorIdUsecase from '../usecases/caso/consultar-casos/consultar-caso-by-id.usecase';
+import { ConsultarCasoUseCase } from '../usecases/caso/consultar-casos/consultar-caso.usecase';
+import { RegistrarCasoRequest } from '../usecases/caso/registrar-caso/registrar-caso.dto';
+import { RegistrarCasoUseCase } from '../usecases/caso/registrar-caso/registrar-caso.usecase';
 
 @Injectable()
 export class CasosService {
   constructor(
     private readonly registrarCasoUseCase: RegistrarCasoUseCase,
-    private readonly adicionarOcorrenciaAoCasoUseCase: AdicionarOcorrenciaAoCasoUseCase,
     private readonly consultarCasoUseCase: ConsultarCasoUseCase,
     private readonly consultarCasoPorIdUsecase: ConsultarCasoPorIdUsecase,
+    private readonly adicionarOcorrenciaAoCasoUseCase: AdicionarOcorrenciaAoCasoUseCase,
+    private readonly atualizarInformacoesBasicasCasoUsecase: AtualizarInformacoesBasicasCasoUsecase,
   ) {}
 
   public async registrarCaso(request: RegistrarCasoRequest) {
@@ -43,6 +46,16 @@ export class CasosService {
     );
 
     return this.toResponse(casoEncontrado);
+  }
+
+  public async editarInformacoesBasicas(
+    id: number,
+    request: EditarInformacoesBasicasRequest,
+  ) {
+    await this.atualizarInformacoesBasicasCasoUsecase.executar({
+      id,
+      dados: request,
+    });
   }
 
   private toResponse(caso: CasoEntity) {

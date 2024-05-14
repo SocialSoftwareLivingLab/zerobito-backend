@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PalavraChaveResponse } from './payloads/palavra-chave/palavra-chave.payload';
-import { AdicionarPalavraChaveUseCase } from './usecases/adicionar-palavra-chave/adicionar-palavra-chave.usecase';
-import { BuscarPalavrasChaveUsecase } from './usecases/buscar-palavras-chave/buscar-palavras-chave.usecase';
-import { ExcluirPalavraChaveUsecase } from './usecases/excluir-palavra-chave/excluir-palavra-chave.usecase';
-import PalavraChaveEntity from './entities/palavra-chave.entity';
+import { PalavraChaveResponse } from '../payloads/palavra-chave/palavra-chave.payload';
+import { AdicionarPalavraChaveUseCase } from '../usecases/palavra-chave/adicionar-palavra-chave/adicionar-palavra-chave.usecase';
+import { BuscarPalavrasChaveUsecase } from '../usecases/palavra-chave/buscar-palavras-chave/buscar-palavras-chave.usecase';
+import { ExcluirPalavraChaveUsecase } from '../usecases/palavra-chave/excluir-palavra-chave/excluir-palavra-chave.usecase';
+import PalavraChaveEntity from '../entities/palavra-chave.entity';
 
 @Injectable()
 export class PalavraChaveService {

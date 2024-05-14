@@ -3,7 +3,7 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import CasoEntity from '../../entities/caso.entity';
+import CasoEntity from '../../../entities/caso.entity';
 import {
   RegistrarCasoRequest,
   RegistrarCasoResponse,

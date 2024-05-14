@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
-import CasoEntity from '../../entities/caso.entity';
+import CasoEntity from '../../../entities/caso.entity';
 import { AdicionarOcorrenciaAoCasoUseCaseInput } from './adicionar-ocorrencia.dto';
 import AppException from '@/shared/exceptions/app-exception';
 import { MensagensHelper } from '@/helpers/mensagens.helper';

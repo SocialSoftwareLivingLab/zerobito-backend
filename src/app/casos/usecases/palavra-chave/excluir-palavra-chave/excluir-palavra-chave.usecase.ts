@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import PalavraChaveEntity from '../../entities/palavra-chave.entity';
+import PalavraChaveEntity from '../../../entities/palavra-chave.entity';
 import AppException from '@/shared/exceptions/app-exception';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 
