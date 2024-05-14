@@ -31,6 +31,34 @@ export class CasosController {
   ) {}
 
   @ApiOperation({
+    summary: 'Buscar todas as causas',
+    description: 'Retorna a listagem atual de causas',
+  })
+  @ApiOkResponse({
+    description: 'Causas encontradas',
+    type: CasoResponse,
+    isArray: true,
+  })
+  @Get('/causas')
+  public async buscarTodasCausas() {
+    return this.casosService.listarTodasAsCausas();
+  }
+
+  @ApiOperation({
+    summary: 'Buscar todas as causas',
+    description: 'Retorna a listagem atual de causas',
+  })
+  @ApiOkResponse({
+    description: 'Causas encontradas',
+    type: CasoResponse,
+    isArray: true,
+  })
+  @Get('/diagnosticos')
+  public async buscarTodosDiagnosticos() {
+    return this.casosService.listarTodosDiagnosticos();
+  }
+
+  @ApiOperation({
     summary: 'Buscar todos os casos sumarizados',
     description:
       'Retorna a listagem atual de casos sem paginação e com dados básicos',

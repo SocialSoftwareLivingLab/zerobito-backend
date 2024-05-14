@@ -23,4 +23,8 @@ export default class ConsultarCausaUsecase {
       throw new AppException(MensagensHelper.Casos.CAUSA_NAO_ENCONTRADA);
     }
   }
+
+  public async listarTodos() {
+    return await this.causaRepository.find();
+  }
 }

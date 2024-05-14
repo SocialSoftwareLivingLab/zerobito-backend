@@ -11,6 +11,9 @@ import ConsultarCasoPorIdUsecase from '../usecases/caso/consultar-casos/consulta
 import { ConsultarCasoUseCase } from '../usecases/caso/consultar-casos/consultar-caso.usecase';
 import { RegistrarCasoRequest } from '../usecases/caso/registrar-caso/registrar-caso.dto';
 import { RegistrarCasoUseCase } from '../usecases/caso/registrar-caso/registrar-caso.usecase';
+import ConsultarCausaUsecase from '../usecases/causa/consultar-causa/consultar-causa.usecase';
+import ConsultarDiagnosticoUsecase from '../usecases/diagnostico/consultar-diagnostico/consultar-diagnostico.usecase';
+import { CausaApiResponse } from '../payloads/caso/causa.payload';
 
 @Injectable()
 export class CasosService {
@@ -20,6 +23,8 @@ export class CasosService {
     private readonly consultarCasoPorIdUsecase: ConsultarCasoPorIdUsecase,
     private readonly adicionarOcorrenciaAoCasoUseCase: AdicionarOcorrenciaAoCasoUseCase,
     private readonly atualizarInformacoesBasicasCasoUsecase: AtualizarInformacoesBasicasCasoUsecase,
+    private readonly consultarCausaUsecase: ConsultarCausaUsecase,
+    private readonly consultarDiagnosticoUseCase: ConsultarDiagnosticoUsecase,
   ) {}
 
   public async registrarCaso(request: RegistrarCasoRequest) {
@@ -55,6 +60,18 @@ export class CasosService {
     await this.atualizarInformacoesBasicasCasoUsecase.executar({
       id,
       dados: request,
+    });
+  }
+
+  public async listarTodasAsCausas() {
+    const response = await this.consultarCausaUsecase.listarTodos();
+
+    return response.map((causa) => {
+      const causaResponse = new CausaApiResponse();
+      causaResponse.codigo = causa.codigo;
+      causaResponse.nome = causa.nome;
+
+      return causaResponse;
     });
   }
 

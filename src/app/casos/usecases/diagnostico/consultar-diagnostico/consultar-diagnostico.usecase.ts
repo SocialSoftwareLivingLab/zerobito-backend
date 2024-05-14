@@ -24,4 +24,8 @@ export default class ConsultarDiagnosticoUsecase {
       return Optional.empty();
     }
   }
+
+  public async listarTodos() {
+    return await this.diagnosticoRepository.find();
+  }
 }
