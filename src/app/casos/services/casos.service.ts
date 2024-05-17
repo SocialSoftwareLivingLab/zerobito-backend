@@ -3,6 +3,8 @@ import AppException from '@/shared/exceptions/app-exception';
 import { Injectable } from '@nestjs/common';
 import CasoEntity from '../entities/caso.entity';
 import { CasoResponse } from '../payloads/caso/caso.payload';
+import { CausaApiResponse } from '../payloads/caso/causa.payload';
+import { DiagnosticoApiResponse } from '../payloads/caso/diagnostico.payload';
 import { EditarInformacoesBasicasRequest } from '../payloads/caso/informacoes-basicas.payload';
 import { AdicionarOcorrenciaAoCasoUseCaseInput } from '../usecases/caso/adicionar-ocorrencia/adicionar-ocorrencia.dto';
 import { AdicionarOcorrenciaAoCasoUseCase } from '../usecases/caso/adicionar-ocorrencia/adicionar-ocorrencia.usecase';
@@ -13,7 +15,6 @@ import { RegistrarCasoRequest } from '../usecases/caso/registrar-caso/registrar-
 import { RegistrarCasoUseCase } from '../usecases/caso/registrar-caso/registrar-caso.usecase';
 import ConsultarCausaUsecase from '../usecases/causa/consultar-causa/consultar-causa.usecase';
 import ConsultarDiagnosticoUsecase from '../usecases/diagnostico/consultar-diagnostico/consultar-diagnostico.usecase';
-import { CausaApiResponse } from '../payloads/caso/causa.payload';
 
 @Injectable()
 export class CasosService {
@@ -72,6 +73,18 @@ export class CasosService {
       causaResponse.nome = causa.nome;
 
       return causaResponse;
+    });
+  }
+
+  public async listarTodosDiagnosticos() {
+    const response = await this.consultarDiagnosticoUseCase.listarTodos();
+
+    return response.map((diagnostico) => {
+      const diagnosticoResponse = new DiagnosticoApiResponse();
+      diagnosticoResponse.codigo = diagnostico.codigo;
+      diagnosticoResponse.nome = diagnostico.nome;
+
+      return diagnosticoResponse;
     });
   }
 
