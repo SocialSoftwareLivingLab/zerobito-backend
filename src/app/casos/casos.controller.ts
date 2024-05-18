@@ -19,6 +19,8 @@ import { PalavraChaveService } from './services/palavra-chave.service';
 import { CasoResponse } from './payloads/caso/caso.payload';
 import { Protegido } from '@/auth/decorators/protegido.decorator';
 import { EditarInformacoesBasicasRequest } from './payloads/caso/informacoes-basicas.payload';
+import { DiagnosticoApiResponse } from './payloads/caso/diagnostico.payload';
+import { CausaApiResponse } from './payloads/caso/causa.payload';
 
 @Protegido()
 @ApiBearerAuth()
@@ -35,8 +37,8 @@ export class CasosController {
     description: 'Retorna a listagem atual de causas',
   })
   @ApiOkResponse({
-    description: 'Causas encontradas',
-    type: CasoResponse,
+    description: 'Causa disponível para uso em vinculação de casos',
+    type: CausaApiResponse,
     isArray: true,
   })
   @Get('/causas')
@@ -49,8 +51,8 @@ export class CasosController {
     description: 'Retorna a listagem atual de causas',
   })
   @ApiOkResponse({
-    description: 'Causas encontradas',
-    type: CasoResponse,
+    description: 'Diagnóstico disponível para uso em vinculações de caso',
+    type: DiagnosticoApiResponse,
     isArray: true,
   })
   @Get('/diagnosticos')

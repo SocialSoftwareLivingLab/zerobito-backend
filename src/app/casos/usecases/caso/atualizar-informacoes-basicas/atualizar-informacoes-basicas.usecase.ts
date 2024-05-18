@@ -1,13 +1,12 @@
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import AppException from '@/shared/exceptions/app-exception';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import CasoEntity from '../../../entities/caso.entity';
 import ConsultarCausaUsecase from '../../causa/consultar-causa/consultar-causa.usecase';
 import ConsultarDiagnosticoUsecase from '../../diagnostico/consultar-diagnostico/consultar-diagnostico.usecase';
 import ConsultarCasoPorIdUsecase from '../consultar-casos/consultar-caso-by-id.usecase';
-import { Repository } from 'typeorm';
-import CausaEntity from '@/app/casos/entities/info-basicas/causa.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 
 export interface AtualizarInformacoesBasicasCasoUsecaseRequest {
   id: number;
