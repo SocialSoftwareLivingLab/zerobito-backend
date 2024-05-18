@@ -25,8 +25,8 @@ export default class AtualizarInformacoesBasicasCasoUsecase {
     private readonly consultarCausaUsecase: ConsultarCausaUsecase,
     private readonly consultarCasoPorIdUsecase: ConsultarCasoPorIdUsecase,
     private readonly consultarDiagnosticoUsecase: ConsultarDiagnosticoUsecase,
-    @InjectRepository(CausaEntity)
-    private readonly causaRepository: Repository<CausaEntity>,
+    @InjectRepository(CasoEntity)
+    private readonly casoRepository: Repository<CasoEntity>,
   ) {}
 
   public async executar({
@@ -53,7 +53,7 @@ export default class AtualizarInformacoesBasicasCasoUsecase {
     caso.informacoesBasicas.causaSecundaria = causaSecundaria;
     caso.informacoesBasicas.diagnostico = diagnostico;
 
-    await this.causaRepository.save(caso);
+    await this.casoRepository.save(caso);
   }
 
   private async consultarCausa(codigo: string | null) {
