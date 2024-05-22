@@ -103,9 +103,9 @@ export class CasosService {
     };
     response.informacoesBasicas = {
       comentario: caso.informacoesBasicas?.comentario,
-      causaPrimaria: caso.informacoesBasicas?.causaPrimaria?.nome || null,
-      causaSecundaria: caso.informacoesBasicas?.causaSecundaria?.nome || null,
-      diagnostico: caso.informacoesBasicas?.diagnostico?.nome || null,
+      causaPrimaria: caso.informacoesBasicas?.causaPrimaria?.codigo || null,
+      causaSecundaria: caso.informacoesBasicas?.causaSecundaria?.codigo || null,
+      diagnostico: caso.informacoesBasicas?.diagnostico?.codigo || null,
     };
 
     return response;
