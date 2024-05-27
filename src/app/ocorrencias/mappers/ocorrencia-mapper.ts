@@ -7,6 +7,7 @@ export function entityToOcorrenciaResponse(entity: OcorrenciaEntity) {
   const resultado = new OcorrenciaDto();
   resultado.data = entity.data;
   resultado.descricao = entity.descricao;
+  resultado.titulo = entity.titulo;
   resultado.empresa = entity.empresa;
   resultado.fonte = entity.fonte;
   resultado.id = entity.id;

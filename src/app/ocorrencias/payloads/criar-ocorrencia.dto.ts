@@ -12,6 +12,12 @@ export class CriarOcorrenciaRequest {
   descricao: string;
 
   @ApiProperty({
+    example: 'Título da ocorreência',
+    description: 'Título da ocorrência',
+  })
+  titulo: string;
+
+  @ApiProperty({
     description: 'Data que aconteceu a ocorrência',
     example: '2021-10-10T00:00:00',
     type: Date,
