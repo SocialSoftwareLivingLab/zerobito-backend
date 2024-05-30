@@ -23,6 +23,9 @@ export class OcorrenciaEntity {
   @Column({ name: 'descricao' })
   descricao: string;
 
+  @Column({ name: 'titulo', nullable: false })
+  titulo: string;
+
   @Column({ name: 'data', nullable: false })
   data: Date;
 
