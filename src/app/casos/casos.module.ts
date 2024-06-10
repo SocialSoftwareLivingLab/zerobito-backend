@@ -20,6 +20,7 @@ import CausaEntity from './entities/info-basicas/causa.entity';
 import DiagnosticoEntity from './entities/info-basicas/diagnostico.entity';
 import CausaSeeds from './seeds/causas.seed';
 import DiagnosticosSeeds from './seeds/diagnosticos.seed';
+import AtualizarLocalizacaoCasoUsecase from './usecases/caso/atualizar-localizacao/atualizar-localizacao';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import DiagnosticosSeeds from './seeds/diagnosticos.seed';
     BuscarPalavrasChaveUsecase,
     ExcluirPalavraChaveUsecase,
     AtualizarInformacoesBasicasCasoUsecase,
+    AtualizarLocalizacaoCasoUsecase,
     ConsultarCausaUsecase,
     ConsultarDiagnosticoUsecase,
   ],

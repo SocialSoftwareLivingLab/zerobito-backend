@@ -40,6 +40,36 @@ export class InformacoesBasicasResponse {
   diagnostico: string;
 }
 
+export class LocalizacaoResponse {
+  @ApiProperty({
+    description: 'Cidade do caso',
+    example: 'CIDADE_EXEMPLO',
+  })
+  cidade: string;
+
+  @ApiProperty({
+    description: 'Estado do caso',
+    example: 'ESTADO_EXEMPLO',
+  })
+  estado: string;
+
+  @ApiProperty({
+    description: 'Logradouro do caso',
+    example: 'LOGRADOURO_EXEMPLO',
+  })
+  logradouro: string;
+
+  @ApiProperty({
+    description: 'Latitude do caso',
+  })
+  latitude: number;
+
+  @ApiProperty({
+    description: 'Longitude do caso',
+  })
+  longitude: number;
+}
+
 export class CasoResponse {
   @ApiProperty({
     description: 'Identificador do caso',
@@ -76,4 +106,10 @@ export class CasoResponse {
     type: InformacoesBasicasResponse,
   })
   informacoesBasicas: InformacoesBasicasResponse;
+
+  @ApiProperty({
+    description: 'Localização do caso',
+    type: LocalizacaoResponse,
+  })
+  localizacao: LocalizacaoResponse;
 }

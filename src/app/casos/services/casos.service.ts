@@ -15,6 +15,8 @@ import { RegistrarCasoRequest } from '../usecases/caso/registrar-caso/registrar-
 import { RegistrarCasoUseCase } from '../usecases/caso/registrar-caso/registrar-caso.usecase';
 import ConsultarCausaUsecase from '../usecases/causa/consultar-causa/consultar-causa.usecase';
 import ConsultarDiagnosticoUsecase from '../usecases/diagnostico/consultar-diagnostico/consultar-diagnostico.usecase';
+import { EditarLocalizacaoRequest } from '../payloads/caso/localizacao.payload';
+import AtualizarLocalizacaoCasoUsecase from '../usecases/caso/atualizar-localizacao/atualizar-localizacao';
 
 @Injectable()
 export class CasosService {
@@ -24,6 +26,7 @@ export class CasosService {
     private readonly consultarCasoPorIdUsecase: ConsultarCasoPorIdUsecase,
     private readonly adicionarOcorrenciaAoCasoUseCase: AdicionarOcorrenciaAoCasoUseCase,
     private readonly atualizarInformacoesBasicasCasoUsecase: AtualizarInformacoesBasicasCasoUsecase,
+    private readonly ataulizarLocalizacaoCasoUsecase: AtualizarLocalizacaoCasoUsecase,
     private readonly consultarCausaUsecase: ConsultarCausaUsecase,
     private readonly consultarDiagnosticoUseCase: ConsultarDiagnosticoUsecase,
   ) {}
@@ -59,6 +62,16 @@ export class CasosService {
     request: EditarInformacoesBasicasRequest,
   ) {
     await this.atualizarInformacoesBasicasCasoUsecase.executar({
+      id,
+      dados: request,
+    });
+  }
+
+  public async editarLocalizacao(
+    id: number,
+    request: EditarLocalizacaoRequest,
+  ) {
+    await this.ataulizarLocalizacaoCasoUsecase.executar({
       id,
       dados: request,
     });
@@ -106,6 +119,13 @@ export class CasosService {
       causaPrimaria: caso.informacoesBasicas?.causaPrimaria?.codigo || null,
       causaSecundaria: caso.informacoesBasicas?.causaSecundaria?.codigo || null,
       diagnostico: caso.informacoesBasicas?.diagnostico?.codigo || null,
+    };
+    response.localizacao = {
+      cidade: caso.localizacao?.cidade || null,
+      estado: caso.localizacao?.estado || null,
+      logradouro: caso.localizacao?.logradouro || null,
+      latitude: caso.localizacao?.latitude || null,
+      longitude: caso.localizacao?.longitude || null,
     };
 
     return response;
