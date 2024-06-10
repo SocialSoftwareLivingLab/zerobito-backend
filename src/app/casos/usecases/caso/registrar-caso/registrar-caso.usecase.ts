@@ -8,6 +8,7 @@ import {
   RegistrarCasoRequest,
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
+import LocalizacaoCaso from '@/app/casos/entities/localizacao/localizacao.entity';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -20,7 +21,21 @@ export class RegistrarCasoUseCase {
   public async executar(
     request: RegistrarCasoRequest,
   ): Promise<RegistrarCasoResponse> {
-    const { nome, coordenador: idCoordenador, criador, ocorrencias } = request;
+    const {
+      nome,
+      coordenador: idCoordenador,
+      criador,
+      ocorrencias,
+      local,
+    } = request;
+
+    const localizacao: LocalizacaoCaso = {
+      latitude: local.latitude,
+      longitude: local.longitude,
+      cidade: local.cidade,
+      estado: local.estado,
+      logradouro: local.logradouro,
+    };
 
     const encontrarCoordenador =
       await this.coordenadoresService.buscarCoordenadorPorId(idCoordenador);
@@ -38,6 +53,7 @@ export class RegistrarCasoUseCase {
       criador,
       dataCriacao: new Date(),
       ocorrencias,
+      localizacao,
     });
 
     const casoSalvo = await this.casosRepository.save(casoCriado);
@@ -47,6 +63,7 @@ export class RegistrarCasoUseCase {
       nome: casoSalvo.nome,
       coordenador: casoSalvo.coordenador.id,
       dataCriacao: casoSalvo.dataCriacao,
+      localizacao: casoSalvo.localizacao,
     };
   }
 }

@@ -13,6 +13,8 @@ import {
 import InformacoesBasicas from './info-basicas/info-basica.entity';
 import { OcorrenciaEntity } from '@/app/ocorrencias/entities/ocorrencias.entity';
 import PalavraChaveEntity from './palavra-chave.entity';
+import Localizacao from './localizacao/localizacao.entity';
+import LocalizacaoCaso from './localizacao/localizacao.entity';
 
 @Entity({ name: 'caso' })
 export default class CasoEntity {
@@ -40,6 +42,9 @@ export default class CasoEntity {
 
   @Column(() => InformacoesBasicas, { prefix: false })
   informacoesBasicas: InformacoesBasicas;
+
+  @Column(() => Localizacao, { prefix: false })
+  localizacao: LocalizacaoCaso;
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataCriacao: Date;
