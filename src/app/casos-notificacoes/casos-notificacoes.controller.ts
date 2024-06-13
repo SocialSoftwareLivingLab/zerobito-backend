@@ -15,6 +15,7 @@ import {
 } from './payloads/nova-notificacao.payload';
 import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { NotificacaoCasoResponse } from './payloads/notificacoes.payload';
 
 @Protegido()
 @ApiBearerAuth()
@@ -36,7 +37,7 @@ export class CasosNotificacoesController {
     isArray: true,
   })
   @Get('/notificacoes/tipos')
-  async buscarTiposNotificacoes() {
+  async buscarTiposNotificacoes(): Promise<TipoNotificacaoResponse[]> {
     return this.casosNotificacoesService.buscarTiposNotificacoes();
   }
 
@@ -54,11 +55,28 @@ export class CasosNotificacoesController {
     @Param('id') id: number,
     @Body() payload: CriarNotificacaoRequest,
     @UsuarioAutenticado() usuarioAutenticado: UsuarioAutenticadoDto,
-  ) {
+  ): Promise<CriarNotificacaoResponse> {
     return this.casosNotificacoesService.adicionarNotificacao(
       id,
       payload,
       usuarioAutenticado,
     );
+  }
+
+  @ApiOperation({
+    summary: 'Buscar notificações de um caso',
+    description:
+      'Retorna a listagem de todas as notificações associadas a um caso específico, identificado pelo ID do caso fornecido',
+  })
+  @ApiOkResponse({
+    description: 'Notificações associadas ao caso',
+    type: NotificacaoCasoResponse,
+    isArray: true,
+  })
+  @Get('/casos/:id/notificacoes')
+  async buscarNotificacoesPorCaso(
+    @Param('id') id: number,
+  ): Promise<NotificacaoCasoResponse[]> {
+    return this.casosNotificacoesService.buscarNotificacoesPorCaso(id);
   }
 }

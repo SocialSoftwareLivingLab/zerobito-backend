@@ -13,6 +13,7 @@ import {
   CriarNotificacaoResponse,
 } from './payloads/nova-notificacao.payload';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { NotificacaoCasoResponse } from './payloads/notificacoes.payload';
 
 @Injectable()
 export class CasosNotificacoesService {
@@ -41,12 +42,7 @@ export class CasosNotificacoesService {
     payload: CriarNotificacaoRequest,
     usuarioAutenticado: UsuarioAutenticadoDto,
   ) {
-    const validacaoConsulta =
-      await this.consultarCasoUseCase.buscarPorId(idCaso);
-
-    const caso: CasoEntity = validacaoConsulta.orElseThrow(
-      () => new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO),
-    );
+    const caso = await this.buscarCasoPorId(idCaso);
 
     const tipoNotificacao = await this.tipoNotificacaoRepository.findOne({
       where: { nome: payload.tipo },
@@ -84,5 +80,45 @@ export class CasosNotificacoesService {
     response.observacao = notificacaoSalva.observacao;
 
     return response;
+  }
+
+  public async buscarNotificacoesPorCaso(
+    idCaso: number,
+  ): Promise<NotificacaoCasoResponse[]> {
+    const caso = await this.buscarCasoPorId(idCaso);
+
+    const notificacoes = await this.notificacaoRepository.find({
+      where: { caso: { id: caso.id } },
+      relations: ['tipo', 'criador'],
+    });
+
+    return notificacoes.map((notificacao) => {
+      return {
+        id: notificacao.id,
+        identificador: notificacao.identificador,
+        isEmitida: notificacao.isEmitida,
+        dataEmissao: notificacao.dataEmissao,
+        observacao: notificacao.observacao,
+        tipo: {
+          id: notificacao.tipo.id,
+          nome: notificacao.tipo.nome,
+          descricao: notificacao.tipo.descricao,
+        },
+        dataCriacao: notificacao.dataCriacao,
+        criador: {
+          id: notificacao.criador.id,
+          nome: notificacao.criador.nome,
+          email: notificacao.criador.email,
+        },
+      } as NotificacaoCasoResponse;
+    });
+  }
+
+  private async buscarCasoPorId(idCaso: number): Promise<CasoEntity> {
+    const caso = await this.consultarCasoUseCase.buscarPorId(idCaso);
+
+    return caso.orElseThrow(
+      () => new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO),
+    );
   }
 }
