@@ -21,7 +21,7 @@ export default class TipoNotificacaoSeed implements SeedRunner {
     private readonly tipoNotificacaoRepository: Repository<TipoNotificacaoEntity>,
   ) {}
 
-  async run(): Promise<void> {
+  async run() {
     this.logger.log('Seed da tabela "caso_notificacao_tipo"...');
 
     const quantidade = await this.tipoNotificacaoRepository.count();
