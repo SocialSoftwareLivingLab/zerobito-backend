@@ -29,6 +29,10 @@ enum Casos {
   DIAGNOSTICO_NAO_ENCONTRADO = 'Diagnóstico não encontrado',
 }
 
+enum Notificacoes {
+  TIPO_NOTIFICACAO_NAO_ENCONTRADO = 'Tipo de notificação não encontrado',
+}
+
 export const MensagensHelper = {
   Usuario,
   Documentos,
@@ -36,4 +40,5 @@ export const MensagensHelper = {
   Ocorrencias,
   Coordenadores,
   Casos,
+  Notificacoes,
 };

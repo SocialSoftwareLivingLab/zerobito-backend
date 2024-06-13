@@ -47,7 +47,12 @@ import DiagnosticosSeeds from './seeds/diagnosticos.seed';
     ConsultarCausaUsecase,
     ConsultarDiagnosticoUsecase,
   ],
-  exports: [CasosService, CausaSeeds, DiagnosticosSeeds],
+  exports: [
+    CasosService,
+    CausaSeeds,
+    DiagnosticosSeeds,
+    ConsultarCasoPorIdUsecase,
+  ],
   controllers: [CasosController],
 })
 export class CasosModule {}
