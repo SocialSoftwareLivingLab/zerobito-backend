@@ -1,3 +1,4 @@
+import { OcorrenciaEntity } from '@/app/ocorrencias/entities/ocorrencias.entity';
 import { UsuarioEntity } from '@/app/usuarios/usuarios.entity';
 import {
   Column,
@@ -11,7 +12,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import InformacoesBasicas from './info-basicas/info-basica.entity';
-import { OcorrenciaEntity } from '@/app/ocorrencias/entities/ocorrencias.entity';
 import PalavraChaveEntity from './palavra-chave.entity';
 
 @Entity({ name: 'caso' })

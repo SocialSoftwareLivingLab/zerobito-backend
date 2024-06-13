@@ -2,6 +2,7 @@ import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import OcorrenciaSeeds from './app/ocorrencias/seeds/ocorrencias.seeds';
 import CausaSeeds from './app/casos/seeds/causas.seed';
 import DiagnosticosSeeds from './app/casos/seeds/diagnosticos.seed';
+import TipoNotificacaoSeed from './app/casos-notificacoes/seeds/tipo-notificacao.seed';
 
 @Injectable()
 export default class AppService implements OnApplicationBootstrap {
@@ -11,6 +12,7 @@ export default class AppService implements OnApplicationBootstrap {
     private readonly ocorrenciaSeeds: OcorrenciaSeeds,
     private readonly causasSeeds: CausaSeeds,
     private readonly diagnosticoSeeds: DiagnosticosSeeds,
+    private readonly tiposNotificacoesSeeds: TipoNotificacaoSeed,
   ) {}
 
   async onApplicationBootstrap() {
@@ -19,6 +21,8 @@ export default class AppService implements OnApplicationBootstrap {
     await this.ocorrenciaSeeds.run();
     await this.causasSeeds.run();
     await this.diagnosticoSeeds.run();
+
+    await this.tiposNotificacoesSeeds.run();
 
     this.logger.log('........ Seed das bases de dados: FINALIZADO ........');
   }
