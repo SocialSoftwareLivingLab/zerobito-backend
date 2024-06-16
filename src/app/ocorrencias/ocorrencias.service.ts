@@ -103,6 +103,7 @@ export class OcorrenciasService {
       coordenador,
       criador: usuarioAutenticado,
       ocorrencias: [ocorrencia],
+      local: ocorrencia.local,
     });
 
     return casoCriado;

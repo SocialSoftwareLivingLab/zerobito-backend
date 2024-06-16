@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { LocalOcorrencia } from '../../entities/local.entity';
 
 export class DadosNovoCasoAceiteOcorrencia {
   @ApiProperty({
@@ -12,4 +13,9 @@ export class DadosNovoCasoAceiteOcorrencia {
     example: '1',
   })
   coordenador: number;
+
+  @ApiProperty({
+    description: 'local da ocorrencia',
+  })
+  local: LocalOcorrencia;
 }

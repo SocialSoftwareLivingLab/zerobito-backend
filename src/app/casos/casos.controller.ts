@@ -21,6 +21,7 @@ import { Protegido } from '@/auth/decorators/protegido.decorator';
 import { EditarInformacoesBasicasRequest } from './payloads/caso/informacoes-basicas.payload';
 import { DiagnosticoApiResponse } from './payloads/caso/diagnostico.payload';
 import { CausaApiResponse } from './payloads/caso/causa.payload';
+import { EditarLocalizacaoRequest } from './payloads/caso/localizacao.payload';
 
 @Protegido()
 @ApiBearerAuth()
@@ -98,6 +99,18 @@ export class CasosController {
     @Body() payload: EditarInformacoesBasicasRequest,
   ) {
     await this.casosService.editarInformacoesBasicas(id, payload);
+  }
+
+  @ApiOperation({
+    summary: 'Editar localização',
+    description: 'Edita a localização de um caso',
+  })
+  @Put('/:id/localizacao')
+  public async editarLocalizacao(
+    @Param('id') id: number,
+    @Body() payload: EditarLocalizacaoRequest,
+  ) {
+    await this.casosService.editarLocalizacao(id, payload);
   }
 
   @ApiOperation({
