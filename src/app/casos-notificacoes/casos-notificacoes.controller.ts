@@ -87,7 +87,7 @@ export class CasosNotificacoesController {
     summary: 'Editar Notificacao',
     description: 'Edita o estado de emissão da notificação de um caso',
   })
-  @Put('/:id/notificacoes/:identificador')
+  @Put('/casos/:id/notificacoes/:identificador')
   public async editarNotificacao(
     @Param('id') id: number,
     @Param('identificador') identificador: string,
