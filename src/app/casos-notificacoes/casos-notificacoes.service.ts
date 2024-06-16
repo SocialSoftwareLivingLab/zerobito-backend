@@ -13,7 +13,10 @@ import {
   CriarNotificacaoResponse,
 } from './payloads/nova-notificacao.payload';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
-import { NotificacaoCasoResponse } from './payloads/notificacoes.payload';
+import {
+  EditarNotificacaoRequest,
+  NotificacaoCasoResponse,
+} from './payloads/notificacoes.payload';
 
 @Injectable()
 export class CasosNotificacoesService {
@@ -112,6 +115,52 @@ export class CasosNotificacoesService {
         },
       } as NotificacaoCasoResponse;
     });
+  }
+
+  public async buscarNotificacaoPorIdentificador(
+    idCaso: number,
+    identificadorNotificacao: string,
+  ): Promise<NotificacaoCasoResponse> {
+    const caso = await this.buscarCasoPorId(idCaso);
+    const notificacao = await this.notificacaoRepository.findOne({
+      where: {
+        caso: { id: caso.id },
+        identificador: identificadorNotificacao,
+      },
+      relations: ['tipo', 'criador'],
+    });
+    return {
+      id: notificacao.id,
+      identificador: notificacao.identificador,
+      isEmitida: notificacao.isEmitida,
+      dataEmissao: notificacao.dataEmissao,
+      observacao: notificacao.observacao,
+      tipo: {
+        id: notificacao.tipo.id,
+        nome: notificacao.tipo.nome,
+        descricao: notificacao.tipo.descricao,
+      },
+      dataCriacao: notificacao.dataCriacao,
+      criador: {
+        id: notificacao.criador.id,
+        nome: notificacao.criador.nome,
+        email: notificacao.criador.email,
+      },
+    } as NotificacaoCasoResponse;
+  }
+
+  public async editarNotificacao(
+    id: number,
+    identificador: string,
+    request: EditarNotificacaoRequest,
+  ) {
+    const notificacao = await this.buscarNotificacaoPorIdentificador(
+      id,
+      identificador,
+    );
+    notificacao.isEmitida = request.isEmitida;
+
+    this.notificacaoRepository.save(notificacao);
   }
 
   private async buscarCasoPorId(idCaso: number): Promise<CasoEntity> {

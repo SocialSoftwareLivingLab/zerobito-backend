@@ -62,3 +62,10 @@ export class NotificacaoCasoResponse {
   })
   criador: CriadorNotificacaoResponse;
 }
+
+export class EditarNotificacaoRequest {
+  @ApiProperty({
+    description: 'estado da emissao do notificacao',
+  })
+  isEmitida: boolean;
+}

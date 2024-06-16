@@ -1,5 +1,5 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -15,7 +15,10 @@ import {
 } from './payloads/nova-notificacao.payload';
 import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
-import { NotificacaoCasoResponse } from './payloads/notificacoes.payload';
+import {
+  EditarNotificacaoRequest,
+  NotificacaoCasoResponse,
+} from './payloads/notificacoes.payload';
 
 @Protegido()
 @ApiBearerAuth()
@@ -78,5 +81,22 @@ export class CasosNotificacoesController {
     @Param('id') id: number,
   ): Promise<NotificacaoCasoResponse[]> {
     return this.casosNotificacoesService.buscarNotificacoesPorCaso(id);
+  }
+
+  @ApiOperation({
+    summary: 'Editar Notificacao',
+    description: 'Edita o estado de emissão da notificação de um caso',
+  })
+  @Put('/:id/notificacoes/:identificador')
+  public async editarNotificacao(
+    @Param('id') id: number,
+    @Param('identificador') identificador: string,
+    @Body() payload: EditarNotificacaoRequest,
+  ) {
+    await this.casosNotificacoesService.editarNotificacao(
+      id,
+      identificador,
+      payload,
+    );
   }
 }
