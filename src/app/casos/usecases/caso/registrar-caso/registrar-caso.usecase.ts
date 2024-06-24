@@ -9,6 +9,7 @@ import {
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
 import LocalizacaoCaso from '@/app/casos/entities/localizacao/localizacao.entity';
+import { CasosNotificacoesService } from '@/app/casos-notificacoes/casos-notificacoes.service';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -16,6 +17,7 @@ export class RegistrarCasoUseCase {
     @InjectRepository(CasoEntity)
     private readonly casosRepository: Repository<CasoEntity>,
     private readonly coordenadoresService: CoordenadoresService,
+    private readonly casosNotificacoesService: CasosNotificacoesService,
   ) {}
 
   public async executar(
@@ -57,6 +59,25 @@ export class RegistrarCasoUseCase {
     });
 
     const casoSalvo = await this.casosRepository.save(casoCriado);
+
+    const tiposNotificacoes =
+      await this.casosNotificacoesService.buscarTiposNotificacoes();
+
+    // Crie uma notificação para cada tipo
+    for (const tipo of tiposNotificacoes) {
+      const notificacaoRequest = {
+        tipo: tipo.nome,
+        identificador: `NOTIF-${tipo.id}-${new Date().getTime()}`,
+        isEmitida: false,
+        dataEmissao: new Date(),
+        observacao: `Notificação automática do tipo ${tipo.nome}`,
+      };
+      await this.casosNotificacoesService.adicionarNotificacao(
+        casoSalvo.id,
+        notificacaoRequest,
+        criador,
+      );
+    }
 
     return {
       id: casoSalvo.id,
