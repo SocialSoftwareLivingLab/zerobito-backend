@@ -28,7 +28,7 @@ export class CasosNotificacoesService {
     private readonly consultarCasoUseCase: ConsultarCasoPorIdUsecase,
   ) {}
 
-  async buscarTiposNotificacoes(): Promise<TipoNotificacaoResponse[]> {
+  public async buscarTiposNotificacoes(): Promise<TipoNotificacaoResponse[]> {
     const resultado = await this.tipoNotificacaoRepository.find({});
 
     return resultado.map((tipo) => {
@@ -40,7 +40,7 @@ export class CasosNotificacoesService {
     });
   }
 
-  async adicionarNotificacao(
+  public async adicionarNotificacao(
     idCaso: number,
     payload: CriarNotificacaoRequest,
     usuarioAutenticado: UsuarioAutenticadoDto,
