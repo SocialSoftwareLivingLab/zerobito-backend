@@ -10,6 +10,7 @@ import {
 } from './registrar-caso.dto';
 import LocalizacaoCaso from '@/app/casos/entities/localizacao/localizacao.entity';
 import { CasosNotificacoesService } from '@/app/casos-notificacoes/casos-notificacoes.service';
+import { CriarNotificacaoRequest } from '@/app/casos-notificacoes/payloads/nova-notificacao.payload';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -65,9 +66,9 @@ export class RegistrarCasoUseCase {
 
     // Crie uma notificação para cada tipo
     for (const tipo of tiposNotificacoes) {
-      const notificacaoRequest = {
+      const notificacaoRequest: CriarNotificacaoRequest = {
         tipo: tipo.nome,
-        identificador: `NOTIF-${tipo.id}-${new Date().getTime()}`,
+        identificador: `${tipo.id}-${new Date().getTime()}`,
         isEmitida: false,
         dataEmissao: new Date(),
         observacao: `Notificação automática do tipo ${tipo.nome}`,
