@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import TipoNotificacaoEntity from './entities/notificacao-tipo.entity';
 import NotificacaoCasoEntity from './entities/notificacao.entity';
 import { CasosModule } from '../casos/casos.module';
+import { CasosService } from '../casos/services/casos.service';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { CasosModule } from '../casos/casos.module';
   ],
   controllers: [CasosNotificacoesController],
   providers: [CasosNotificacoesService, TipoNotificacaoSeed],
-  exports: [TipoNotificacaoSeed],
+  exports: [TipoNotificacaoSeed, CasosService],
 })
 export class CasosNotificacoesModule {}
