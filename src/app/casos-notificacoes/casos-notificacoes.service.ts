@@ -1,6 +1,6 @@
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import AppException from '@/shared/exceptions/app-exception';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CasoEntity from '../casos/entities/caso.entity';
@@ -25,10 +25,11 @@ export class CasosNotificacoesService {
     private readonly tipoNotificacaoRepository: Repository<TipoNotificacaoEntity>,
     @InjectRepository(NotificacaoCasoEntity)
     private readonly notificacaoRepository: Repository<NotificacaoCasoEntity>,
+    @Inject(forwardRef(() => ConsultarCasoPorIdUsecase))
     private readonly consultarCasoUseCase: ConsultarCasoPorIdUsecase,
   ) {}
 
-  public async buscarTiposNotificacoes(): Promise<TipoNotificacaoResponse[]> {
+  async buscarTiposNotificacoes(): Promise<TipoNotificacaoResponse[]> {
     const resultado = await this.tipoNotificacaoRepository.find({});
 
     return resultado.map((tipo) => {
@@ -40,7 +41,7 @@ export class CasosNotificacoesService {
     });
   }
 
-  public async adicionarNotificacao(
+  async adicionarNotificacao(
     idCaso: number,
     payload: CriarNotificacaoRequest,
     usuarioAutenticado: UsuarioAutenticadoDto,

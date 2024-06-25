@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { CasosNotificacoesController } from './casos-notificacoes.controller';
 import { CasosNotificacoesService } from './casos-notificacoes.service';
 import TipoNotificacaoSeed from './seeds/tipo-notificacao.seed';
@@ -11,7 +11,7 @@ import { CasosService } from '../casos/services/casos.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([TipoNotificacaoEntity, NotificacaoCasoEntity]),
-    CasosModule,
+    forwardRef(() => CasosModule),
   ],
   controllers: [CasosNotificacoesController],
   providers: [CasosNotificacoesService, TipoNotificacaoSeed],

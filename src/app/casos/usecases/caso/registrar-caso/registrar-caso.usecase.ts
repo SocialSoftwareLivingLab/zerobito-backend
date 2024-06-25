@@ -1,6 +1,11 @@
 import { CoordenadoresService } from '@/app/coordenadores/coordenadores.service';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CasoEntity from '../../../entities/caso.entity';
@@ -18,6 +23,7 @@ export class RegistrarCasoUseCase {
     @InjectRepository(CasoEntity)
     private readonly casosRepository: Repository<CasoEntity>,
     private readonly coordenadoresService: CoordenadoresService,
+    @Inject(forwardRef(() => CasosNotificacoesService))
     private readonly casosNotificacoesService: CasosNotificacoesService,
   ) {}
 
