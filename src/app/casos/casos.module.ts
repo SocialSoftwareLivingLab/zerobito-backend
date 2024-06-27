@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoordenadoresModule } from '../coordenadores/coordenadores.module';
 import { CasosController } from './casos.controller';
@@ -32,7 +32,7 @@ import { CasosNotificacoesModule } from '../casos-notificacoes/casos-notificacoe
       DiagnosticoEntity,
     ]),
     CoordenadoresModule,
-    CasosNotificacoesModule,
+    forwardRef(() => CasosNotificacoesModule),
   ],
   providers: [
     CausaSeeds,
