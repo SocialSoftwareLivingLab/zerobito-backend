@@ -17,6 +17,7 @@ import ConsultarCausaUsecase from '../usecases/causa/consultar-causa/consultar-c
 import ConsultarDiagnosticoUsecase from '../usecases/diagnostico/consultar-diagnostico/consultar-diagnostico.usecase';
 import { EditarLocalizacaoRequest } from '../payloads/caso/localizacao.payload';
 import AtualizarLocalizacaoCasoUsecase from '../usecases/caso/atualizar-localizacao/atualizar-localizacao';
+import { Point } from 'typeorm';
 
 @Injectable()
 export class CasosService {
@@ -120,14 +121,29 @@ export class CasosService {
       causaSecundaria: caso.informacoesBasicas?.causaSecundaria?.codigo || null,
       diagnostico: caso.informacoesBasicas?.diagnostico?.codigo || null,
     };
+
+    const { latitude, longitude } = this.getCoordenadas(
+      caso.localizacao?.localizacao,
+    );
+
     response.localizacao = {
       cidade: caso.localizacao?.cidade || null,
       estado: caso.localizacao?.estado || null,
       logradouro: caso.localizacao?.logradouro || null,
-      latitude: caso.localizacao?.latitude || null,
-      longitude: caso.localizacao?.longitude || null,
+      latitude,
+      longitude,
     };
 
     return response;
+  }
+
+  private getCoordenadas(coordenada: Point) {
+    if (!coordenada || !coordenada.coordinates) {
+      return { latitude: null, longitude: null };
+    }
+
+    const [longitude, latitude] = coordenada.coordinates;
+
+    return { latitude, longitude };
   }
 }

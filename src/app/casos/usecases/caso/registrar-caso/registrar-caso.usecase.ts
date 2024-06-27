@@ -39,8 +39,7 @@ export class RegistrarCasoUseCase {
     } = request;
 
     const localizacao: LocalizacaoCaso = {
-      latitude: local.latitude,
-      longitude: local.longitude,
+      localizacao: null,
       cidade: local.cidade,
       estado: local.estado,
       logradouro: local.logradouro,

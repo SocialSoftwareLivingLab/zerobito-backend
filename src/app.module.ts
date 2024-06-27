@@ -28,6 +28,7 @@ import { CasosNotificacoesModule } from './app/casos-notificacoes/casos-notifica
           database: process.env.TYPEORM_DATABASE,
           entities: [__dirname + '/**/*.entity.{ts,js}'],
           synchronize: true,
+          // logging: true,
         } as TypeOrmModuleOptions;
       },
       async dataSourceFactory(options) {
