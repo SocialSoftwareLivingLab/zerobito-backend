@@ -73,10 +73,10 @@ export class RegistrarCasoUseCase {
     for (const tipo of tiposNotificacoes) {
       const notificacaoRequest: CriarNotificacaoRequest = {
         tipo: tipo.nome,
-        identificador: null,
+        identificador: "",
         isEmitida: false,
-        dataEmissao: null,
-        observacao: null,
+        dataEmissao: new Date(),
+        observacao: "",
       };
       await this.casosNotificacoesService.adicionarNotificacao(
         casoSalvo.id,
