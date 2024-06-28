@@ -2,7 +2,10 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import AppException from '@/shared/exceptions/app-exception';
 import { Injectable } from '@nestjs/common';
 import CasoEntity from '../entities/caso.entity';
-import { CasoResponse } from '../payloads/caso/caso.payload';
+import {
+  CasoResponse,
+  LocalizacaoResponse,
+} from '../payloads/caso/caso.payload';
 import { CausaApiResponse } from '../payloads/caso/causa.payload';
 import { DiagnosticoApiResponse } from '../payloads/caso/diagnostico.payload';
 import { EditarInformacoesBasicasRequest } from '../payloads/caso/informacoes-basicas.payload';
@@ -76,6 +79,27 @@ export class CasosService {
       id,
       dados: request,
     });
+  }
+
+  public async buscarLocalizacao(id: number): Promise<LocalizacaoResponse> {
+    const resultadoConsulta =
+      await this.consultarCasoPorIdUsecase.buscarPorId(id);
+
+    const casoEncontrado = resultadoConsulta.orElseThrow(
+      () => new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO),
+    );
+
+    const { latitude, longitude } = this.getCoordenadas(
+      casoEncontrado.localizacao?.localizacao,
+    );
+
+    return {
+      cidade: casoEncontrado.localizacao?.cidade || null,
+      estado: casoEncontrado.localizacao?.estado || null,
+      logradouro: casoEncontrado.localizacao?.logradouro || null,
+      latitude,
+      longitude,
+    };
   }
 
   public async listarTodasAsCausas() {
