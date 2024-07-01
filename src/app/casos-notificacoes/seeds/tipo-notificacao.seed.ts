@@ -9,7 +9,6 @@ const tiposNotificacoes = [
   { sigla: 'SINAN*', descricao: 'SINAN*' },
   { sigla: 'DO*', descricao: 'DO*' },
   { sigla: 'SIM*', descricao: 'SIM*' },
-  { sigla: 'OUTROS', descricao: 'Outros' },
 ];
 
 @Injectable()
