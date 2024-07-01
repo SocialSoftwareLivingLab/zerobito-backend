@@ -14,6 +14,12 @@ export class CriarNotificacaoRequest {
   isEmitida: boolean;
 
   @ApiProperty({
+    example: 'Aguardando',
+    description: 'Indica status da Emissão'
+  })
+  statusNotificacao: string;
+
+  @ApiProperty({
     example: 'CAT*',
     description: 'Tipo de documento da notificação',
   })
@@ -50,6 +56,13 @@ export class CriarNotificacaoResponse {
     description: 'Indica se a notificação foi emitida',
   })
   isEmitida: boolean;
+
+  @ApiProperty({
+    example: 'Aguardando',
+    description: 'Indica status da Emissão'
+  })
+  statusNotificacao: string;
+
 
   @ApiProperty({
     example: 'CAT*',

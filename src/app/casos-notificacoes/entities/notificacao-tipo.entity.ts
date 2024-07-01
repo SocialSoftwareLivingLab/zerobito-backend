@@ -18,4 +18,5 @@ export default class TipoNotificacaoEntity {
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataCriacao: Date;
+  
 }

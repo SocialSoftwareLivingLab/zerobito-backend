@@ -58,11 +58,12 @@ export class CasosNotificacoesService {
       );
     }
 
-    const { identificador, isEmitida, dataEmissao, observacao } = payload;
+    const { identificador, isEmitida, statusNotificacao, dataEmissao, observacao } = payload;
 
     const notificacao = this.notificacaoRepository.create({
       identificador,
       isEmitida,
+      statusNotificacao,
       dataEmissao,
       observacao,
       tipo: tipoNotificacao,
@@ -78,6 +79,7 @@ export class CasosNotificacoesService {
     response.id = notificacaoSalva.id;
     response.identificacao = notificacaoSalva.identificador;
     response.isEmitida = notificacaoSalva.isEmitida;
+    response.statusNotificacao = notificacaoSalva.statusNotificacao;
     response.tipo = notificacaoSalva.tipo.nome;
     response.dataEmissao = notificacaoSalva.dataEmissao;
     response.dataCriacao = notificacaoSalva.dataCriacao;
@@ -101,6 +103,7 @@ export class CasosNotificacoesService {
         id: notificacao.id,
         identificador: notificacao.identificador,
         isEmitida: notificacao.isEmitida,
+        statusNotificacao: notificacao.statusNotificacao,
         dataEmissao: notificacao.dataEmissao,
         observacao: notificacao.observacao,
         tipo: {
@@ -134,6 +137,7 @@ export class CasosNotificacoesService {
       id: notificacao.id,
       identificador: notificacao.identificador,
       isEmitida: notificacao.isEmitida,
+      statusNotificacao: notificacao.statusNotificacao,
       dataEmissao: notificacao.dataEmissao,
       observacao: notificacao.observacao,
       tipo: {

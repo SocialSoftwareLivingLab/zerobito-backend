@@ -35,6 +35,12 @@ export class NotificacaoCasoResponse {
   isEmitida: boolean;
 
   @ApiProperty({
+    example: 'Aguardando',
+    description: 'Indica o status da Notificação',
+  })
+  statusNotificacao: string;
+
+  @ApiProperty({
     example: '2021-08-01',
     description: 'Data de emissão da notificação',
   })

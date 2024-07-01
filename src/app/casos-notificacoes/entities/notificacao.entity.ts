@@ -24,6 +24,9 @@ export default class NotificacaoCasoEntity {
   @Column({ name: 'is_emitida' })
   isEmitida: boolean;
 
+  @Column({ name: 'status_notificacao' })
+  statusNotificacao: string;
+
   @Column({ name: 'identificador', type: 'varchar', length: 255 })
   identificador: string;
 
