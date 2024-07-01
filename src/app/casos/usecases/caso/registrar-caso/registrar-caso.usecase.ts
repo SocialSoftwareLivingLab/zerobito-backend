@@ -75,6 +75,7 @@ export class RegistrarCasoUseCase {
         tipo: tipo.nome,
         identificador: "",
         isEmitida: false,
+        statusNotificacao: 'Aguardando',
         dataEmissao: new Date(),
         observacao: "",
       };
