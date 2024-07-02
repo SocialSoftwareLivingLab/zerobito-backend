@@ -18,7 +18,7 @@ export default class NotificacaoCasoEntity {
   @ManyToOne(() => CasoEntity, { nullable: false })
   caso: CasoEntity;
 
-  @Column({ name: 'data_emissao' })
+  @Column({ name: 'data_emissao', nullable: true })
   dataEmissao: Date;
 
   @Column({ name: 'is_emitida' })

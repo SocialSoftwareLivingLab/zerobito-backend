@@ -76,7 +76,7 @@ export class RegistrarCasoUseCase {
         identificador: "",
         isEmitida: false,
         statusNotificacao: tipo.nome === 'CAT*' ? 'Não se aplica' : 'Aguardando',
-        dataEmissao: new Date(),
+        dataEmissao: null,
         observacao: "",
       };
       await this.casosNotificacoesService.adicionarNotificacao(
