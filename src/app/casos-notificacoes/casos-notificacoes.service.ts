@@ -14,7 +14,6 @@ import {
 } from './payloads/nova-notificacao.payload';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import {
-  EditarNotificacaoRequest,
   NotificacaoCasoResponse,
 } from './payloads/notificacoes.payload';
 
@@ -121,51 +120,52 @@ export class CasosNotificacoesService {
     });
   }
 
-  public async buscarNotificacaoPorIdentificador(
+  async editarNotificacao(
     idCaso: number,
-    identificadorNotificacao: string,
-  ): Promise<NotificacaoCasoResponse> {
-    const caso = await this.buscarCasoPorId(idCaso);
-    const notificacao = await this.notificacaoRepository.findOne({
-      where: {
-        caso: { id: caso.id },
-        identificador: identificadorNotificacao,
-      },
-      relations: ['tipo', 'criador'],
-    });
-    return {
-      id: notificacao.id,
-      identificador: notificacao.identificador,
-      isEmitida: notificacao.isEmitida,
-      statusNotificacao: notificacao.statusNotificacao,
-      dataEmissao: notificacao.dataEmissao,
-      observacao: notificacao.observacao,
-      tipo: {
-        id: notificacao.tipo.id,
-        nome: notificacao.tipo.nome,
-        descricao: notificacao.tipo.descricao,
-      },
-      dataCriacao: notificacao.dataCriacao,
-      criador: {
-        id: notificacao.criador.id,
-        nome: notificacao.criador.nome,
-        email: notificacao.criador.email,
-      },
-    } as NotificacaoCasoResponse;
-  }
-
-  public async editarNotificacao(
-    id: number,
-    identificador: string,
-    request: EditarNotificacaoRequest,
+    payload: CriarNotificacaoRequest,
   ) {
-    const notificacao = await this.buscarNotificacaoPorIdentificador(
-      id,
-      identificador,
-    );
-    notificacao.isEmitida = request.isEmitida;
+    const caso = await this.buscarCasoPorId(idCaso);
 
-    this.notificacaoRepository.save(notificacao);
+    const tipoNotificacao = await this.tipoNotificacaoRepository.findOne({
+      where: { nome: payload.tipo },
+    });
+
+    if (!tipoNotificacao) {
+      throw new AppException(
+        MensagensHelper.Notificacoes.TIPO_NOTIFICACAO_NAO_ENCONTRADO,
+      );
+    }
+
+    const { identificador, isEmitida, statusNotificacao, dataEmissao, observacao } = payload;
+
+    const notificacoes : NotificacaoCasoResponse[] =
+    await this.buscarNotificacoesPorCaso(idCaso);
+
+
+    const notificacaoExistente = notificacoes.find(
+    (notificacao) => notificacao.tipo.nome === payload.tipo,
+  );
+
+    notificacaoExistente.identificador = payload.identificador;
+    notificacaoExistente.isEmitida = payload.isEmitida;
+    notificacaoExistente.statusNotificacao = payload.statusNotificacao;
+    notificacaoExistente.dataEmissao = payload.dataEmissao;
+    notificacaoExistente.observacao = payload.observacao;
+
+
+    const notificacaoSalva = await this.notificacaoRepository.save(notificacaoExistente);
+
+    const response = new CriarNotificacaoResponse();
+    response.id = notificacaoSalva.id;
+    response.identificacao = notificacaoSalva.identificador;
+    response.isEmitida = notificacaoSalva.isEmitida;
+    response.statusNotificacao = notificacaoSalva.statusNotificacao;
+    response.tipo = notificacaoSalva.tipo.nome;
+    response.dataEmissao = notificacaoSalva.dataEmissao;
+    response.dataCriacao = notificacaoSalva.dataCriacao;
+    response.observacao = notificacaoSalva.observacao;
+
+    return response;
   }
 
   private async buscarCasoPorId(idCaso: number): Promise<CasoEntity> {

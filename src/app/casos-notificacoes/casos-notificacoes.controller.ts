@@ -16,7 +16,6 @@ import {
 import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import {
-  EditarNotificacaoRequest,
   NotificacaoCasoResponse,
 } from './payloads/notificacoes.payload';
 
@@ -85,17 +84,15 @@ export class CasosNotificacoesController {
 
   @ApiOperation({
     summary: 'Editar Notificacao',
-    description: 'Edita o estado de emissão da notificação de um caso',
+    description: 'Edita uma notificação de um caso',
   })
-  @Put('/casos/:id/notificacoes/:identificador')
+  @Put('/casos/:id/notificacoes/')
   public async editarNotificacao(
     @Param('id') id: number,
-    @Param('identificador') identificador: string,
-    @Body() payload: EditarNotificacaoRequest,
+    @Body() payload: CriarNotificacaoRequest,
   ) {
     await this.casosNotificacoesService.editarNotificacao(
       id,
-      identificador,
       payload,
     );
   }
