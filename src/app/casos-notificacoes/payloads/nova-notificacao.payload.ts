@@ -28,7 +28,7 @@ export class CriarNotificacaoRequest {
   @ApiProperty({
     example: '2021-05-10',
     description: 'Data de emissão da notificação',
-    nullable: true
+    nullable: true,
   })
   dataEmissao: Date;
 

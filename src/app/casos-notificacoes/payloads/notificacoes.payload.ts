@@ -43,6 +43,7 @@ export class NotificacaoCasoResponse {
   @ApiProperty({
     example: '2021-08-01',
     description: 'Data de emissão da notificação',
+    nullable: true,
   })
   dataEmissao: Date;
 
@@ -69,9 +70,3 @@ export class NotificacaoCasoResponse {
   criador: CriadorNotificacaoResponse;
 }
 
-export class EditarNotificacaoRequest {
-  @ApiProperty({
-    description: 'estado da emissao do notificacao',
-  })
-  isEmitida: boolean;
-}
