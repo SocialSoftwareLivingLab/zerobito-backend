@@ -12,6 +12,7 @@ import { CasosModule } from './app/casos/casos.module';
 import AppService from './app.service';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
+import { CasosNotificacoesModule } from './app/casos-notificacoes/casos-notificacoes.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { DataSource } from 'typeorm';
           database: process.env.TYPEORM_DATABASE,
           entities: [__dirname + '/**/*.entity.{ts,js}'],
           synchronize: true,
+          // logging: true,
         } as TypeOrmModuleOptions;
       },
       async dataSourceFactory(options) {
@@ -42,6 +44,7 @@ import { DataSource } from 'typeorm';
     OcorrenciasModule,
     CoordenadoresModule,
     CasosModule,
+    CasosNotificacoesModule,
   ],
   controllers: [],
   providers: [

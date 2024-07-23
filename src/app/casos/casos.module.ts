@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoordenadoresModule } from '../coordenadores/coordenadores.module';
 import { CasosController } from './casos.controller';
@@ -21,6 +21,7 @@ import DiagnosticoEntity from './entities/info-basicas/diagnostico.entity';
 import CausaSeeds from './seeds/causas.seed';
 import DiagnosticosSeeds from './seeds/diagnosticos.seed';
 import AtualizarLocalizacaoCasoUsecase from './usecases/caso/atualizar-localizacao/atualizar-localizacao';
+import { CasosNotificacoesModule } from '../casos-notificacoes/casos-notificacoes.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import AtualizarLocalizacaoCasoUsecase from './usecases/caso/atualizar-localizac
       DiagnosticoEntity,
     ]),
     CoordenadoresModule,
+    forwardRef(() => CasosNotificacoesModule),
   ],
   providers: [
     CausaSeeds,
@@ -49,7 +51,12 @@ import AtualizarLocalizacaoCasoUsecase from './usecases/caso/atualizar-localizac
     ConsultarCausaUsecase,
     ConsultarDiagnosticoUsecase,
   ],
-  exports: [CasosService, CausaSeeds, DiagnosticosSeeds],
+  exports: [
+    CasosService,
+    CausaSeeds,
+    DiagnosticosSeeds,
+    ConsultarCasoPorIdUsecase,
+  ],
   controllers: [CasosController],
 })
 export class CasosModule {}

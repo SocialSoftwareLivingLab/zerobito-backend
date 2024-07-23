@@ -1,4 +1,4 @@
-import { Column } from 'typeorm';
+import { Column, Point } from 'typeorm';
 
 export default class LocalizacaoCaso {
   @Column({ name: 'cidade', type: 'text', nullable: true })
@@ -10,9 +10,12 @@ export default class LocalizacaoCaso {
   @Column({ name: 'logradouro', type: 'text', nullable: true })
   logradouro: string;
 
-  @Column({ name: 'latitude', nullable: true })
-  latitude: number;
-
-  @Column({ name: 'longitude', nullable: true })
-  longitude: number;
+  @Column({
+    name: 'localizacao',
+    nullable: true,
+    type: 'geography',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+  })
+  localizacao: Point;
 }
