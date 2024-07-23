@@ -114,6 +114,15 @@ export class CasosController {
   }
 
   @ApiOperation({
+    summary: 'Buscar localização do caso',
+    description: 'Busca as informações sobre a localização do caso',
+  })
+  @Get('/:id/localizacao')
+  public async buscarDadosLocalizacao(@Param('id') id: number) {
+    await this.casosService.buscarLocalizacao(id);
+  }
+
+  @ApiOperation({
     summary: 'Adicionar palavra-chave',
     description: 'Adiciona uma nova palavra-chave a um caso',
   })

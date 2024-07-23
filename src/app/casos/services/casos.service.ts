@@ -2,7 +2,10 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import AppException from '@/shared/exceptions/app-exception';
 import { Injectable } from '@nestjs/common';
 import CasoEntity from '../entities/caso.entity';
-import { CasoResponse } from '../payloads/caso/caso.payload';
+import {
+  CasoResponse,
+  LocalizacaoResponse,
+} from '../payloads/caso/caso.payload';
 import { CausaApiResponse } from '../payloads/caso/causa.payload';
 import { DiagnosticoApiResponse } from '../payloads/caso/diagnostico.payload';
 import { EditarInformacoesBasicasRequest } from '../payloads/caso/informacoes-basicas.payload';
@@ -17,6 +20,7 @@ import ConsultarCausaUsecase from '../usecases/causa/consultar-causa/consultar-c
 import ConsultarDiagnosticoUsecase from '../usecases/diagnostico/consultar-diagnostico/consultar-diagnostico.usecase';
 import { EditarLocalizacaoRequest } from '../payloads/caso/localizacao.payload';
 import AtualizarLocalizacaoCasoUsecase from '../usecases/caso/atualizar-localizacao/atualizar-localizacao';
+import { Point } from 'typeorm';
 
 @Injectable()
 export class CasosService {
@@ -77,6 +81,27 @@ export class CasosService {
     });
   }
 
+  public async buscarLocalizacao(id: number): Promise<LocalizacaoResponse> {
+    const resultadoConsulta =
+      await this.consultarCasoPorIdUsecase.buscarPorId(id);
+
+    const casoEncontrado = resultadoConsulta.orElseThrow(
+      () => new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO),
+    );
+
+    const { latitude, longitude } = this.getCoordenadas(
+      casoEncontrado.localizacao?.localizacao,
+    );
+
+    return {
+      cidade: casoEncontrado.localizacao?.cidade || null,
+      estado: casoEncontrado.localizacao?.estado || null,
+      logradouro: casoEncontrado.localizacao?.logradouro || null,
+      latitude,
+      longitude,
+    };
+  }
+
   public async listarTodasAsCausas() {
     const response = await this.consultarCausaUsecase.listarTodos();
 
@@ -120,14 +145,29 @@ export class CasosService {
       causaSecundaria: caso.informacoesBasicas?.causaSecundaria?.codigo || null,
       diagnostico: caso.informacoesBasicas?.diagnostico?.codigo || null,
     };
+
+    const { latitude, longitude } = this.getCoordenadas(
+      caso.localizacao?.localizacao,
+    );
+
     response.localizacao = {
       cidade: caso.localizacao?.cidade || null,
       estado: caso.localizacao?.estado || null,
       logradouro: caso.localizacao?.logradouro || null,
-      latitude: caso.localizacao?.latitude || null,
-      longitude: caso.localizacao?.longitude || null,
+      latitude,
+      longitude,
     };
 
     return response;
+  }
+
+  private getCoordenadas(coordenada: Point) {
+    if (!coordenada || !coordenada.coordinates) {
+      return { latitude: null, longitude: null };
+    }
+
+    const [longitude, latitude] = coordenada.coordinates;
+
+    return { latitude, longitude };
   }
 }

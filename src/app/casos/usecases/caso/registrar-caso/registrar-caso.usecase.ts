@@ -1,6 +1,11 @@
 import { CoordenadoresService } from '@/app/coordenadores/coordenadores.service';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CasoEntity from '../../../entities/caso.entity';
@@ -9,6 +14,8 @@ import {
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
 import LocalizacaoCaso from '@/app/casos/entities/localizacao/localizacao.entity';
+import { CasosNotificacoesService } from '@/app/casos-notificacoes/casos-notificacoes.service';
+import { CriarNotificacaoRequest } from '@/app/casos-notificacoes/payloads/nova-notificacao.payload';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -16,6 +23,8 @@ export class RegistrarCasoUseCase {
     @InjectRepository(CasoEntity)
     private readonly casosRepository: Repository<CasoEntity>,
     private readonly coordenadoresService: CoordenadoresService,
+    @Inject(forwardRef(() => CasosNotificacoesService))
+    private readonly casosNotificacoesService: CasosNotificacoesService,
   ) {}
 
   public async executar(
@@ -30,8 +39,7 @@ export class RegistrarCasoUseCase {
     } = request;
 
     const localizacao: LocalizacaoCaso = {
-      latitude: local.latitude,
-      longitude: local.longitude,
+      localizacao: null,
       cidade: local.cidade,
       estado: local.estado,
       logradouro: local.logradouro,
@@ -57,6 +65,26 @@ export class RegistrarCasoUseCase {
     });
 
     const casoSalvo = await this.casosRepository.save(casoCriado);
+
+    const tiposNotificacoes =
+      await this.casosNotificacoesService.buscarTiposNotificacoes();
+
+    // Crie uma notificação para cada tipo
+    for (const tipo of tiposNotificacoes) {
+      const notificacaoRequest: CriarNotificacaoRequest = {
+        tipo: tipo.nome,
+        identificador: "",
+        isEmitida: false,
+        statusNotificacao: 'Aguardando',
+        dataEmissao: null,
+        observacao: "",
+      };
+      await this.casosNotificacoesService.adicionarNotificacao(
+        casoSalvo.id,
+        notificacaoRequest,
+        criador,
+      );
+    }
 
     return {
       id: casoSalvo.id,
