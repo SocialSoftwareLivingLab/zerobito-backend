@@ -22,6 +22,7 @@ import CausaSeeds from './seeds/causas.seed';
 import DiagnosticosSeeds from './seeds/diagnosticos.seed';
 import AtualizarLocalizacaoCasoUsecase from './usecases/caso/atualizar-localizacao/atualizar-localizacao';
 import { CasosNotificacoesModule } from '../casos-notificacoes/casos-notificacoes.module';
+import { ConsultarOcorrenciasUsecase } from './usecases/ocorrencia/consultar-ocorrencias-usecase';
 
 @Module({
   imports: [
