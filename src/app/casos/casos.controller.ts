@@ -160,4 +160,13 @@ export class CasosController {
       idPalavraChave,
     );
   }
+
+  @ApiOperation({
+    summary: 'Buscar ocorrências',
+    description: 'Busca todas ocorrências de um caso'
+  })
+  @Get('/:id/ocorrencias')
+  public async listarOcorrenciasCaso(@Param('id') id: number) {
+    return await this.casosService.listarOcorrenciasCaso(id);
+  }
 }

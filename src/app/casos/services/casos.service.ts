@@ -21,6 +21,7 @@ import ConsultarDiagnosticoUsecase from '../usecases/diagnostico/consultar-diagn
 import { EditarLocalizacaoRequest } from '../payloads/caso/localizacao.payload';
 import AtualizarLocalizacaoCasoUsecase from '../usecases/caso/atualizar-localizacao/atualizar-localizacao';
 import { Point } from 'typeorm';
+import { ConsultarOcorrenciasUsecase } from '../usecases/ocorrencia/consultar-ocorrencias-usecase';
 
 @Injectable()
 export class CasosService {
@@ -33,6 +34,7 @@ export class CasosService {
     private readonly ataulizarLocalizacaoCasoUsecase: AtualizarLocalizacaoCasoUsecase,
     private readonly consultarCausaUsecase: ConsultarCausaUsecase,
     private readonly consultarDiagnosticoUseCase: ConsultarDiagnosticoUsecase,
+    private readonly consultarOcorrenciasUseCase: ConsultarOcorrenciasUsecase
   ) {}
 
   public async registrarCaso(request: RegistrarCasoRequest) {
@@ -43,6 +45,10 @@ export class CasosService {
     data: AdicionarOcorrenciaAoCasoUseCaseInput,
   ) {
     await this.adicionarOcorrenciaAoCasoUseCase.adicionar(data);
+  }
+
+  public async listarOcorrenciasCaso(id: number){
+    return this.consultarOcorrenciasUseCase.listarOcorrenciasCaso(id);
   }
 
   public async buscarTodosSumarizado() {
