@@ -22,7 +22,7 @@ export class ConsultarOcorrenciasUsecase {
             throw new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO);
         }
       
-        return caso.ocorrencias
+        return caso.ocorrencias;
     
   }
 }
