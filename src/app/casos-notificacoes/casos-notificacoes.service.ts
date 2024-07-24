@@ -126,16 +126,6 @@ export class CasosNotificacoesService {
   ) {
     const caso = await this.buscarCasoPorId(idCaso);
 
-    const tipoNotificacao = await this.tipoNotificacaoRepository.findOne({
-      where: { nome: payload.tipo },
-    });
-
-    if (!tipoNotificacao) {
-      throw new AppException(
-        MensagensHelper.Notificacoes.TIPO_NOTIFICACAO_NAO_ENCONTRADO,
-      );
-    }
-
     const { identificador, isEmitida, statusNotificacao, dataEmissao, observacao } = payload;
 
     const notificacoes : NotificacaoCasoResponse[] =
