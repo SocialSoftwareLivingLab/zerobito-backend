@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import AppException from '@/shared/exceptions/app-exception';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import CasoEntity from '../../../entities/caso.entity';
+import { entityToOcorrenciaResponse } from '@/app/ocorrencias/mappers/ocorrencia-mapper';
 
 @Injectable()
 export default class ConsultarOcorrenciasUsecase {
@@ -22,7 +23,9 @@ export default class ConsultarOcorrenciasUsecase {
             throw new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO);
         }
       
-        return caso.ocorrencias;
+        return caso.ocorrencias.map((ocorrencia) =>
+            entityToOcorrenciaResponse(ocorrencia),
+          );
     
   }
 }
