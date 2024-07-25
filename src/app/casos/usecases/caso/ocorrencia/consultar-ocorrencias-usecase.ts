@@ -23,9 +23,7 @@ export default class ConsultarOcorrenciasUsecase {
             throw new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO);
         }
       
-        return caso.ocorrencias.map((ocorrencia) =>
-            entityToOcorrenciaResponse(ocorrencia),
-          );
+        return caso.ocorrencias;
     
   }
 }
