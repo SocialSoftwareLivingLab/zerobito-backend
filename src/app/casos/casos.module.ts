@@ -51,6 +51,7 @@ import { ConsultarOcorrenciasUsecase } from './usecases/ocorrencia/consultar-oco
     AtualizarLocalizacaoCasoUsecase,
     ConsultarCausaUsecase,
     ConsultarDiagnosticoUsecase,
+    ConsultarOcorrenciasUsecase
   ],
   exports: [
     CasosService,
