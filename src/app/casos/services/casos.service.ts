@@ -21,7 +21,7 @@ import ConsultarDiagnosticoUsecase from '../usecases/diagnostico/consultar-diagn
 import { EditarLocalizacaoRequest } from '../payloads/caso/localizacao.payload';
 import AtualizarLocalizacaoCasoUsecase from '../usecases/caso/atualizar-localizacao/atualizar-localizacao';
 import { Point } from 'typeorm';
-import { ConsultarOcorrenciasUsecase } from '../usecases/ocorrencia/consultar-ocorrencias-usecase';
+import ConsultarOcorrenciasUsecase from '../usecases/ocorrencia/consultar-ocorrencias-usecase';
 
 @Injectable()
 export class CasosService {

@@ -6,7 +6,7 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import CasoEntity from '../../entities/caso.entity';
 
 @Injectable()
-export class ConsultarOcorrenciasUsecase {
+export default class ConsultarOcorrenciasUsecase {
     constructor(
         @InjectRepository(CasoEntity)
         private readonly casoRepository: Repository<CasoEntity>,
