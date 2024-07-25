@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import AppException from '@/shared/exceptions/app-exception';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
-import CasoEntity from '../../entities/caso.entity';
+import CasoEntity from '../../../entities/caso.entity';
 
 @Injectable()
 export default class ConsultarOcorrenciasUsecase {
