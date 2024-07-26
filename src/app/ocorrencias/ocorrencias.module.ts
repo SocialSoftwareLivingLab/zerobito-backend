@@ -28,6 +28,6 @@ import { TrocarStatusOcorrenciaUseCase } from './usecases/trocar-status-ocorrenc
     TrocarStatusOcorrenciaUseCase,
   ],
   controllers: [OcorrenciasController],
-  exports: [OcorrenciaSeeds, OcorrenciaEntity],
+  exports: [OcorrenciaSeeds],
 })
 export class OcorrenciasModule {}
