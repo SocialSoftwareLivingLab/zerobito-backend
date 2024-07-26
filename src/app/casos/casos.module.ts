@@ -33,14 +33,12 @@ import { OcorrenciasModule } from '../ocorrencias/ocorrencias.module';
       PalavraChaveEntity,
       CausaEntity,
       DiagnosticoEntity,
-      OcorrenciaEntity,
     ]),
     CoordenadoresModule,
     forwardRef(() => CasosNotificacoesModule),
     forwardRef(() => OcorrenciasModule)
   ],
   providers: [
-    OcorrenciaEntity,
     CausaSeeds,
     DiagnosticosSeeds,
     CasosService,
