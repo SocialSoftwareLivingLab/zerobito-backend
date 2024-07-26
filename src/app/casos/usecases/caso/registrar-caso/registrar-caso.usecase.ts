@@ -1,4 +1,8 @@
+import { CasosNotificacoesService } from '@/app/casos-notificacoes/casos-notificacoes.service';
+import { CriarNotificacaoRequest } from '@/app/casos-notificacoes/payloads/nova-notificacao.payload';
+import LocalizacaoCaso from '@/app/casos/entities/localizacao/localizacao.entity';
 import { CoordenadoresService } from '@/app/coordenadores/coordenadores.service';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import {
   BadRequestException,
@@ -13,9 +17,6 @@ import {
   RegistrarCasoRequest,
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
-import LocalizacaoCaso from '@/app/casos/entities/localizacao/localizacao.entity';
-import { CasosNotificacoesService } from '@/app/casos-notificacoes/casos-notificacoes.service';
-import { CriarNotificacaoRequest } from '@/app/casos-notificacoes/payloads/nova-notificacao.payload';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -30,6 +31,22 @@ export class RegistrarCasoUseCase {
   public async executar(
     request: RegistrarCasoRequest,
   ): Promise<RegistrarCasoResponse> {
+    const { criador } = request;
+    
+    const casoSalvo = await this.criarCaso(request);
+
+    await this.registrarNotificacoesIniciais(casoSalvo, criador);
+
+    return {
+      id: casoSalvo.id,
+      nome: casoSalvo.nome,
+      coordenador: casoSalvo.coordenador.id,
+      dataCriacao: casoSalvo.dataCriacao,
+      localizacao: casoSalvo.localizacao,
+    };
+  }
+
+  private async criarCaso(request: RegistrarCasoRequest): Promise<CasoEntity> {
     const {
       nome,
       coordenador: idCoordenador,
@@ -64,8 +81,10 @@ export class RegistrarCasoUseCase {
       localizacao,
     });
 
-    const casoSalvo = await this.casosRepository.save(casoCriado);
+    return await this.casosRepository.save(casoCriado);
+  }
 
+  private async registrarNotificacoesIniciais(casoCriado: CasoEntity, criador: UsuarioAutenticadoDto) {
     const tiposNotificacoes =
       await this.casosNotificacoesService.buscarTiposNotificacoes();
 
@@ -79,19 +98,12 @@ export class RegistrarCasoUseCase {
         dataEmissao: null,
         observacao: "",
       };
+      
       await this.casosNotificacoesService.adicionarNotificacao(
-        casoSalvo.id,
+        casoCriado.id,
         notificacaoRequest,
         criador,
       );
     }
-
-    return {
-      id: casoSalvo.id,
-      nome: casoSalvo.nome,
-      coordenador: casoSalvo.coordenador.id,
-      dataCriacao: casoSalvo.dataCriacao,
-      localizacao: casoSalvo.localizacao,
-    };
   }
 }
