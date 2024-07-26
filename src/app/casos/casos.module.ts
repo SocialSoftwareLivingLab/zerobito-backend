@@ -33,6 +33,7 @@ import { OcorrenciasModule } from '../ocorrencias/ocorrencias.module';
       PalavraChaveEntity,
       CausaEntity,
       DiagnosticoEntity,
+      OcorrenciaEntity,
     ]),
     CoordenadoresModule,
     forwardRef(() => CasosNotificacoesModule),
