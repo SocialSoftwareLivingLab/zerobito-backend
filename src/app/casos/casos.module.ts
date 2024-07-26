@@ -32,11 +32,13 @@ import ConsultarOcorrenciasUsecase from './usecases/caso/ocorrencia/consultar-oc
       PalavraChaveEntity,
       CausaEntity,
       DiagnosticoEntity,
+      OcorrenciaEntity,
     ]),
     CoordenadoresModule,
     forwardRef(() => CasosNotificacoesModule),
   ],
   providers: [
+    OcorrenciaEntity,
     CausaSeeds,
     DiagnosticosSeeds,
     CasosService,
