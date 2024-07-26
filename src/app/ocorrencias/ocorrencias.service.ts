@@ -1,6 +1,6 @@
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
@@ -29,6 +29,7 @@ export class OcorrenciasService {
 
     private readonly buscarOcorrenciaUseCase: BuscarOcorrenciaUseCase,
     private readonly aceitarOcorrenciaUseCase: AceitarOcorrenciaUseCase,
+    @Inject(forwardRef(() => CasosService))
     private readonly casoService: CasosService,
   ) {}
 
