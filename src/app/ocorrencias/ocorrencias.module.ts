@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CasosModule } from '../casos/casos.module';
 import { OcorrenciaEntity } from './entities/ocorrencias.entity';
@@ -18,7 +18,7 @@ import { TrocarStatusOcorrenciaUseCase } from './usecases/trocar-status-ocorrenc
       CondicaoVitimaEntity,
       OcorrenciaEntity,
     ]),
-    CasosModule,
+    forwardRef(() => CasosModule),
   ],
   providers: [
     OcorrenciasService,
