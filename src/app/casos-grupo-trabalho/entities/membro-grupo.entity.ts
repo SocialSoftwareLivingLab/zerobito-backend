@@ -10,15 +10,12 @@ import {
 } from 'typeorm';
 
 @Entity('caso_membros_grupo_trabalho')
-export default class MembroGrupoTrabalho {
+export default class MembroGrupoTrabalhoEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
 
   @Column({ name: 'identificador', type: 'uuid' })
   identificador: string;
-
-  @Column({ name: 'is_coordenador' })
-  coordenador: boolean;
 
   @ManyToOne(() => CasoEntity)
   caso: CasoEntity;
