@@ -24,6 +24,7 @@ import AtualizarLocalizacaoCasoUsecase from './usecases/caso/atualizar-localizac
 import { CasosNotificacoesModule } from '../casos-notificacoes/casos-notificacoes.module';
 import { OcorrenciaEntity } from '../ocorrencias/entities/ocorrencias.entity';
 import ConsultarOcorrenciasUsecase from './usecases/caso/ocorrencia/consultar-ocorrencias-usecase';
+import { OcorrenciasModule } from '../ocorrencias/ocorrencias.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import ConsultarOcorrenciasUsecase from './usecases/caso/ocorrencia/consultar-oc
       OcorrenciaEntity,
     ]),
     CoordenadoresModule,
+    OcorrenciasModule,
     forwardRef(() => CasosNotificacoesModule),
   ],
   providers: [
