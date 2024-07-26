@@ -13,6 +13,7 @@ import AppService from './app.service';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { CasosNotificacoesModule } from './app/casos-notificacoes/casos-notificacoes.module';
+import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo-trabalho.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CasosNotificacoesModule } from './app/casos-notificacoes/casos-notifica
     CoordenadoresModule,
     CasosModule,
     CasosNotificacoesModule,
+    CasosGrupoTrabalhoModule,
   ],
   controllers: [],
   providers: [
