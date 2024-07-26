@@ -35,6 +35,8 @@ export default class ConsultarOcorrenciasUsecase {
             relations: ['status', 'relator']
         });
 
-        return ocorrencias;
+        return ocorrencias.map((ocorrencia) =>
+            entityToOcorrenciaResponse(ocorrencia),
+          );
     }
 }
