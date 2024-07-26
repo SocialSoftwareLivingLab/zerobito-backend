@@ -36,8 +36,8 @@ import { OcorrenciasModule } from '../ocorrencias/ocorrencias.module';
       OcorrenciaEntity,
     ]),
     CoordenadoresModule,
-    OcorrenciasModule,
     forwardRef(() => CasosNotificacoesModule),
+    forwardRef(() => OcorrenciasModule)
   ],
   providers: [
     OcorrenciaEntity,
