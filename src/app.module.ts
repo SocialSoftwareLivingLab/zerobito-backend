@@ -14,6 +14,8 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { CasosNotificacoesModule } from './app/casos-notificacoes/casos-notificacoes.module';
 import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo-trabalho.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { eventEmitterConfig } from './config/events.config';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo
         return addTransactionalDataSource(new DataSource(options));
       },
     }),
+    EventEmitterModule.forRoot(eventEmitterConfig),
     UsuariosModule,
     AuthModule,
     OcorrenciasModule,

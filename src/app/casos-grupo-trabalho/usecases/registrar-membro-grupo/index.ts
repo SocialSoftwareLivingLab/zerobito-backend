@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import MembroGrupoTrabalhoEntity from '../../entities/membro-grupo.entity';
 
 import { v4 as uuid } from 'uuid';
+import StatusMembroGrupoTrabalhoEntity from '../../entities/status-membro.entity';
+import { StatusMembroGrupoTrabalhoEnum } from '../../enum/status-membro.enum';
 
 export interface Request {
   idCaso: number;
@@ -12,6 +14,7 @@ export interface Request {
     id: number;
   };
   solicitante: UsuarioAutenticadoDto;
+  statusMembro: StatusMembroGrupoTrabalhoEnum
 }
 
 @Injectable()
@@ -19,10 +22,18 @@ export default class RegistrarMembroGrupoUseCase {
   constructor(
     @InjectRepository(MembroGrupoTrabalhoEntity)
     private readonly membroGrupoRepository: Repository<MembroGrupoTrabalhoEntity>,
+    @InjectRepository(StatusMembroGrupoTrabalhoEntity)
+    private readonly statusMembroGrupoRepository: Repository<StatusMembroGrupoTrabalhoEntity>,
   ) {}
 
-  public async registrar({ idCaso, membro, solicitante }: Request) {
+  public async registrar({ idCaso, membro, solicitante, statusMembro }: Request) {
     const identificador = uuid();
+
+    const status = await this.statusMembroGrupoRepository.findOne({
+      where: {
+        codigo: statusMembro.toString(),
+      },
+    });
 
     const novoMembro = this.membroGrupoRepository.create({
       criador: {
@@ -34,6 +45,7 @@ export default class RegistrarMembroGrupoUseCase {
       dataVinculo: new Date(),
       identificador,
       membro,
+      status,
     });
 
     return this.membroGrupoRepository.save(novoMembro);

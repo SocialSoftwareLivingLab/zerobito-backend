@@ -2,7 +2,7 @@ import SeedRunner from '@/shared/seeds/seed-runner';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import StatusMembroGrupoTrabalho from '../entities/status-membro.entity';
+import StatusMembroGrupoTrabalhoEntity from '../entities/status-membro.entity';
 import { Seed } from '@/shared/seeds/seed.decorator';
 
 interface StatusType {
@@ -23,8 +23,8 @@ export default class StatusMembroGrupoTrabalhoSeed implements SeedRunner {
   private readonly logger = new Logger(StatusMembroGrupoTrabalhoSeed.name);
 
   constructor(
-    @InjectRepository(StatusMembroGrupoTrabalho)
-    private readonly statusMembroGrupoRepository: Repository<StatusMembroGrupoTrabalho>,
+    @InjectRepository(StatusMembroGrupoTrabalhoEntity)
+    private readonly statusMembroGrupoRepository: Repository<StatusMembroGrupoTrabalhoEntity>,
   ) {}
 
   public async run() {

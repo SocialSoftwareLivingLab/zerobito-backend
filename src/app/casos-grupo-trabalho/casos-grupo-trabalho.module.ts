@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import MembroGrupoTrabalhoEntity from './entities/membro-grupo.entity';
-import StatusMembroGrupoTrabalho from './entities/status-membro.entity';
+import StatusMembroGrupoTrabalhoEntity from './entities/status-membro.entity';
 import StatusMembroGrupoTrabalhoSeed from './seeds/status-membro-grupo.seed';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       MembroGrupoTrabalhoEntity,
-      StatusMembroGrupoTrabalho,
+      StatusMembroGrupoTrabalhoEntity,
     ]),
   ],
   providers: [CasosGrupoTrabalhoService, StatusMembroGrupoTrabalhoSeed],

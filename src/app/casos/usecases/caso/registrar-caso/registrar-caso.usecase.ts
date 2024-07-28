@@ -17,6 +17,7 @@ import {
   RegistrarCasoRequest,
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -26,6 +27,7 @@ export class RegistrarCasoUseCase {
     private readonly coordenadoresService: CoordenadoresService,
     @Inject(forwardRef(() => CasosNotificacoesService))
     private readonly casosNotificacoesService: CasosNotificacoesService,
+    private readonly eventEmitter: EventEmitter2
   ) {}
 
   public async executar(
