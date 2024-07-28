@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, DiscoveryModule } from '@nestjs/core';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { OcorrenciasModule } from './app/ocorrencias/ocorrencias.module';
 import { UsuariosModule } from './app/usuarios/usuarios.module';
@@ -17,6 +17,7 @@ import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo
 
 @Module({
   imports: [
+    DiscoveryModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory() {

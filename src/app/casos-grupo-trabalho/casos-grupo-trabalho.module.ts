@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
-import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import MembroGrupoTrabalhoEntity from './entities/membro-grupo.entity';
+import StatusMembroGrupoTrabalho from './entities/status-membro.entity';
+import StatusMembroGrupoTrabalhoSeed from './seeds/status-membro-grupo.seed';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MembroGrupoTrabalhoEntity])],
-  providers: [CasosGrupoTrabalhoService],
+  imports: [
+    TypeOrmModule.forFeature([
+      MembroGrupoTrabalhoEntity,
+      StatusMembroGrupoTrabalho,
+    ]),
+  ],
+  providers: [CasosGrupoTrabalhoService, StatusMembroGrupoTrabalhoSeed],
+  exports: [StatusMembroGrupoTrabalhoSeed]
 })
 export class CasosGrupoTrabalhoModule {}
