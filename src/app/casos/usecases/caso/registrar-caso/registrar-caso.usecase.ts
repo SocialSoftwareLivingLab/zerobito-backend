@@ -18,6 +18,7 @@ import {
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CasoCriadoEvent, CasoCriadoEventKey } from '@/app/casos/events/caso-criado.event';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -38,6 +39,15 @@ export class RegistrarCasoUseCase {
     const casoSalvo = await this.criarCaso(request);
 
     await this.registrarNotificacoesIniciais(casoSalvo, criador);
+
+    const eventoCasoCriado: CasoCriadoEvent = {
+      criador,
+      entity: casoSalvo,
+      id: casoSalvo.id,
+      dataCriacao: casoSalvo.dataCriacao
+    }
+
+    this.eventEmitter.emit(CasoCriadoEventKey, eventoCasoCriado);
 
     return {
       id: casoSalvo.id,
