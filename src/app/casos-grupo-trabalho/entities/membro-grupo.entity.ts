@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import StatusMembroGrupoTrabalhoEntity from './status-membro.entity';
 
-@Entity('caso_membros_grupo_trabalho')
+@Entity('caso_membro_grupo_trabalho')
 export default class MembroGrupoTrabalhoEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
