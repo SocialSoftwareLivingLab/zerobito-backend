@@ -1,7 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import ListarMembrosGrupoUsecase from './usecases/listar-membros-grupo';
 
 @Injectable()
-export class CasosGrupoTrabalhoService { }
+export class CasosGrupoTrabalhoService {
+  constructor(private readonly listarMembrosGrupo: ListarMembrosGrupoUsecase) {}
+
+  public async listar(idCaso: number) {
+    return await this.listarMembrosGrupo.listar({ idCaso });
+  }
+}
 
 /**
  * 
