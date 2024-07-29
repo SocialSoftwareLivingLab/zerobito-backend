@@ -42,8 +42,8 @@ export default class StatusMembroGrupoTrabalhoSeed implements SeedRunner {
     for (const statusMapeado of status) {
       const statusEntity = this.statusMembroGrupoRepository.create();
       statusEntity.codigo = statusMapeado.codigo;
+      statusEntity.nome = statusMapeado.nome;
       statusEntity.descricao = statusMapeado.descricao;
-      statusEntity.nome = statusMapeado.descricao;
 
       await this.statusMembroGrupoRepository.save(statusEntity);
     }

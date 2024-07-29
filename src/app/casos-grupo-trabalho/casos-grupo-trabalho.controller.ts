@@ -1,30 +1,50 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import { MembroGrupoTrabalhoResponse } from './payloads/membro-grupo-trabalho.payload';
 
 @Protegido()
 @ApiBearerAuth()
-@ApiTags('Grupo de trabalho')
+@ApiTags('Grupo de trabalho', 'Casos')
 @Controller('/api/v1/casos')
 export class CasosGrupoTrabalhoController {
   constructor(
     private readonly casoGrupoTrabalhoService: CasosGrupoTrabalhoService,
   ) {}
 
-  @Get('/{idCaso}/grupo-trabalho/membros')
-  public async listarMembrosGrupo(idCaso: number) {
+  @ApiOperation({
+    summary: 'Listar todos os membros do grupo de trabalho',
+    description:
+      'Retorna a relação de membros presentes no grupo de trabalho de um caso. Cada membro aparece de acordo com um convite' +
+      'realizado pelo coordenador.',
+  })
+  @ApiOkResponse({
+    description: 'Tipo de notificação registrado',
+    type: MembroGrupoTrabalhoResponse,
+    isArray: true,
+  })
+  @Get('/:idCaso/grupo-trabalho/membros')
+  public async listarMembrosGrupo(
+    @Param("idCaso")
+    idCaso: number
+  ) {
     const response = await this.casoGrupoTrabalhoService.listar(idCaso);
 
-    return response.map(membro => {
+    return response.map((membro) => {
       const membroResponse = new MembroGrupoTrabalhoResponse();
       membroResponse.id = membro.id;
       membroResponse.identificador = membro.identificador;
       membroResponse.nome = membro.membro.nome;
       membroResponse.email = membro.membro.email;
+      membroResponse.status = membro.status;
 
       return membroResponse;
-    })
+    });
   }
 }

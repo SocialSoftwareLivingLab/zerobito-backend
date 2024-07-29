@@ -32,7 +32,8 @@ import { eventEmitterConfig } from './config/events.config';
           database: process.env.TYPEORM_DATABASE,
           entities: [__dirname + '/**/*.entity.{ts,js}'],
           synchronize: true,
-          // logging: true,
+          logging: true,
+          
         } as TypeOrmModuleOptions;
       },
       async dataSourceFactory(options) {
