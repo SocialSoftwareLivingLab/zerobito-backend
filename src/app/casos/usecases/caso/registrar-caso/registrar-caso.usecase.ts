@@ -1,15 +1,12 @@
-import { CasosNotificacoesService } from '@/app/casos-notificacoes/casos-notificacoes.service';
-import { CriarNotificacaoRequest } from '@/app/casos-notificacoes/payloads/nova-notificacao.payload';
 import LocalizacaoCaso from '@/app/casos/entities/localizacao/localizacao.entity';
+import { CasoCriadoEvent, CasoCriadoEventKey } from '@/app/casos/events/caso-criado.event';
 import { CoordenadoresService } from '@/app/coordenadores/coordenadores.service';
-import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import {
   BadRequestException,
-  Inject,
-  Injectable,
-  forwardRef,
+  Injectable
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CasoEntity from '../../../entities/caso.entity';
@@ -17,8 +14,6 @@ import {
   RegistrarCasoRequest,
   RegistrarCasoResponse,
 } from './registrar-caso.dto';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CasoCriadoEvent, CasoCriadoEventKey } from '@/app/casos/events/caso-criado.event';
 
 @Injectable()
 export class RegistrarCasoUseCase {
@@ -26,8 +21,6 @@ export class RegistrarCasoUseCase {
     @InjectRepository(CasoEntity)
     private readonly casosRepository: Repository<CasoEntity>,
     private readonly coordenadoresService: CoordenadoresService,
-    @Inject(forwardRef(() => CasosNotificacoesService))
-    private readonly casosNotificacoesService: CasosNotificacoesService,
     private readonly eventEmitter: EventEmitter2
   ) {}
 
@@ -37,8 +30,6 @@ export class RegistrarCasoUseCase {
     const { criador } = request;
     
     const casoSalvo = await this.criarCaso(request);
-
-    await this.registrarNotificacoesIniciais(casoSalvo, criador);
 
     const eventoCasoCriado: CasoCriadoEvent = {
       criador,
@@ -96,26 +87,4 @@ export class RegistrarCasoUseCase {
     return await this.casosRepository.save(casoCriado);
   }
 
-  private async registrarNotificacoesIniciais(casoCriado: CasoEntity, criador: UsuarioAutenticadoDto) {
-    const tiposNotificacoes =
-      await this.casosNotificacoesService.buscarTiposNotificacoes();
-
-    // Crie uma notificação para cada tipo
-    for (const tipo of tiposNotificacoes) {
-      const notificacaoRequest: CriarNotificacaoRequest = {
-        tipo: tipo.nome,
-        identificador: "",
-        isEmitida: false,
-        statusNotificacao: 'Aguardando',
-        dataEmissao: null,
-        observacao: "",
-      };
-      
-      await this.casosNotificacoesService.adicionarNotificacao(
-        casoCriado.id,
-        notificacaoRequest,
-        criador,
-      );
-    }
-  }
 }
