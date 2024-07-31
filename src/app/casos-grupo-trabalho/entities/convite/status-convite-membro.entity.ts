@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'caso_grupo_trabalho_membro_status' })
-export default class StatusMembroGrupoTrabalhoEntity {
+@Entity({ name: 'caso_grupo_trabalho_convite_status' })
+export default class StatusConviteGrupoTrabalhoEntity {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
