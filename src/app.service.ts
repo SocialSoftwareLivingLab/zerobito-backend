@@ -5,6 +5,7 @@ import DiagnosticosSeeds from './app/casos/seeds/diagnosticos.seed';
 import TipoNotificacaoSeed from './app/casos-notificacoes/seeds/tipo-notificacao.seed';
 import StatusMembroGrupoTrabalhoSeed from './app/casos-grupo-trabalho/seeds/status-membro-grupo.seed';
 import SeedRunner from './shared/seeds/seed-runner';
+import { EmailService } from './shared/email/email.service';
 
 @Injectable()
 export default class AppService implements OnApplicationBootstrap {
@@ -16,6 +17,7 @@ export default class AppService implements OnApplicationBootstrap {
     private readonly diagnosticoSeeds: DiagnosticosSeeds,
     private readonly tiposNotificacoesSeeds: TipoNotificacaoSeed,
     private readonly statusMembroGrupoSeeds: StatusMembroGrupoTrabalhoSeed,
+    private readonly emailService: EmailService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -29,8 +31,16 @@ export default class AppService implements OnApplicationBootstrap {
       this.statusMembroGrupoSeeds,
     ];
 
-    runners.forEach( runner => runner.run());
+    runners.forEach((runner) => runner.run());
 
     this.logger.log('........ Seed das bases de dados: FINALIZADO ........');
+
+    this.logger.log('Testando envio de e-mail');
+
+    this.emailService.enviarTextoPuro({
+      assunto: 'Teste de e-mail',
+      destinatario: { nome: 'Leonardo Braz', email: 'lhleonardo05@gmail.com' },
+      mensagem: 'Esse é um teste',
+    });
   }
 }
