@@ -86,6 +86,8 @@ export default class RegistrarConviteParaGrupoUsecase {
 
     const conviteCriado = await this.conviteRepository.save(convite);
 
-    await this.enviarEmailConvite.enviarEmail({ convite: conviteCriado });
+    await this.enviarEmailConvite.enviarEmail({
+      identificadorConvite: conviteCriado.identificador,
+    });
   }
 }
