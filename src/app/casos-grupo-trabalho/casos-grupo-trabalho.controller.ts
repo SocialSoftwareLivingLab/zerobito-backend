@@ -40,12 +40,11 @@ export class CasosGrupoTrabalhoController {
   ) {
     const response = await this.casoGrupoTrabalhoService.listar(idCaso);
 
-    return response.map((membro) => {
+    return response.membros.map((membro) => {
       const membroResponse = new MembroGrupoTrabalhoResponse();
-      membroResponse.id = membro.id;
       membroResponse.identificador = membro.identificador;
-      membroResponse.nome = membro.membro.nome;
-      membroResponse.email = membro.membro.email;
+      membroResponse.nome = membro.nome;
+      membroResponse.email = membro.email;
       membroResponse.status = membro.status;
 
       return membroResponse;

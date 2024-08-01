@@ -1,5 +1,3 @@
-
-
 export class MembroGrupoTrabalhoResponse {
   id: number;
   identificador: string;
@@ -8,6 +6,5 @@ export class MembroGrupoTrabalhoResponse {
   status: {
     codigo: string;
     nome: string;
-    descricao: string;
   };
 }

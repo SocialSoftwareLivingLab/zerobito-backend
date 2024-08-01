@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import MembroGrupoTrabalhoEntity from '../../entities/membro-grupo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import ConviteGrupoTrabalhoEntity from '../../entities/convite/convite-membro.entity';
@@ -13,7 +13,10 @@ interface MembroResponse {
   identificador: string;
   nome: string;
   email: string;
-  status: string;
+  status: {
+    codigo: string;
+    nome: string;
+  };
 }
 
 export interface Response {
@@ -53,9 +56,10 @@ export default class ListarMembrosGrupoUsecase {
           id: idCaso,
         },
         status: {
-          codigo: StatusConviteGrupoTrabalhoEnum.PENDENTE,
+          codigo: Not(StatusConviteGrupoTrabalhoEnum.ACEITADO),
         },
       },
+      relations: ['status'],
     });
 
     const [membrosEncontrados, convitesEncontrados] = await Promise.all([
@@ -68,7 +72,10 @@ export default class ListarMembrosGrupoUsecase {
         email: membro.membro.email,
         nome: membro.membro.nome,
         identificador: membro.identificador,
-        status: membro.status.nome,
+        status: {
+          codigo: membro.status.codigo,
+          nome: membro.status.nome,
+        },
       } as MembroResponse;
     });
 
@@ -77,7 +84,10 @@ export default class ListarMembrosGrupoUsecase {
         email: convite.emailConvidado,
         nome: convite.nomeConvidado,
         identificador: convite.identificador,
-        status: convite.status.nome,
+        status: {
+          codigo: convite.status.codigo,
+          nome: convite.status.nome,
+        },
       } as MembroResponse;
     });
 
