@@ -15,7 +15,7 @@ export class EmailService {
       from: 'Equipe ZerÓbito <nao-responda@zerobito.com>',
       to: `${destinatario.nome} <${destinatario.email}>`,
       subject: assunto,
-      text: mensagem,
+      html: mensagem,
     });
   }
 }

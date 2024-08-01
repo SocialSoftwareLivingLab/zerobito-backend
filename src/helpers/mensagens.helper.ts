@@ -31,6 +31,7 @@ enum Casos {
 
 enum CasosConviteGrupoTrabalho {
   MEMBRO_NAO_PODE_SER_CONVIDADO = 'O membro não pode ser convidado por já possuir convite ativo ou já estar vinculado ao grupo',
+  CONVITE_NAO_ENCONTRADO = 'Convite informado não foi encontrado ou não está mais disponível para uso',
 }
 
 enum Notificacoes {

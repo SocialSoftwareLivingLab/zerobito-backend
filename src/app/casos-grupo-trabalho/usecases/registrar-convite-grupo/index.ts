@@ -10,6 +10,7 @@ import { StatusConviteGrupoTrabalhoEnum } from '../../enum/status-convite.enum';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 
 import { v4 as uuid } from 'uuid';
+import EnviarEmailConviteGrupoUsecase from '../enviar-email-convite';
 
 export interface RegistrarConviteParaGrupoUsecaseRequest {
   motivo: string;
@@ -31,6 +32,7 @@ export default class RegistrarConviteParaGrupoUsecase {
     private readonly conviteRepository: Repository<ConviteGrupoTrabalhoEntity>,
     @InjectRepository(StatusConviteGrupoTrabalhoEntity)
     private readonly statusConviteRepository: Repository<StatusConviteGrupoTrabalhoEntity>,
+    private readonly enviarEmailConvite: EnviarEmailConviteGrupoUsecase,
   ) {}
 
   public async registrar(payload: RegistrarConviteParaGrupoUsecaseRequest) {
@@ -82,6 +84,8 @@ export default class RegistrarConviteParaGrupoUsecase {
       identificador: uuid(),
     });
 
-    await this.conviteRepository.save(convite);
+    const conviteCriado = await this.conviteRepository.save(convite);
+
+    await this.enviarEmailConvite.enviarEmail({ convite: conviteCriado });
   }
 }

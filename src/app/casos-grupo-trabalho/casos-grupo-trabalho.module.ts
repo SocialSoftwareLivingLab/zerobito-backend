@@ -13,6 +13,8 @@ import RegistrarMembroGrupoUseCase from './usecases/registrar-membro-grupo';
 import ConviteGrupoTrabalhoEntity from './entities/convite/convite-membro.entity';
 import { CasosModule } from '../casos/casos.module';
 import RegistrarConviteParaGrupoUsecase from './usecases/registrar-convite-grupo';
+import EnviarEmailConviteGrupoUsecase from './usecases/enviar-email-convite';
+import { EmailModule } from '@/shared/email/email.module';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import RegistrarConviteParaGrupoUsecase from './usecases/registrar-convite-grupo
       ConviteGrupoTrabalhoEntity,
     ]),
     CasosModule,
+    EmailModule,
   ],
   providers: [
     CasosGrupoTrabalhoService,
@@ -30,6 +33,7 @@ import RegistrarConviteParaGrupoUsecase from './usecases/registrar-convite-grupo
     StatusConviteGrupoTrabalhoSeed,
     RegistrarMembroGrupoUseCase,
     RegistrarConviteParaGrupoUsecase,
+    EnviarEmailConviteGrupoUsecase,
     ListarMembrosGrupoUsecase,
     VincularCoordenadorGrupoTrabalhoListener,
   ],
