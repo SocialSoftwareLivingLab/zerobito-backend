@@ -27,4 +27,8 @@ export default class ConsultarCasoPorIdUsecase {
     });
     return Optional.ofNullable(resultado);
   }
+
+  public async casoExiste(id: number): Promise<boolean> {
+    return await this.casoRepository.exists({ where: { id } });
+  }
 }

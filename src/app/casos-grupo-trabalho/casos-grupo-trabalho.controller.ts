@@ -1,13 +1,17 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import { MembroGrupoTrabalhoResponse } from './payloads/membro-grupo-trabalho.payload';
+import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { ConvidarMembroGrupoTrabalhoRequest } from './payloads/convidar-membro.payload';
 
 @Protegido()
 @ApiBearerAuth()
@@ -31,8 +35,8 @@ export class CasosGrupoTrabalhoController {
   })
   @Get('/:idCaso/grupo-trabalho/membros')
   public async listarMembrosGrupo(
-    @Param("idCaso")
-    idCaso: number
+    @Param('idCaso')
+    idCaso: number,
   ) {
     const response = await this.casoGrupoTrabalhoService.listar(idCaso);
 
@@ -46,5 +50,20 @@ export class CasosGrupoTrabalhoController {
 
       return membroResponse;
     });
+  }
+
+  @ApiOperation({
+    summary: 'Criar um novo convite para o grupo de trabalho',
+    description:
+      'Emite um novo convite de participação no grupo de trabalho, para que o convidado consiga ingressar por conta própria',
+  })
+  @Post('/:idCaso/grupo-trabalho/convite')
+  public async enviarConvite(
+    @Param('idCaso')
+    idCaso: number,
+    @UsuarioAutenticado() criador: UsuarioAutenticadoDto,
+    @Body() payload: ConvidarMembroGrupoTrabalhoRequest,
+  ) {
+    await this.casoGrupoTrabalhoService.enviarConvite(idCaso, criador, payload);
   }
 }

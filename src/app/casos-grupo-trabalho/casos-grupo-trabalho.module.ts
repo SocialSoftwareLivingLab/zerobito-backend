@@ -11,6 +11,8 @@ import StatusMembroGrupoTrabalhoSeed from './seeds/status-membro-grupo.seed';
 import ListarMembrosGrupoUsecase from './usecases/listar-membros-grupo';
 import RegistrarMembroGrupoUseCase from './usecases/registrar-membro-grupo';
 import ConviteGrupoTrabalhoEntity from './entities/convite/convite-membro.entity';
+import { CasosModule } from '../casos/casos.module';
+import RegistrarConviteParaGrupoUsecase from './usecases/registrar-convite-grupo';
 
 @Module({
   imports: [
@@ -20,12 +22,14 @@ import ConviteGrupoTrabalhoEntity from './entities/convite/convite-membro.entity
       MembroGrupoTrabalhoEntity,
       ConviteGrupoTrabalhoEntity,
     ]),
+    CasosModule,
   ],
   providers: [
     CasosGrupoTrabalhoService,
     StatusMembroGrupoTrabalhoSeed,
     StatusConviteGrupoTrabalhoSeed,
     RegistrarMembroGrupoUseCase,
+    RegistrarConviteParaGrupoUsecase,
     ListarMembrosGrupoUsecase,
     VincularCoordenadorGrupoTrabalhoListener,
   ],

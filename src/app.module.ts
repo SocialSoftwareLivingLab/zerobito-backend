@@ -33,8 +33,7 @@ import { EmailModule } from './shared/email/email.module';
           database: process.env.TYPEORM_DATABASE,
           entities: [__dirname + '/**/*.entity.{ts,js}'],
           synchronize: true,
-          // logging: true,
-          
+          // logging: ['query'],
         } as TypeOrmModuleOptions;
       },
       async dataSourceFactory(options) {

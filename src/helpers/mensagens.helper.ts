@@ -29,6 +29,10 @@ enum Casos {
   DIAGNOSTICO_NAO_ENCONTRADO = 'Diagnóstico não encontrado',
 }
 
+enum CasosConviteGrupoTrabalho {
+  MEMBRO_NAO_PODE_SER_CONVIDADO = 'O membro não pode ser convidado por já possuir convite ativo ou já estar vinculado ao grupo',
+}
+
 enum Notificacoes {
   TIPO_NOTIFICACAO_NAO_ENCONTRADO = 'Tipo de notificação não encontrado',
 }
@@ -40,5 +44,6 @@ export const MensagensHelper = {
   Ocorrencias,
   Coordenadores,
   Casos,
+  CasosConviteGrupoTrabalho,
   Notificacoes,
 };
