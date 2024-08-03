@@ -35,13 +35,9 @@ export default class AtualizarInformacoesBasicasCasoUsecase {
     const validacaoConsulta =
       await this.consultarCasoPorIdUsecase.buscarPorId(id);
 
-    console.log(id, dados);
-
     const caso: CasoEntity = validacaoConsulta.orElseThrow(
       () => new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO),
     );
-
-    console.log(caso);
 
     const causaPrimaria = await this.consultarCausa(dados.causaPrimaria);
     const causaSecundaria = await this.consultarCausa(dados.causaSecundaria);
@@ -59,7 +55,6 @@ export default class AtualizarInformacoesBasicasCasoUsecase {
     if (codigo === null) return undefined;
 
     const causa = await this.consultarCausaUsecase.consultar(codigo);
-    console.log(causa);
     return causa;
   }
 
@@ -72,8 +67,6 @@ export default class AtualizarInformacoesBasicasCasoUsecase {
     const diagnostico = buscarDiagnostico.orElseThrow(
       () => new AppException(MensagensHelper.Casos.DIAGNOSTICO_NAO_ENCONTRADO),
     );
-
-    console.log(diagnostico);
 
     return diagnostico;
   }

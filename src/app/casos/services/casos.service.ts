@@ -34,7 +34,7 @@ export class CasosService {
     private readonly ataulizarLocalizacaoCasoUsecase: AtualizarLocalizacaoCasoUsecase,
     private readonly consultarCausaUsecase: ConsultarCausaUsecase,
     private readonly consultarDiagnosticoUseCase: ConsultarDiagnosticoUsecase,
-    private readonly consultarOcorrenciasUseCase: ConsultarOcorrenciasUsecase
+    private readonly consultarOcorrenciasUseCase: ConsultarOcorrenciasUsecase,
   ) {}
 
   public async registrarCaso(request: RegistrarCasoRequest) {
@@ -47,7 +47,7 @@ export class CasosService {
     await this.adicionarOcorrenciaAoCasoUseCase.adicionar(data);
   }
 
-  public async listarOcorrenciasCaso(id: number){
+  public async listarOcorrenciasCaso(id: number) {
     return this.consultarOcorrenciasUseCase.listarOcorrenciasCaso(id);
   }
 
@@ -65,6 +65,10 @@ export class CasosService {
     );
 
     return this.toResponse(casoEncontrado);
+  }
+
+  public async casoExiste(id: number) {
+    return this.consultarCasoPorIdUsecase.casoExiste(id);
   }
 
   public async editarInformacoesBasicas(
