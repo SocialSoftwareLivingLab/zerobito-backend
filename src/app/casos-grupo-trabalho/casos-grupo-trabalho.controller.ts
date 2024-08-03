@@ -65,4 +65,24 @@ export class CasosGrupoTrabalhoController {
   ) {
     await this.casoGrupoTrabalhoService.enviarConvite(idCaso, criador, payload);
   }
+
+  @ApiOperation({
+    summary: 'Aceitar um convite para o grupo de trabalho',
+    description:
+      'Aceita um convite para ingressar no grupo de trabalho de um caso específico',
+  })
+  @ApiNoContentResponse({
+    description: 'Convite aceito com sucesso',
+  })
+  @Post('/grupo-trabalho/convite/:identificador/aceitar')
+  public async aceitarConvite(
+    @Param('identificador')
+    identificadorConvite: string,
+    @UsuarioAutenticado() usuarioAutenticado: UsuarioAutenticadoDto,
+  ) {
+    await this.casoGrupoTrabalhoService.aceitarConvite(
+      identificadorConvite,
+      usuarioAutenticado,
+    );
+  }
 }

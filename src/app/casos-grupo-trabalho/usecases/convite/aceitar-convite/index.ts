@@ -37,6 +37,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
           codigo: StatusConviteGrupoTrabalhoEnum.PENDENTE,
         },
       },
+      relations: ['caso', 'criador'],
     });
 
     if (!convite) {
