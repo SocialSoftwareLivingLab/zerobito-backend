@@ -13,8 +13,10 @@ export interface Request {
   membro: {
     id: number;
   };
-  solicitante: UsuarioAutenticadoDto;
-  statusMembro: StatusMembroGrupoTrabalhoEnum
+  solicitante: {
+    id: number;
+  };
+  statusMembro: StatusMembroGrupoTrabalhoEnum;
 }
 
 @Injectable()
@@ -26,7 +28,12 @@ export default class RegistrarMembroGrupoUseCase {
     private readonly statusMembroGrupoRepository: Repository<StatusMembroGrupoTrabalhoEntity>,
   ) {}
 
-  public async registrar({ idCaso, membro, solicitante, statusMembro }: Request) {
+  public async registrar({
+    idCaso,
+    membro,
+    solicitante,
+    statusMembro,
+  }: Request) {
     const identificador = uuid();
 
     const status = await this.statusMembroGrupoRepository.findOne({

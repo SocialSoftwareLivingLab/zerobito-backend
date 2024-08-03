@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import ListarMembrosGrupoUsecase from './usecases/listar-membros-grupo';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { ConvidarMembroGrupoTrabalhoRequest } from './payloads/convidar-membro.payload';
-import RegistrarConviteParaGrupoUsecase from './usecases/registrar-convite-grupo';
+import RegistrarConviteParaGrupoUsecase from './usecases/convite/registrar-convite-grupo';
 
 @Injectable()
 export class CasosGrupoTrabalhoService {
