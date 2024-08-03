@@ -3,6 +3,10 @@ import OcorrenciaSeeds from './app/ocorrencias/seeds/ocorrencias.seeds';
 import CausaSeeds from './app/casos/seeds/causas.seed';
 import DiagnosticosSeeds from './app/casos/seeds/diagnosticos.seed';
 import TipoNotificacaoSeed from './app/casos-notificacoes/seeds/tipo-notificacao.seed';
+import StatusMembroGrupoTrabalhoSeed from './app/casos-grupo-trabalho/seeds/status-membro-grupo.seed';
+import SeedRunner from './shared/seeds/seed-runner';
+import { EmailService } from './shared/email/email.service';
+import StatusConviteGrupoTrabalhoSeed from './app/casos-grupo-trabalho/seeds/status-convite-grupo.seed';
 
 @Injectable()
 export default class AppService implements OnApplicationBootstrap {
@@ -13,16 +17,23 @@ export default class AppService implements OnApplicationBootstrap {
     private readonly causasSeeds: CausaSeeds,
     private readonly diagnosticoSeeds: DiagnosticosSeeds,
     private readonly tiposNotificacoesSeeds: TipoNotificacaoSeed,
+    private readonly statusMembroGrupoSeeds: StatusMembroGrupoTrabalhoSeed,
+    private readonly statusConviteGrupoSeeds: StatusConviteGrupoTrabalhoSeed,
   ) {}
 
   async onApplicationBootstrap() {
     this.logger.log('........ Seed das bases de dados: INICIANDO  ........');
 
-    await this.ocorrenciaSeeds.run();
-    await this.causasSeeds.run();
-    await this.diagnosticoSeeds.run();
+    const runners: SeedRunner[] = [
+      this.ocorrenciaSeeds,
+      this.causasSeeds,
+      this.diagnosticoSeeds,
+      this.tiposNotificacoesSeeds,
+      this.statusMembroGrupoSeeds,
+      this.statusConviteGrupoSeeds,
+    ];
 
-    await this.tiposNotificacoesSeeds.run();
+    runners.forEach((runner) => runner.run());
 
     this.logger.log('........ Seed das bases de dados: FINALIZADO ........');
   }

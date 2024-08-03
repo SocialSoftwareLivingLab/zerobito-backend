@@ -17,8 +17,6 @@ export default class ConsultarDiagnosticoUsecase {
         codigo,
       });
 
-      console.log(response);
-
       return Optional.ofNullable(response);
     } catch {
       return Optional.empty();

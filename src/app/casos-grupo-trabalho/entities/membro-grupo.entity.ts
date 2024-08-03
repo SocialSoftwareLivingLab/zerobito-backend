@@ -8,8 +8,9 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import StatusMembroGrupoTrabalhoEntity from './status-membro.entity';
 
-@Entity('caso_membros_grupo_trabalho')
+@Entity({ name: 'caso_grupo_trabalho_membro' })
 export default class MembroGrupoTrabalhoEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
@@ -25,6 +26,9 @@ export default class MembroGrupoTrabalhoEntity {
 
   @ManyToOne(() => UsuarioEntity)
   criador: UsuarioEntity;
+
+  @ManyToOne(() => StatusMembroGrupoTrabalhoEntity)
+  status: StatusMembroGrupoTrabalhoEntity;
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataVinculo: Date;

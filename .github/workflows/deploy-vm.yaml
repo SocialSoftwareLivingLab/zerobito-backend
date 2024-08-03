@@ -23,54 +23,54 @@ jobs:
             sudo mkdir -p /opt/backup/backend/${CURRENT_DATE_FRONT}
             echo "Pasta /opt/backup/backend/${CURRENT_DATE_FRONT} criada com sucesso."
             echo "Realizando backup..."
-            sudo cp -r /opt/apps/backend/ /opt/backup/backend/${CURRENT_DATE_FRONT}
+            sudo rsync -av --exclude='.git' --exclude='node_modules' /opt/apps/backend/ /opt/backup/backend/${CURRENT_DATE_FRONT}
             echo "Backup finalizado!"
 
   build-and-deploy:
     runs-on: ubuntu-latest
     needs: backup-versao-atual
     steps:
-    - name: Baixar repositório na branch atual
-      uses: actions/checkout@v2
+      - name: Baixar repositório na branch atual
+        uses: actions/checkout@v2
 
-    - name: Configurar NodeJS na versão 18
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
+      - name: Configurar NodeJS na versão 18
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
 
-    - name: Instalar Dependências
-      run: yarn install
+      - name: Instalar Dependências
+        run: yarn install
 
-    - name: Realizar o build do backend
-      run: yarn build
+      - name: Realizar o build do backend
+        run: yarn build
 
-    - name: Verificar output do build
-      run: ls
+      - name: Verificar output do build
+        run: ls
 
-    - name: Enviar build final para a VM
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
-        port: ${{ secrets.SSH_PORT }}
-        timeout: 240s
-        source: "dist/*,package.json"
-        target: ${{ secrets.SSH_OUTPUT_APP_FOLDER }}
+      - name: Enviar build final para a VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
+          port: ${{ secrets.SSH_PORT }}
+          timeout: 240s
+          source: 'dist/*,package.json'
+          target: ${{ secrets.SSH_OUTPUT_APP_FOLDER }}
 
-    - name: Reinicializar o backend
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd /opt/apps/backend  
-          ls -la
-          sudo cp -i package.json ./dist/package.json
-          sudo cp -i .env ./dist/.env
-          cd /dist
-          source ~/.nvm/nvm.sh
-          yarn
-          pm2 restart all
+      - name: Reinicializar o backend
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /opt/apps/backend  
+            ls -la
+            sudo cp -i package.json ./dist/package.json
+            sudo cp -i .env ./dist/.env
+            cd /dist
+            source ~/.nvm/nvm.sh
+            yarn
+            pm2 restart all

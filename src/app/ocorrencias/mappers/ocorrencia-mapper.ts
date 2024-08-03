@@ -4,7 +4,6 @@ import { CondicaoVitimaOcorrenciaEnum } from '../enums/condicao-vitima-ocorrenci
 import { StatusOcorrenciaEnum } from '../enums/status-ocorrencia.enum';
 
 export function entityToOcorrenciaResponse(entity: OcorrenciaEntity) {
-  console.log(entity);
   const resultado = new OcorrenciaDto();
   resultado.data = entity.data;
   resultado.descricao = entity.descricao;

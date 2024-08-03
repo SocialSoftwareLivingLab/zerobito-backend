@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, DiscoveryModule } from '@nestjs/core';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { OcorrenciasModule } from './app/ocorrencias/ocorrencias.module';
 import { UsuariosModule } from './app/usuarios/usuarios.module';
@@ -14,9 +14,13 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { CasosNotificacoesModule } from './app/casos-notificacoes/casos-notificacoes.module';
 import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo-trabalho.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { eventEmitterConfig } from './config/events.config';
+import { EmailModule } from './shared/email/email.module';
 
 @Module({
   imports: [
+    DiscoveryModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory() {
@@ -29,7 +33,7 @@ import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo
           database: process.env.TYPEORM_DATABASE,
           entities: [__dirname + '/**/*.entity.{ts,js}'],
           synchronize: true,
-          // logging: true,
+          // logging: ['query'],
         } as TypeOrmModuleOptions;
       },
       async dataSourceFactory(options) {
@@ -40,6 +44,7 @@ import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo
         return addTransactionalDataSource(new DataSource(options));
       },
     }),
+    EventEmitterModule.forRoot(eventEmitterConfig),
     UsuariosModule,
     AuthModule,
     OcorrenciasModule,
@@ -47,6 +52,7 @@ import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo
     CasosModule,
     CasosNotificacoesModule,
     CasosGrupoTrabalhoModule,
+    EmailModule,
   ],
   controllers: [],
   providers: [
