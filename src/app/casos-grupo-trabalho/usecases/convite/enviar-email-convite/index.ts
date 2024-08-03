@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import ConviteGrupoTrabalhoEntity from '../../entities/convite/convite-membro.entity';
+import ConviteGrupoTrabalhoEntity from '../../../entities/convite/convite-membro.entity';
 import { EmailService } from '@/shared/email/email.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StatusConviteGrupoTrabalhoEnum } from '../../enum/status-convite.enum';
+import { StatusConviteGrupoTrabalhoEnum } from '../../../enum/status-convite.enum';
 import AppException from '@/shared/exceptions/app-exception';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 

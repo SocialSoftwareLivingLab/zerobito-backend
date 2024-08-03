@@ -1,13 +1,13 @@
 import { CasosService } from '@/app/casos/services/casos.service';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import AppException from '@/shared/exceptions/app-exception';
 import { Injectable } from '@nestjs/common';
-import { In, Not, Repository } from 'typeorm';
-import ConviteGrupoTrabalhoEntity from '../../entities/convite/convite-membro.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import StatusConviteGrupoTrabalhoEntity from '../../entities/convite/status-convite-membro.entity';
-import { StatusConviteGrupoTrabalhoEnum } from '../../enum/status-convite.enum';
-import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { In, Repository } from 'typeorm';
+import ConviteGrupoTrabalhoEntity from '../../../entities/convite/convite-membro.entity';
+import StatusConviteGrupoTrabalhoEntity from '../../../entities/convite/status-convite-membro.entity';
+import { StatusConviteGrupoTrabalhoEnum } from '../../../enum/status-convite.enum';
 
 import { v4 as uuid } from 'uuid';
 import EnviarEmailConviteGrupoUsecase from '../enviar-email-convite';
