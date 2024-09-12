@@ -35,6 +35,8 @@ export class ConsultarCasoUseCase {
           nome: true,
         },
         dataCriacao: true,
+        dataObito: true,
+        dataCaso: true,
         nome: true,
         informacoesBasicas: {
           causaPrimaria: {

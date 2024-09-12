@@ -24,6 +24,8 @@ import ConsultarDiagnosticoUsecase from './usecases/diagnostico/consultar-diagno
 import { AdicionarPalavraChaveUseCase } from './usecases/palavra-chave/adicionar-palavra-chave/adicionar-palavra-chave.usecase';
 import { BuscarPalavrasChaveUsecase } from './usecases/palavra-chave/buscar-palavras-chave/buscar-palavras-chave.usecase';
 import { ExcluirPalavraChaveUsecase } from './usecases/palavra-chave/excluir-palavra-chave/excluir-palavra-chave.usecase';
+import AtualizarDataObitoCasoUsecase from './usecases/caso/atualizar-data-obito/atualizar-data-obito.usecase';
+import AtualizarDataCasoUsecase from './usecases/caso/atualizar-data/atualizar-data.usecase';
 
 @Module({
   imports: [
@@ -54,6 +56,8 @@ import { ExcluirPalavraChaveUsecase } from './usecases/palavra-chave/excluir-pal
     ConsultarCausaUsecase,
     ConsultarDiagnosticoUsecase,
     ConsultarOcorrenciasUsecase,
+    AtualizarDataObitoCasoUsecase,
+    AtualizarDataCasoUsecase,
   ],
   exports: [
     CasosService,

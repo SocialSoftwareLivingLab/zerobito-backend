@@ -90,6 +90,30 @@ export class CasosController {
   }
 
   @ApiOperation({
+    summary: 'Atualiza data de Óbito',
+    description: 'Edita a data de óbito de um caso'
+  })
+  @Put('/:id/data-obito')
+  public async atualizarDataObito(
+    @Param('id') id: number,
+    @Body() payload: Date,
+  ) {
+    await this.casosService.editarDataObito(id, payload);
+  }
+
+  @ApiOperation({
+    summary: 'Atualiza data',
+    description: 'Edita a data de um caso'
+  })
+  @Put('/:id/data-caso')
+  public async atualizarData(
+    @Param('id') id: number,
+    @Body() payload: Date,
+  ) {
+    await this.casosService.editarData(id, payload);
+  }
+
+  @ApiOperation({
     summary: 'Editar informações básicas',
     description: 'Edita informações básicas de um caso',
   })

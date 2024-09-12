@@ -105,6 +105,7 @@ export class OcorrenciasService {
       criador: usuarioAutenticado,
       ocorrencias: [ocorrencia],
       local: ocorrencia.local,
+      dataCaso: ocorrencia.data
     });
 
     return casoCriado;

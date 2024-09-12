@@ -44,6 +44,7 @@ export class RegistrarCasoUseCase {
       id: casoSalvo.id,
       nome: casoSalvo.nome,
       coordenador: casoSalvo.coordenador.id,
+      dataCaso: casoSalvo.dataCaso,
       dataCriacao: casoSalvo.dataCriacao,
       localizacao: casoSalvo.localizacao,
     };
@@ -53,6 +54,7 @@ export class RegistrarCasoUseCase {
     const {
       nome,
       coordenador: idCoordenador,
+      dataCaso,
       criador,
       ocorrencias,
       local,
@@ -79,6 +81,7 @@ export class RegistrarCasoUseCase {
       nome,
       coordenador,
       criador,
+      dataCaso,
       dataCriacao: new Date(),
       ocorrencias,
       localizacao,

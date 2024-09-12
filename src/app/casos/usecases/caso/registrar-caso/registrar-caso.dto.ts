@@ -8,6 +8,7 @@ export class RegistrarCasoRequest {
   coordenador: number;
   criador: UsuarioAutenticadoDto;
   local: LocalOcorrencia;
+  dataCaso: Date
   ocorrencias: OcorrenciaEntity[];
 }
 
@@ -16,5 +17,6 @@ export class RegistrarCasoResponse {
   nome: string;
   coordenador: number;
   dataCriacao: Date;
+  dataCaso: Date;
   localizacao: LocalizacaoCaso;
 }
