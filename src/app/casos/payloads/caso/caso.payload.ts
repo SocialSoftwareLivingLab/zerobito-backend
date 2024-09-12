@@ -112,4 +112,16 @@ export class CasoResponse {
     type: LocalizacaoResponse,
   })
   localizacao: LocalizacaoResponse;
+
+  @ApiProperty({
+    description: 'Data do obito',
+    type: Date,
+  })
+  dataObito: Date;
+
+  @ApiProperty({
+    description: 'Data do acidente',
+    type: Date,
+  })
+  dataCaso: Date;
 }

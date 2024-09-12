@@ -22,7 +22,8 @@ import { EditarLocalizacaoRequest } from '../payloads/caso/localizacao.payload';
 import AtualizarLocalizacaoCasoUsecase from '../usecases/caso/atualizar-localizacao/atualizar-localizacao';
 import { Point } from 'typeorm';
 import ConsultarOcorrenciasUsecase from '../usecases/caso/ocorrencia/consultar-ocorrencias-usecase';
-
+import AtualizarDataObitoCasoUsecase from '../usecases/caso/atualizar-data-obito/atualizar-data-obito.usecase';
+import AtualizarDataCasoUsecase from '../usecases/caso/atualizar-data/atualizar-data.usecase';
 @Injectable()
 export class CasosService {
   constructor(
@@ -35,6 +36,8 @@ export class CasosService {
     private readonly consultarCausaUsecase: ConsultarCausaUsecase,
     private readonly consultarDiagnosticoUseCase: ConsultarDiagnosticoUsecase,
     private readonly consultarOcorrenciasUseCase: ConsultarOcorrenciasUsecase,
+    private readonly atualizarDataObitoUsecase: AtualizarDataObitoCasoUsecase,
+    private readonly atualizarDataUsecase: AtualizarDataCasoUsecase,
   ) {}
 
   public async registrarCaso(request: RegistrarCasoRequest) {
@@ -69,6 +72,26 @@ export class CasosService {
 
   public async casoExiste(id: number) {
     return this.consultarCasoPorIdUsecase.casoExiste(id);
+  }
+
+  public async editarDataObito(
+    id: number,
+    dataObito: Date,
+  ) {
+    await this.atualizarDataObitoUsecase.executar({
+      id,
+      dataObito,
+    })
+  }
+
+  public async editarData(
+    id: number,
+    dataCaso: Date,
+  ) {
+    await this.atualizarDataUsecase.executar({
+      id,
+      dataCaso,
+    })
   }
 
   public async editarInformacoesBasicas(
@@ -141,6 +164,7 @@ export class CasosService {
     response.id = caso.id;
     response.nome = caso.nome;
     response.dataCriacao = caso.dataCriacao;
+    response.dataObito = caso.dataObito
     response.criador = {
       id: caso.criador.id,
       nome: caso.criador.nome,

@@ -24,6 +24,12 @@ export default class CasoEntity {
   @Column({ name: 'nome', type: 'varchar', length: 255 })
   nome: string;
 
+  @Column({ name: 'dataObito', type: 'date', nullable: true })
+  dataObito: Date;
+
+  @Column({ name: 'dataCaso', type: 'date', nullable: true })
+  dataCaso: Date;
+
   @ManyToOne(() => UsuarioEntity)
   @JoinColumn({ name: 'id_usuario_coordenador' })
   coordenador: UsuarioEntity;
@@ -48,6 +54,7 @@ export default class CasoEntity {
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataCriacao: Date;
+
 
   @OneToMany(() => PalavraChaveEntity, (palavraChave) => palavraChave.caso)
   palavrasChave: PalavraChaveEntity[];
