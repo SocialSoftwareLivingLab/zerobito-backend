@@ -15,6 +15,11 @@ export class DadosNovoCasoAceiteOcorrencia {
   coordenador: number;
 
   @ApiProperty({
+    description: 'Data da ocorrencia',
+  })
+  data: Date;
+
+  @ApiProperty({
     description: 'local da ocorrencia',
   })
   local: LocalOcorrencia;
