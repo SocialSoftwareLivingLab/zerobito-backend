@@ -74,24 +74,18 @@ export class CasosService {
     return this.consultarCasoPorIdUsecase.casoExiste(id);
   }
 
-  public async editarDataObito(
-    id: number,
-    dataObito: Date,
-  ) {
+  public async editarDataObito(id: number, dataObito: Date) {
     await this.atualizarDataObitoUsecase.executar({
       id,
       dataObito,
-    })
+    });
   }
 
-  public async editarData(
-    id: number,
-    dataCaso: Date,
-  ) {
+  public async editarData(id: number, dataCaso: Date) {
     await this.atualizarDataUsecase.executar({
       id,
       dataCaso,
-    })
+    });
   }
 
   public async editarInformacoesBasicas(
@@ -164,7 +158,8 @@ export class CasosService {
     response.id = caso.id;
     response.nome = caso.nome;
     response.dataCriacao = caso.dataCriacao;
-    response.dataObito = caso.dataObito
+    response.dataObito = caso.dataObito;
+    response.dataCaso = caso.dataCaso;
     response.criador = {
       id: caso.criador.id,
       nome: caso.criador.nome,
