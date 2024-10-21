@@ -7,6 +7,7 @@ import StatusMembroGrupoTrabalhoSeed from './app/casos-grupo-trabalho/seeds/stat
 import SeedRunner from './shared/seeds/seed-runner';
 import { EmailService } from './shared/email/email.service';
 import StatusConviteGrupoTrabalhoSeed from './app/casos-grupo-trabalho/seeds/status-convite-grupo.seed';
+import CadastrarPermissoesSeed from './app/permissoes/seeds/cadastrar-permissoes.seed';
 
 @Injectable()
 export default class AppService implements OnApplicationBootstrap {
@@ -19,6 +20,7 @@ export default class AppService implements OnApplicationBootstrap {
     private readonly tiposNotificacoesSeeds: TipoNotificacaoSeed,
     private readonly statusMembroGrupoSeeds: StatusMembroGrupoTrabalhoSeed,
     private readonly statusConviteGrupoSeeds: StatusConviteGrupoTrabalhoSeed,
+    private readonly cadastrarPermissoesSeed: CadastrarPermissoesSeed,
   ) {}
 
   async onApplicationBootstrap() {
@@ -31,6 +33,7 @@ export default class AppService implements OnApplicationBootstrap {
       this.tiposNotificacoesSeeds,
       this.statusMembroGrupoSeeds,
       this.statusConviteGrupoSeeds,
+      this.cadastrarPermissoesSeed,
     ];
 
     runners.forEach((runner) => runner.run());
