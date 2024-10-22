@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { PermissaoEntity } from './permissao.entity';
 
-@Entity({ name: 'perfil_usuario' })
-export class PerfilUsuarioEntity {
+@Entity({ name: 'perfil_membro_caso' })
+export default class PerfilMembroCasoEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -18,14 +18,11 @@ export class PerfilUsuarioEntity {
   @Column({ name: 'sigla' })
   sigla: string;
 
-  @Column({ name: 'descricao' })
-  descricao: string;
-
   @ManyToMany(() => PermissaoEntity)
   @JoinTable({
-    name: 'perfil_usuario_permissao',
+    name: 'perfil_membro_caso_permissao',
     joinColumn: {
-      name: 'id_perfil_usuario',
+      name: 'id_perfil_membro_caso',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
