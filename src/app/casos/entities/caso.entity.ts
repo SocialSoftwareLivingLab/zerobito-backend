@@ -10,6 +10,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import InformacoesBasicas from './info-basicas/info-basica.entity';
 import PalavraChaveEntity from './palavra-chave.entity';
@@ -63,6 +64,9 @@ export default class CasoEntity {
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataCriacao: Date;
+
+  @UpdateDateColumn({ name: 'data_atualizacao' })
+  dataAtualizacao: Date;
 
   @OneToMany(() => PalavraChaveEntity, (palavraChave) => palavraChave.caso)
   palavrasChave: PalavraChaveEntity[];

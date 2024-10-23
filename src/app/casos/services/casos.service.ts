@@ -24,6 +24,8 @@ import { Point } from 'typeorm';
 import ConsultarOcorrenciasUsecase from '../usecases/caso/ocorrencia/consultar-ocorrencias-usecase';
 import AtualizarDataObitoCasoUsecase from '../usecases/caso/atualizar-data-obito/atualizar-data-obito.usecase';
 import AtualizarDataCasoUsecase from '../usecases/caso/atualizar-data/atualizar-data.usecase';
+import { StatusCasoEnum } from '../entities/status-caso.enum';
+import AtualizarStatusCasoUsecase from '../usecases/caso/atualizar-status/atualizar-status.usecase';
 @Injectable()
 export class CasosService {
   constructor(
@@ -38,6 +40,7 @@ export class CasosService {
     private readonly consultarOcorrenciasUseCase: ConsultarOcorrenciasUsecase,
     private readonly atualizarDataObitoUsecase: AtualizarDataObitoCasoUsecase,
     private readonly atualizarDataUsecase: AtualizarDataCasoUsecase,
+    private readonly atualizarStatusUseCase: AtualizarStatusCasoUsecase,
   ) {}
 
   public async registrarCaso(request: RegistrarCasoRequest) {
@@ -52,6 +55,10 @@ export class CasosService {
 
   public async listarOcorrenciasCaso(id: number) {
     return this.consultarOcorrenciasUseCase.listarOcorrenciasCaso(id);
+  }
+
+  public async atualizarStatus(idCaso: number, status: StatusCasoEnum) {
+    await this.atualizarStatusUseCase.executar({ idCaso, status });
   }
 
   public async buscarTodosSumarizado() {
