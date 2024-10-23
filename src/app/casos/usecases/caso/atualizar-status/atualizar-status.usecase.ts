@@ -5,6 +5,7 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import AppException from '@/shared/exceptions/app-exception';
 import { Repository } from 'typeorm';
 import CasoEntity from '@/app/casos/entities/caso.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export interface AtualizarStatusCasoUsecaseInput {
   idCaso: number;
@@ -15,6 +16,7 @@ export interface AtualizarStatusCasoUsecaseInput {
 export default class AtualizarStatusCasoUsecase {
   constructor(
     private readonly consultarCasoPorIdUsecase: ConsultarCasoPorIdUsecase,
+    @InjectRepository(CasoEntity)
     private readonly casoRepository: Repository<CasoEntity>,
   ) {}
 
