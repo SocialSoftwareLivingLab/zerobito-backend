@@ -34,8 +34,8 @@ export default class CasoEntity {
   @Column({
     type: 'enum',
     enum: StatusCasoEnum,
-    default: StatusCasoEnum.AGUARDANDO_NOTIFICACOES,
-    name: 'permissao',
+    name: 'status',
+    nullable: true,
   })
   status: StatusCasoEnum;
 

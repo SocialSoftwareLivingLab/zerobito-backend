@@ -86,6 +86,7 @@ export class CasoResponse {
 
   @ApiProperty({
     description: 'Status do caso',
+    enum: StatusCasoEnum,
     example: 'AGUARDANDO_NOTIFICACOES',
   })
   status: StatusCasoEnum;
