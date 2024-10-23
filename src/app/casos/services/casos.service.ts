@@ -160,6 +160,7 @@ export class CasosService {
     response.dataCriacao = caso.dataCriacao;
     response.dataObito = caso.dataObito;
     response.dataCaso = caso.dataCaso;
+    response.status = caso.status;
     response.criador = {
       id: caso.criador.id,
       nome: caso.criador.nome,

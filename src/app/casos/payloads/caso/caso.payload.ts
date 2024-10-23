@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { StatusCasoEnum } from '../../entities/status-caso.enum';
 
 export class UsuarioCasoResponse {
   @ApiProperty({
@@ -82,6 +83,12 @@ export class CasoResponse {
     example: 'Caso 1',
   })
   nome: string;
+
+  @ApiProperty({
+    description: 'Status do caso',
+    example: 'AGUARDANDO_NOTIFICACOES',
+  })
+  status: StatusCasoEnum;
 
   @ApiProperty({
     description: 'Data de criação do caso',
