@@ -11,6 +11,7 @@ import { StatusConviteGrupoTrabalhoEnum } from '../../../enum/status-convite.enu
 
 import { v4 as uuid } from 'uuid';
 import EnviarEmailConviteGrupoUsecase from '../enviar-email-convite';
+import { StatusCasoEnum } from '@/app/casos/entities/status-caso.enum';
 
 export interface RegistrarConviteParaGrupoUsecaseRequest {
   motivo: string;
@@ -44,6 +45,13 @@ export default class RegistrarConviteParaGrupoUsecase {
 
     if (!casoInformadoExiste) {
       throw new AppException(MensagensHelper.Casos.CASO_NAO_ENCONTRADO);
+    }
+
+    if (casoInformadoExiste.status === StatusCasoEnum.AGUARDANDO_NOTIFICACOES) {
+      await this.casoService.atualizarStatus(
+        caso.id,
+        StatusCasoEnum.EM_PLANEJAMENTO,
+      );
     }
 
     const existeConviteRegistrado = await this.conviteRepository.existsBy({

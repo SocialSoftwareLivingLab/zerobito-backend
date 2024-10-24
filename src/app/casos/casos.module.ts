@@ -26,6 +26,7 @@ import { BuscarPalavrasChaveUsecase } from './usecases/palavra-chave/buscar-pala
 import { ExcluirPalavraChaveUsecase } from './usecases/palavra-chave/excluir-palavra-chave/excluir-palavra-chave.usecase';
 import AtualizarDataObitoCasoUsecase from './usecases/caso/atualizar-data-obito/atualizar-data-obito.usecase';
 import AtualizarDataCasoUsecase from './usecases/caso/atualizar-data/atualizar-data.usecase';
+import AtualizarStatusCasoUsecase from './usecases/caso/atualizar-status/atualizar-status.usecase';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import AtualizarDataCasoUsecase from './usecases/caso/atualizar-data/atualizar-d
       OcorrenciaEntity,
     ]),
     CoordenadoresModule,
-    forwardRef(() => OcorrenciasModule)
+    forwardRef(() => OcorrenciasModule),
   ],
   providers: [
     CausaSeeds,
@@ -58,6 +59,7 @@ import AtualizarDataCasoUsecase from './usecases/caso/atualizar-data/atualizar-d
     ConsultarOcorrenciasUsecase,
     AtualizarDataObitoCasoUsecase,
     AtualizarDataCasoUsecase,
+    AtualizarStatusCasoUsecase,
   ],
   exports: [
     CasosService,
