@@ -10,11 +10,13 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import InformacoesBasicas from './info-basicas/info-basica.entity';
 import PalavraChaveEntity from './palavra-chave.entity';
 import Localizacao from './localizacao/localizacao.entity';
 import LocalizacaoCaso from './localizacao/localizacao.entity';
+import { StatusCasoEnum } from './status-caso.enum';
 
 @Entity({ name: 'caso' })
 export default class CasoEntity {
@@ -29,6 +31,14 @@ export default class CasoEntity {
 
   @Column({ name: 'dataCaso', type: 'date', nullable: true })
   dataCaso: Date;
+
+  @Column({
+    type: 'enum',
+    enum: StatusCasoEnum,
+    name: 'status',
+    nullable: true,
+  })
+  status: StatusCasoEnum;
 
   @ManyToOne(() => UsuarioEntity)
   @JoinColumn({ name: 'id_usuario_coordenador' })
@@ -55,6 +65,8 @@ export default class CasoEntity {
   @CreateDateColumn({ name: 'data_criacao' })
   dataCriacao: Date;
 
+  @UpdateDateColumn({ name: 'data_atualizacao' })
+  dataAtualizacao: Date;
 
   @OneToMany(() => PalavraChaveEntity, (palavraChave) => palavraChave.caso)
   palavrasChave: PalavraChaveEntity[];
