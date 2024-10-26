@@ -17,6 +17,7 @@ import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { eventEmitterConfig } from './config/events.config';
 import { EmailModule } from './shared/email/email.module';
+import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejamento.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { EmailModule } from './shared/email/email.module';
     CasosNotificacoesModule,
     CasosGrupoTrabalhoModule,
     EmailModule,
+    CasosPlanejamentoModule,
   ],
   controllers: [],
   providers: [
