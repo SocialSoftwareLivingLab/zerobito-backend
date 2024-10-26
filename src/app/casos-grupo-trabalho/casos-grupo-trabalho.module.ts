@@ -16,6 +16,7 @@ import RegistrarConviteParaGrupoUsecase from './usecases/convite/registrar-convi
 import EnviarEmailConviteGrupoUsecase from './usecases/convite/enviar-email-convite';
 import { EmailModule } from '@/shared/email/email.module';
 import AceitarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/aceitar-convite';
+import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import AceitarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/aceitar
     ListarMembrosGrupoUsecase,
     AceitarConviteMembroGrupoTrabalhoUsecase,
     VincularCoordenadorGrupoTrabalhoListener,
+    IniciarPlanejamentoUsecase,
   ],
   exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed],
   controllers: [CasosGrupoTrabalhoController],
