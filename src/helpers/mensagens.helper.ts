@@ -35,7 +35,8 @@ enum CasosConviteGrupoTrabalho {
 }
 
 enum CasosAgendamentoReuniaoPreparacao {
-  HORARIO_JA_POSSUI_REUNIAO = 'O horário que vocë solicitou para planejamento deste caso já está sendo utilizado em outro caso'
+  HORARIO_JA_POSSUI_REUNIAO = 'O horário que vocë solicitou para planejamento deste caso já está sendo utilizado em outro caso',
+  HORARIO_INVALIDO_PARA_AGENDAMENTO = "O horário para agendamento precisa ser uma data no futuro",
 }
 
 enum Notificacoes {
