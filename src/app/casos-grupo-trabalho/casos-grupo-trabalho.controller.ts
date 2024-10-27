@@ -15,7 +15,7 @@ import { ConvidarMembroGrupoTrabalhoRequest } from './payloads/convidar-membro.p
 
 @Protegido()
 @ApiBearerAuth()
-@ApiTags('Grupo de trabalho', 'Casos')
+@ApiTags('Grupo de trabalho')
 @Controller('/api/v1/casos')
 export class CasosGrupoTrabalhoController {
   constructor(

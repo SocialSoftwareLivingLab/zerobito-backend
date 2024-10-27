@@ -34,6 +34,11 @@ enum CasosConviteGrupoTrabalho {
   CONVITE_NAO_ENCONTRADO = 'Convite informado não foi encontrado ou não está mais disponível para uso',
 }
 
+enum CasosAgendamentoReuniaoPreparacao {
+  HORARIO_JA_POSSUI_REUNIAO = 'O horário que vocë solicitou para planejamento deste caso já está sendo utilizado em outro caso',
+  HORARIO_INVALIDO_PARA_AGENDAMENTO = "O horário para agendamento precisa ser uma data no futuro",
+}
+
 enum Notificacoes {
   TIPO_NOTIFICACAO_NAO_ENCONTRADO = 'Tipo de notificação não encontrado',
 }
@@ -46,5 +51,6 @@ export const MensagensHelper = {
   Coordenadores,
   Casos,
   CasosConviteGrupoTrabalho,
+  CasosAgendamentoReuniaoPreparacao,
   Notificacoes,
 };
