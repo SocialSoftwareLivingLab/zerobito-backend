@@ -9,7 +9,11 @@ import { CasosModule } from '../casos/casos.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AgendamentoReuniaoEntity]), CasosModule],
-  providers: [CasosPlanejamentoService, AgendarReuniaoUsecase, BuscarAgendamentosReuniaoPlanejamentoUseCase],
+  providers: [
+    CasosPlanejamentoService,
+    AgendarReuniaoUsecase,
+    BuscarAgendamentosReuniaoPlanejamentoUseCase
+  ],
   controllers: [CasosPlanejamentoController]
 })
 export class CasosPlanejamentoModule { }
