@@ -85,4 +85,18 @@ export class CasosGrupoTrabalhoController {
       usuarioAutenticado,
     );
   }
+  
+  @ApiOperation({
+    summary: 'Iniciar Planejamento',
+    description:
+      'Inicia o planejamento de um caso específico',
+  })
+  @Post('/:idCaso/planejamento/iniciar')
+  public async iniciarPlanejamento(
+    @Param('idCaso')
+    idCaso: number,
+  ) {
+    await this.casoGrupoTrabalhoService.IniciarPlanejamento(idCaso);
+  }
+
 }

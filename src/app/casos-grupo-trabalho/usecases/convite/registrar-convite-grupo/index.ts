@@ -50,7 +50,7 @@ export default class RegistrarConviteParaGrupoUsecase {
     if (casoInformadoExiste.status === StatusCasoEnum.AGUARDANDO_NOTIFICACOES) {
       await this.casoService.atualizarStatus(
         caso.id,
-        StatusCasoEnum.EM_PLANEJAMENTO,
+        StatusCasoEnum.EM_PREPARACAO,
       );
     }
 
