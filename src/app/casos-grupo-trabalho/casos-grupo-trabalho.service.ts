@@ -5,6 +5,7 @@ import { ConvidarMembroGrupoTrabalhoRequest } from './payloads/convidar-membro.p
 import RegistrarConviteParaGrupoUsecase from './usecases/convite/registrar-convite-grupo';
 import AceitarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/aceitar-convite';
 import { Transactional } from 'typeorm-transactional';
+import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
 
 @Injectable()
 export class CasosGrupoTrabalhoService {
@@ -12,6 +13,7 @@ export class CasosGrupoTrabalhoService {
     private readonly listarMembrosGrupo: ListarMembrosGrupoUsecase,
     private readonly registrarConvite: RegistrarConviteParaGrupoUsecase,
     private readonly aceitarConviteUsecase: AceitarConviteMembroGrupoTrabalhoUsecase,
+    private readonly iniciarPlanejamentoUseCase: IniciarPlanejamentoUsecase,
   ) {}
 
   public async listar(idCaso: number) {
@@ -30,6 +32,15 @@ export class CasosGrupoTrabalhoService {
       convidado: payload.convidado,
     });
   }
+
+  public async IniciarPlanejamento(
+    idCaso: number,
+  ) {
+    await this.iniciarPlanejamentoUseCase.IniciarPlanejamento({
+      caso: { id: idCaso },
+    });
+  }
+
 
   @Transactional()
   public async aceitarConvite(
