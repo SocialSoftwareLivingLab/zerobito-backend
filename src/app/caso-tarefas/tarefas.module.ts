@@ -1,0 +1,28 @@
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import StatusTarefaEntity from "./entities/status-tarefa.entity";
+import TarefaEntity from "./entities/tarefa.entity";
+import { StatusMembroGrupoTrabalhoEnum } from "../casos-grupo-trabalho/enum/status-membro.enum";
+import { CasosGrupoTrabalhoModule } from "../casos-grupo-trabalho/casos-grupo-trabalho.module";
+import StatusTarefaSeed from "./seeds/tarefa.seed";
+import RegistrarTarefaUseCase from "./usecases/registrar-tarefa";
+import ListarTarefasMembrosGrupoUseCase from "./usecases/listar-tarefas";
+import { CasosTarefasController } from "./tarefas.controller";
+
+@Module({
+    imports: [
+        TypeOrmModule.forFeature([
+            StatusTarefaEntity,
+            TarefaEntity,
+        ]),
+        CasosGrupoTrabalhoModule,
+    ],
+    providers: [
+        StatusTarefaSeed,
+        RegistrarTarefaUseCase,
+        ListarTarefasMembrosGrupoUseCase,
+    ],
+    exports: [StatusTarefaSeed],
+    controllers: [CasosTarefasController],
+})
+export class CasosTarefasGrupoTrabalhoModule {}
