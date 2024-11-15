@@ -18,11 +18,13 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { eventEmitterConfig } from './config/events.config';
 import { EmailModule } from './shared/email/email.module';
 import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejamento.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     DiscoveryModule,
     ConfigModule.forRoot(),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory() {
         return {
