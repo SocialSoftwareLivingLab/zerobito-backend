@@ -10,7 +10,7 @@ export default class TarefaEntity {
     @Column({ name: 'identificador', type: 'uuid' })
     identificador: string;
 
-    @Column({ name: 'nome', type: 'string' })
+    @Column({ name: 'nome', type: 'varchar', length: 255})
     nome: string;
 
     @ManyToOne(() => MembroGrupoTrabalhoEntity)
@@ -28,6 +28,6 @@ export default class TarefaEntity {
     @Column({ name: 'prazo_de_conclusao', type: 'date'})
     prazo: Date;
 
-    @Column({ name: 'comentario', type: 'string'})
+    @Column({ name: 'comentario', type: 'varchar', length: 255})
     comentario: string;
 }
