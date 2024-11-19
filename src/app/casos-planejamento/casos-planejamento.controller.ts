@@ -1,5 +1,5 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CasosPlanejamentoService } from './casos-planejamento.service';
 import { MarcarReuniaoPlanejamentoRequest } from './payloads/marcar-reuniao.payload';
@@ -35,6 +35,17 @@ export class CasosPlanejamentoController {
       idCaso,
       usuarioAutenticado
     );
+  }
+
+  @ApiOperation({
+    summary: "Buscar agendamentos marcados",
+    description: "Retorna a lista de reuniões agendadas para o caso. A ordenação está definida pela data da reunião, em ordem crescente."
+  })
+  @Get('/casos/:id/planejamento/reunioes')
+  async buscarReunioesAgendadas(
+    @Param('id') idCaso: number,
+  ) {
+    return await this.casosPlanejamentoService.buscarAgendamentos(idCaso);
   }
 
 }
