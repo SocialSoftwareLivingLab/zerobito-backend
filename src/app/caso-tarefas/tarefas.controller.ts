@@ -47,7 +47,7 @@ export class CasosTarefasController {
         description: 'Registra um pedido de tarefa para um membro do grupo de trabalho',
     })
     @ApiOkResponse({
-        description: 'Tarefa emitida com sucesso.'
+        description: 'Tarefa registrada com sucesso.'
     })
     @Post('/:idCaso/grupo-trabalho/membros/registrar-tarefa')
     public async registrarTarefa(
