@@ -30,7 +30,6 @@ export class AtualizarPrazoAtrasado {
 
         this.logger.debug(`Tarefas atrasadas encontradas: ${tarefasAtrasadas.length}`);
 
-        // Atualiza o status para cada tarefa atrasada
         for (const tarefa of tarefasAtrasadas) {
             await this.atualizarStatusTarefaUsecase.atualizar({
                 id: tarefa.id,

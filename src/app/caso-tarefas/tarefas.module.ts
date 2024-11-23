@@ -9,6 +9,7 @@ import RegistrarTarefaUseCase from "./usecases/registrar-tarefa";
 import ListarTarefasMembrosGrupoUseCase from "./usecases/listar-tarefas";
 import { CasosTarefasController } from "./tarefas.controller";
 import AtualizarStatusTarefaUsecase from "./usecases/atualizar-status.ts";
+import { CasosTarefasService } from "./tarefas.service";
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import AtualizarStatusTarefaUsecase from "./usecases/atualizar-status.ts";
         CasosGrupoTrabalhoModule,
     ],
     providers: [
+        CasosTarefasService,
         StatusTarefaSeed,
         RegistrarTarefaUseCase,
         ListarTarefasMembrosGrupoUseCase,
