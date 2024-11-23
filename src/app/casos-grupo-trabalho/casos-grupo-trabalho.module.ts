@@ -41,7 +41,7 @@ import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
     VincularCoordenadorGrupoTrabalhoListener,
     IniciarPlanejamentoUsecase,
   ],
-  exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed],
+  exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed, TypeOrmModule.forFeature([MembroGrupoTrabalhoEntity])],
   controllers: [CasosGrupoTrabalhoController],
 })
 export class CasosGrupoTrabalhoModule {}
