@@ -9,11 +9,11 @@ export class CasosTarefasService {
         private readonly registrarTarefasMembroGrupo: RegistrarTarefaUseCase,
     ) {}
 
-    public async listarTarefa(idCaso: number, idMembro: number){
-        return await this.listarTarefasMembrosGrupo.listar({idCaso, idMembro});
+    public async listarTarefa(idCaso: number, identificador: string){
+        return await this.listarTarefasMembrosGrupo.listar({idCaso, identificador});
     }
 
-    public async registrarTarefa(idCaso, membro, comentario, nome, prazo) {
-        return await this.registrarTarefasMembroGrupo.registrar({idCaso, membro, comentario, nome, prazo});
+    public async registrarTarefa(idCaso, nomeMembro, comentario, nome, prazo) {
+        return await this.registrarTarefasMembroGrupo.registrar({idCaso, nomeMembro, comentario, nome, prazo});
     }
 }

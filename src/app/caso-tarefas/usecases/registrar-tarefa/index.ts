@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import TarefaEntity from "../../entities/tarefa.entity";
 import { Repository } from "typeorm";
@@ -8,9 +8,7 @@ import MembroGrupoTrabalhoEntity from "@/app/casos-grupo-trabalho/entities/membr
 
 export interface Request {
     idCaso: number;
-    membro: {
-        id: number;
-    }
+    nomeMembro: string;
     comentario: string;
     nome: string;
     prazo: Date;
@@ -29,7 +27,7 @@ export default class RegistrarTarefaUseCase {
 
     public async registrar({
         idCaso,
-        membro,
+        nomeMembro,
         comentario,
         nome,
         prazo,
@@ -42,12 +40,21 @@ export default class RegistrarTarefaUseCase {
             }
         });
 
+        if (!status) {
+            throw new NotFoundException('Status "EM_ANDAMENTO" não encontrado.');
+        }
+
         const membroGrupoTrabalho = await this.membroGrupoTrabalhoRepository.findOne({
             where: {
-                caso: { id: idCaso},
-                membro: membro,
+                caso: { id: idCaso },
+                membro: { nome: nomeMembro },
             }
-        })
+        });
+        console.log(membroGrupoTrabalho);
+
+        if (!membroGrupoTrabalho) {
+            throw new NotFoundException(`Membro "${nomeMembro}" não encontrado no caso com ID ${idCaso}.`);
+        }
 
         const novaTarefa = this.tarefaRepository.create({
             dataVinculo: new Date(),

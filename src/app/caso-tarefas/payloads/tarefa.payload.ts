@@ -10,9 +10,7 @@ export class TarefaResponse {
 }
 
 export class RegistrarTarefaRequest {
-    membro: {
-        id: number;
-    }
+    nomeMembro: string;
     comentario: string;
     nome: string;
     prazo: Date;

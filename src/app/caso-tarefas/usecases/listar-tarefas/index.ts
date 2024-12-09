@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 
 export interface Request {
     idCaso: number;
-    idMembro: number;
+    identificador: string;
 }
 
 export interface TarefaResponse {
@@ -34,15 +34,15 @@ export default class ListarTarefasMembrosGrupoUseCase {
 
     public async listar(req: Request){
         const { idCaso } = req;
-        const { idMembro } = req
+        const { identificador } = req
 
         this.logger.log(
-            `Pesquisando tarefas do membro ${idMembro} grupo de trabalho para o caso ${idCaso}`,
+            `Pesquisando tarefas do membro ${identificador} grupo de trabalho para o caso ${idCaso}`,
         );
         
         const tarefasPromise =  this.tarefasRepository.find({
             where: {
-                membroGrupoTrabalho: { caso: {id: idCaso}, membro: {id: idMembro}},
+                membroGrupoTrabalho: { caso: {id: idCaso}, identificador: identificador},
             },
             relations: ['membroGrupoTrabalho', 'status'],
         });
