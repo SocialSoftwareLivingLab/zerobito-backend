@@ -26,9 +26,9 @@ export class CasosTarefasController {
     public async listarTarefas(
         @Param('idCaso')
         idCaso: number,
-        @Body() idMembro: number,
+        @Body() identficador: string,
     ) {
-        const response = await this.casoTarefaService.listarTarefa(idCaso, idMembro);
+        const response = await this.casoTarefaService.listarTarefa(idCaso, identficador);
 
         return response.tarefas.map((tarefa) => {
             const tarefaResponse = new TarefaResponse();
@@ -56,7 +56,7 @@ export class CasosTarefasController {
     ) {
         return await this.casoTarefaService.registrarTarefa(
             idCaso,
-            payload.membro,
+            payload.nomeMembro,
             payload.comentario,
             payload.nome,
             payload.prazo
