@@ -33,6 +33,8 @@ export default class RegistrarTarefaUseCase {
         prazo,
     }: Request) {
         const identificador = uuid();
+        console.log('nome:');
+        console.log(nome);
 
         const status = await this.statusTarefaRepository.findOne({
             where: {
