@@ -9,8 +9,8 @@ export class CasosTarefasService {
         private readonly registrarTarefasMembroGrupo: RegistrarTarefaUseCase,
     ) {}
 
-    public async listarTarefa(idCaso: number, identificador: string){
-        return await this.listarTarefasMembrosGrupo.listar({idCaso, identificador});
+    public async listarTarefa(idCaso: number, membroGrupoTrabalhoId: number){
+        return await this.listarTarefasMembrosGrupo.listar({idCaso, membroGrupoTrabalhoId});
     }
 
     public async registrarTarefa(idCaso, nomeMembro, comentario, nome, prazo) {

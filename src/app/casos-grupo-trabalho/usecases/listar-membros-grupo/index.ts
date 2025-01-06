@@ -10,6 +10,7 @@ export interface Request {
 }
 
 interface MembroResponse {
+  id: number;
   identificador: string;
   nome: string;
   email: string;
@@ -67,8 +68,13 @@ export default class ListarMembrosGrupoUsecase {
       convitesPromise,
     ]);
 
+    this.logger.debug('Membros encontrados:', membrosEncontrados);
+    this.logger.debug('Convites encontrados:', convitesEncontrados);
+
+
     const membros = membrosEncontrados.map((membro) => {
       return {
+        id: membro.id,
         email: membro.membro.email,
         nome: membro.membro.nome,
         identificador: membro.identificador,
@@ -81,6 +87,7 @@ export default class ListarMembrosGrupoUsecase {
 
     const convites = convitesEncontrados.map((convite) => {
       return {
+        id: convite.id,
         email: convite.emailConvidado,
         nome: convite.nomeConvidado,
         identificador: convite.identificador,

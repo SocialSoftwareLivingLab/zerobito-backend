@@ -42,6 +42,7 @@ export class CasosGrupoTrabalhoController {
 
     return response.membros.map((membro) => {
       const membroResponse = new MembroGrupoTrabalhoResponse();
+      membroResponse.id = membro.id;
       membroResponse.identificador = membro.identificador;
       membroResponse.nome = membro.nome;
       membroResponse.email = membro.email;
