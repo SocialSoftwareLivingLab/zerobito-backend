@@ -22,7 +22,7 @@ export class CasosTarefasController {
         type: TarefaResponse,
         isArray: true,
     })
-    @Get('/:idCaso/grupo-trabalho/membros/tarefas')
+    @Get('/:idCaso/grupo-trabalho/membros/tarefas/:membroGrupoTrabalhoId')
     public async listarTarefas(
         @Param('idCaso')
         idCaso: number,
