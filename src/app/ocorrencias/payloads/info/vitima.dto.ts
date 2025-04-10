@@ -2,6 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CondicaoVitimaOcorrenciaEnum } from '../../enums/condicao-vitima-ocorrencia.enum';
 
 export class VitimaDto {
+  @ApiProperty({ description: 'Quantidade de vítimas', example: '4'})
+  numero: string;
+
   @ApiProperty({ description: 'Nome da vítima', example: 'João da Silva' })
   nome: string;
 
