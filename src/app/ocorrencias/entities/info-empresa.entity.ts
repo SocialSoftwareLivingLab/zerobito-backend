@@ -8,6 +8,9 @@ export class InformacoesEmpresa {
   @Column({ name: 'info_empresa_cnpj' })
   cnpj: string;
 
+  @Column({ name: 'info_empresa_cnae', nullable: true})
+  cnae: string;
+
   @Column(() => InfoEmpresaTomadoraServico)
   tomadoraServico: InfoEmpresaTomadoraServico;
 }
