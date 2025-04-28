@@ -6,6 +6,9 @@ export class DadosConvidadoPayload {
 
   @ApiProperty({ description: 'E-mail para acesso do convidado' })
   email: string;
+
+  @ApiProperty( {description: 'Instituição do convidade '})
+  instituicao: string;
 }
 
 export class ConvidarMembroGrupoTrabalhoRequest {

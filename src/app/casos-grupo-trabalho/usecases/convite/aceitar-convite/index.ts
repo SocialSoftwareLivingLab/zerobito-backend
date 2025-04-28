@@ -62,6 +62,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
       solicitante: {
         id: convite.criador.id,
       },
+      instituicao: convite.instituicaoConvidado,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
     });
   }

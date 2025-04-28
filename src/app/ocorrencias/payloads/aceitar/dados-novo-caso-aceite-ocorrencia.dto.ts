@@ -15,6 +15,12 @@ export class DadosNovoCasoAceiteOcorrencia {
   coordenador: number;
 
   @ApiProperty({
+    description: 'Instituição do usuário que será coordenador do caso aceito',
+    example: 'Ministério do Trabalho',
+  })
+  instituicao: string;
+
+  @ApiProperty({
     description: 'Data da ocorrencia',
   })
   data: Date;

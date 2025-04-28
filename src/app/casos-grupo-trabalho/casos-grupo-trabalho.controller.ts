@@ -44,6 +44,7 @@ export class CasosGrupoTrabalhoController {
       const membroResponse = new MembroGrupoTrabalhoResponse();
       membroResponse.id = membro.id;
       membroResponse.identificador = membro.identificador;
+      membroResponse.instituicao = membro.instituicao;
       membroResponse.nome = membro.nome;
       membroResponse.email = membro.email;
       membroResponse.status = membro.status;
