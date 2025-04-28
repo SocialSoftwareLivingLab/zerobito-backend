@@ -12,6 +12,7 @@ export interface Request {
 interface MembroResponse {
   id: number;
   identificador: string;
+  instituicao: string;
   nome: string;
   email: string;
   status: {
@@ -77,6 +78,7 @@ export default class ListarMembrosGrupoUsecase {
         id: membro.id,
         email: membro.membro.email,
         nome: membro.membro.nome,
+        instituicao: membro.instituicao,
         identificador: membro.identificador,
         status: {
           codigo: membro.status.codigo,
@@ -90,6 +92,7 @@ export default class ListarMembrosGrupoUsecase {
         id: convite.id,
         email: convite.emailConvidado,
         nome: convite.nomeConvidado,
+        instituicao: convite.instituicaoConvidado,
         identificador: convite.identificador,
         status: {
           codigo: convite.status.codigo,
@@ -97,6 +100,9 @@ export default class ListarMembrosGrupoUsecase {
         },
       } as MembroResponse;
     });
+
+    this.logger.debug('Membross encontrados:', membros);
+    this.logger.debug('Convites encontrados:', convites);
 
     return {
       membros: [...membros, ...convites],

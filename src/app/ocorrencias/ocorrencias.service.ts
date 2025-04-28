@@ -96,12 +96,13 @@ export class OcorrenciasService {
     dadosAceite: AceitarOcorrenciaRequest,
     usuarioAutenticado: UsuarioAutenticadoDto,
   ) {
-    const { nome, coordenador } = dadosAceite.novoCaso;
+    const { nome, coordenador, instituicao } = dadosAceite.novoCaso;
 
     const ocorrencia = await this.aceitarOcorrenciaUseCase.aceitar({ id });
     const casoCriado = await this.casoService.registrarCaso({
       nome,
       coordenador,
+      instituicao: instituicao,
       criador: usuarioAutenticado,
       ocorrencias: [ocorrencia],
       local: ocorrencia.local,
