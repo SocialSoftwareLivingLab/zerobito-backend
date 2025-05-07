@@ -69,8 +69,6 @@ export default class ListarMembrosGrupoUsecase {
       convitesPromise,
     ]);
 
-    this.logger.debug('Membros encontrados:', membrosEncontrados);
-    this.logger.debug('Convites encontrados:', convitesEncontrados);
 
 
     const membros = membrosEncontrados.map((membro) => {
@@ -101,8 +99,6 @@ export default class ListarMembrosGrupoUsecase {
       } as MembroResponse;
     });
 
-    this.logger.debug('Membross encontrados:', membros);
-    this.logger.debug('Convites encontrados:', convites);
 
     return {
       membros: [...membros, ...convites],
