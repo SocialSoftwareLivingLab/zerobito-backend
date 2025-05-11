@@ -4,6 +4,10 @@ enum Usuario {
   LOGIN_USUARIO_NAO_ENCONTRADO = 'E-mail e/ou senha inválidos',
 }
 
+enum Token {
+  TOKEN_INVALIDO = 'O token é inválido e/ou expirou.'
+}
+
 enum Documentos {
   CNPJ_INVALIDO = 'CNPJ inválido',
 }
@@ -53,4 +57,5 @@ export const MensagensHelper = {
   CasosConviteGrupoTrabalho,
   CasosAgendamentoReuniaoPreparacao,
   Notificacoes,
+  Token
 };
