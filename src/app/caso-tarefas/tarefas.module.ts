@@ -10,6 +10,7 @@ import ListarTarefasMembrosGrupoUseCase from "./usecases/listar-tarefas";
 import { CasosTarefasController } from "./tarefas.controller";
 import AtualizarStatusTarefaUsecase from "./usecases/atualizar-status.ts";
 import { CasosTarefasService } from "./tarefas.service";
+import { AtualizarPrazoAtrasado } from "./listeners/verificar-validade-prazo.listener";
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { CasosTarefasService } from "./tarefas.service";
         RegistrarTarefaUseCase,
         ListarTarefasMembrosGrupoUseCase,
         AtualizarStatusTarefaUsecase,
+        AtualizarPrazoAtrasado,
     ],
     exports: [StatusTarefaSeed],
     controllers: [CasosTarefasController],

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { Cron } from "@nestjs/schedule";
 import { Repository } from "typeorm";
 import TarefaEntity from "../entities/tarefa.entity";
@@ -15,9 +15,13 @@ export class AtualizarPrazoAtrasado {
         private readonly atualizarStatusTarefaUsecase: AtualizarStatusTarefaUsecase,
     ) {}
 
-    @Cron('0 1 * * *')
+    async onModuleInit() {
+        await this.handleCron(); // Executa assim que o módulo for iniciado
+    }
+
+    @Cron('0 1 * * *') // Roda a cada minuto
     async handleCron(){
-        this.logger.debug('Called every day 1 a.m');
+        this.logger.debug('Called every day 1 a.m or when the module starts.');
         const statusAtrasado = 'ATRASADO';
         const hoje = new Date();
 

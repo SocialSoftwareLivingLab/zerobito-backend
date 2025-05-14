@@ -18,4 +18,10 @@ export class TomadoraServicoDto {
     message: MensagensHelper.Documentos.CNPJ_INVALIDO,
   })
   cnpj: string;
+
+  @ApiProperty({
+    description: 'CNAE da empresa tomadora de serviço',
+    example: '1234567',
+  })
+  cnae: string;
 }
