@@ -24,7 +24,7 @@ export default class AtualizarStatusTarefaUsecase {
 
         const statusNovo = await this.statusTarefaRepository.findOne({
             where: {
-                codigo: 'EM_ANDAMENTO',
+                codigo: status,
             }
         });
 
