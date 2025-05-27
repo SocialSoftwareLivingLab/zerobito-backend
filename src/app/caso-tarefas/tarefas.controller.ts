@@ -44,6 +44,34 @@ export class CasosTarefasController {
     }
 
     @ApiOperation({
+        summary: 'Listar todas as tarefas para um membro de um grupo de trabalho',
+        description: 'Retorna uma lista de tarefas para um membro em determinado grupo de trabalho',
+    })
+    @ApiOkResponse({
+        description: 'Tarefas de um mebro para o grupo disponíveis.',
+        type: TarefaResponse,
+        isArray: true,
+    })
+    @Get('/:idCaso/grupo-trabalho/membros/tarefas')
+    public async listarTarefasCaso(
+        @Param('idCaso')
+        idCaso: number,
+    ) {
+        const response = await this.casoTarefaService.listarTarefaCaso(idCaso);
+
+        return response.tarefas.map((tarefa) => {
+            const tarefaResponse = new TarefaResponse();
+            tarefaResponse.comentario = tarefa.comentario;
+            tarefaResponse.identificador = tarefa.identificador;
+            tarefaResponse.nome = tarefa.nome;
+            tarefaResponse.prazo = tarefa.prazo;
+            tarefaResponse.status = tarefa.status;
+
+            return tarefaResponse;
+        });
+    }
+
+    @ApiOperation({
         summary: 'Registrar uma tarefa',
         description: 'Registra um pedido de tarefa para um membro do grupo de trabalho',
     })
@@ -63,4 +91,6 @@ export class CasosTarefasController {
             payload.prazo
         );
     }
+
+    
 }

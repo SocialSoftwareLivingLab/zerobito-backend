@@ -25,3 +25,4 @@ export class ConvidarMembroGrupoTrabalhoResponse {
   @ApiProperty({ description: 'Token de identificação do convite criado' })
   identificador: string;
 }
+

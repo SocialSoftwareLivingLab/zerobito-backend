@@ -59,7 +59,6 @@ export default class RegistrarConviteParaGrupoUsecase {
       emailConvidado: convidado.email,
       status: {
         codigo: In([
-          StatusConviteGrupoTrabalhoEnum.PENDENTE,
           StatusConviteGrupoTrabalhoEnum.ACEITADO,
         ]),
       },

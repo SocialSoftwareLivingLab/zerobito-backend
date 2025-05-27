@@ -30,8 +30,9 @@ export default class AtualizarStatusTarefaUsecase {
 
         const tarefa =  await this.tarefaRepository.findOne({
             where: {
-                id: id,
-            }
+                id: id
+            },
+            relations: ['status']
         });
 
         tarefa.status = statusNovo;
