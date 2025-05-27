@@ -54,6 +54,26 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
     convite.dataAlteracao = new Date();
 
     await this.conviteRepository.save(convite);
+
+    const statusPendente = await this.statusConviteRepository.findOne({
+      where: { codigo: StatusConviteGrupoTrabalhoEnum.PENDENTE },
+    });
+
+
+    // Remove todos os outros convites pendentes para o mesmo email
+    await this.conviteRepository
+      .createQueryBuilder()
+      .delete()
+      .from(ConviteGrupoTrabalhoEntity)
+      .where('emailConvidado = :email', { email: usuarioAutenticado.email })
+      .andWhere('identificador != :identificador', {
+        identificador: convite.identificador,
+      })
+      .andWhere('id_status = :statusPendenteId', {
+        statusPendenteId: statusPendente.id,
+      })
+      .execute();
+
     await this.registrarMembroAoGrupo.registrar({
       idCaso: convite.caso.id,
       membro: {

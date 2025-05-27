@@ -25,16 +25,16 @@ export class AtualizarPrazoAtrasado {
         const statusAtrasado = 'ATRASADO';
         const hoje = new Date();
 
-        const tarefas = await this.tarefaRepository.find();
-
+        const tarefas = await this.tarefaRepository.find({relations: ['status']});
 
         const tarefasAtrasadas = tarefas.filter(tarefa => 
-            tarefa.prazo && new Date(tarefa.prazo) < hoje
+            tarefa.prazo && new Date(tarefa.prazo) < hoje && tarefa.status.codigo === 'EM_ANDAMENTO'
         );
 
         this.logger.debug(`Tarefas atrasadas encontradas: ${tarefasAtrasadas.length}`);
 
         for (const tarefa of tarefasAtrasadas) {
+            this.logger.debug(tarefa.status.id)
             await this.atualizarStatusTarefaUsecase.atualizar({
                 id: tarefa.id,
                 status: statusAtrasado,
