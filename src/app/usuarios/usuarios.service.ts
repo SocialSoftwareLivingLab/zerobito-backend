@@ -10,6 +10,8 @@ import { UsuarioEntity } from './usuarios.entity';
 import { Optional } from 'typescript-optional';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import { PerfilUsuario } from './enums/perfil-usuario.enum';
+import { PerfisService } from './services/perfis.service';
+import AppException from '@/shared/exceptions/app-exception';
 
 @Injectable()
 export class UsuariosService {
@@ -18,6 +20,7 @@ export class UsuariosService {
   constructor(
     @InjectRepository(UsuarioEntity)
     private readonly usuarioRepository: Repository<UsuarioEntity>,
+    private readonly perfisService: PerfisService,
   ) {}
 
   public async adicionar(
@@ -33,9 +36,16 @@ export class UsuariosService {
       );
     }
 
+    const perfilResult = await this.perfisService.buscarPerfilPorCodigo(perfil);
+    const perfilEntity = perfilResult.orElseThrow(
+      () => new AppException(MensagensHelper.Usuario.PERFIL_NAO_ENCONTRADO),
+    );
+
     const usuario = this.usuarioRepository.create({
       ...body,
-      permissao: perfil,
+      perfil: {
+        id: perfilEntity.id,
+      },
     });
 
     return await this.usuarioRepository.save(usuario);
