@@ -5,7 +5,7 @@ import SeedRunner from '@/shared/seeds/seed-runner';
 import { UsuarioEntity } from '../usuarios.entity';
 import { PerfilUsuario } from '../enums/perfil-usuario.enum';
 import { UsuariosService } from '../usuarios.service';
-import { CriarUsuarioRequestDto } from '../dtos/criar-usuario.dto';
+import { CriarUsuarioAdminRequestDto } from '../dtos/criar-usuario.dto';
 
 /**
  * Seed do usuário administrador ROOT
@@ -47,10 +47,11 @@ export default class UsuarioAdministradorSeed implements SeedRunner {
 
     try {
       // Criar dados do usuário
-      const dadosUsuario: CriarUsuarioRequestDto = {
+      const dadosUsuario: CriarUsuarioAdminRequestDto = {
         nome: 'Administrador do Sistema',
         email: 'root@zerobito.com',
         senha: 'Admin1234*',
+        perfil: PerfilUsuario.ROOT,
       };
 
       // Criar usuário usando o service (que já faz todas as validações e relacionamentos)

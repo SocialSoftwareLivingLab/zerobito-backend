@@ -1,29 +1,29 @@
 import { UsuariosService } from '@/app/usuarios/usuarios.service';
+import { Protegido } from '@/auth/decorators/protegido.decorator';
+import {
+  obterPermissoesUsuario,
+  UsuarioAutenticado,
+  usuarioTemPermissao,
+} from '@/auth/decorators/usuario-autenticado.decorator';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
   ApiTags,
-  ApiBearerAuth,
 } from '@nestjs/swagger';
+import { Permissao } from './decorators/permissao.decorator';
 import {
-  CriarUsuarioRequestDto,
+  CriarUsuarioAdminRequestDto,
+  CriarUsuarioComumRequestDto,
   CriarUsuarioResponseDto,
 } from './dtos/criar-usuario.dto';
 import { PerfilUsuario } from './enums/perfil-usuario.enum';
-import { Permissao } from './decorators/permissao.decorator';
 import { PermissaoEnum } from './enums/permissoes.enum';
-import {
-  UsuarioAutenticado,
-  usuarioTemPermissao,
-  obterPermissoesUsuario,
-} from '@/auth/decorators/usuario-autenticado.decorator';
-import { Protegido } from '@/auth/decorators/protegido.decorator';
-import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 
-// TODO: Adicionar funcionalidade de cadastro quando o admin conseguir criar usuários na plataforma
-// @ApiBearerAuth()
 @ApiTags('Usuarios')
+@ApiBearerAuth()
 @Controller('/api/v1/usuarios')
 export class UsuariosController {
   constructor(private readonly usuarioService: UsuariosService) {}
@@ -37,14 +37,31 @@ export class UsuariosController {
     type: CriarUsuarioResponseDto,
     description: 'Usuário criado',
   })
-  // @Protegido()
-  // @Perfil(PerfilUsuario.ADMIN) // Antigo sistema baseado em enum
-  @Permissao(PermissaoEnum.SISTEMA_CRIAR_ADMIN) // Novo sistema RBAC específico
   public async adicionar(
-    @Body() body: CriarUsuarioRequestDto,
+    @Body() body: CriarUsuarioComumRequestDto,
   ): Promise<CriarUsuarioResponseDto> {
     const { id, nome, email, dataCriacao } =
       await this.usuarioService.adicionar(body, PerfilUsuario.USER);
+
+    return { id, nome, email, dataCriacao };
+  }
+
+  @Post('/admin')
+  @ApiOperation({
+    description: 'Adiciona um novo usuário na plataforma',
+    summary: 'Adicionar novo usuário',
+  })
+  @ApiCreatedResponse({
+    type: CriarUsuarioResponseDto,
+    description: 'Usuário criado',
+  })
+  @Protegido()
+  @Permissao(PermissaoEnum.SISTEMA_CRIAR_ADMIN)
+  public async adicionarQualquerUsuario(
+    @Body() body: CriarUsuarioAdminRequestDto,
+  ): Promise<CriarUsuarioResponseDto> {
+    const { id, nome, email, dataCriacao } =
+      await this.usuarioService.adicionar(body, PerfilUsuario[body.perfil]);
 
     return { id, nome, email, dataCriacao };
   }

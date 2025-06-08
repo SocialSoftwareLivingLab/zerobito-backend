@@ -5,7 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { CriarUsuarioRequestDto } from './dtos/criar-usuario.dto';
+import {
+  CriarUsuarioAdminRequestDto,
+  CriarUsuarioComumRequestDto,
+} from './dtos/criar-usuario.dto';
 import { UsuarioEntity } from './usuarios.entity';
 import { Optional } from 'typescript-optional';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
@@ -24,7 +27,7 @@ export class UsuariosService {
   ) {}
 
   public async adicionar(
-    body: CriarUsuarioRequestDto,
+    body: CriarUsuarioComumRequestDto | CriarUsuarioAdminRequestDto,
     perfil: PerfilUsuario = PerfilUsuario.USER,
   ): Promise<UsuarioEntity> {
     this.logger.log(`Adicionando usuário ${body}`);
