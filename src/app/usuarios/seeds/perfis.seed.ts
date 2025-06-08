@@ -24,12 +24,6 @@ const perfis = [
     descricao: 'Perfil básico de usuário',
     isPerfilCaso: false,
   },
-  {
-    codigo: PerfilUsuario.COORDENADOR,
-    nome: 'Coordenador',
-    descricao: 'Perfil de coordenação de casos',
-    isPerfilCaso: true,
-  },
 ];
 
 @Injectable()

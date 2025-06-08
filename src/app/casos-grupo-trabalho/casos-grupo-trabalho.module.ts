@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CasosGrupoTrabalhoController } from './casos-grupo-trabalho.controller';
+import { MembrosPerfilController } from './controllers/membros-perfil.controller';
 import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import MembroGrupoTrabalhoEntity from './entities/membro-grupo.entity';
+
 import StatusConviteGrupoTrabalhoEntity from './entities/convite/status-convite-membro.entity';
 import StatusMembroGrupoTrabalhoEntity from './entities/status-membro.entity';
 import VincularCoordenadorGrupoTrabalhoListener from './listeners/vincular-coordenador-grupo.listener';
@@ -17,6 +19,8 @@ import EnviarEmailConviteGrupoUsecase from './usecases/convite/enviar-email-conv
 import { EmailModule } from '@/shared/email/email.module';
 import AceitarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/aceitar-convite';
 import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
+import { CasosPermissaoService } from '../casos/services/casos-permissao.service';
+import { PerfilEntity } from '../usuarios/entities/perfil.entity';
 
 @Module({
   imports: [
@@ -25,6 +29,7 @@ import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
       StatusConviteGrupoTrabalhoEntity,
       MembroGrupoTrabalhoEntity,
       ConviteGrupoTrabalhoEntity,
+      PerfilEntity,
     ]),
     CasosModule,
     EmailModule,
@@ -40,8 +45,9 @@ import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
     AceitarConviteMembroGrupoTrabalhoUsecase,
     VincularCoordenadorGrupoTrabalhoListener,
     IniciarPlanejamentoUsecase,
+    CasosPermissaoService,
   ],
   exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed],
-  controllers: [CasosGrupoTrabalhoController],
+  controllers: [CasosGrupoTrabalhoController, MembrosPerfilController],
 })
 export class CasosGrupoTrabalhoModule {}
