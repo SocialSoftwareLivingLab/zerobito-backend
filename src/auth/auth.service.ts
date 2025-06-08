@@ -1,5 +1,6 @@
 import { UsuarioEntity } from '@/app/usuarios/usuarios.entity';
 import { UsuariosService } from '@/app/usuarios/usuarios.service';
+import { PerfisService } from '@/app/usuarios/services/perfis.service';
 import { CriptografiaHelper } from '@/helpers/criptografia.helper';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import {
@@ -22,11 +23,16 @@ export class AuthService {
   public async gerarTokenAutenticacao(req: Request): Promise<LoginResponse> {
     const user = req.user;
 
+    // Buscar dados completos do perfil e permissões
+    const dadosUsuarioCompletos = await this.buscarDadosCompletosUsuario(
+      user.id,
+    );
+
     const jwtPayload: JwtPayload = {
       sub: user.id,
       email: user.email,
       nome: user.nome,
-      role: user.perfil,
+      perfil: dadosUsuarioCompletos.perfil,
     };
 
     const token = this.jwtService.sign(jwtPayload);
@@ -35,6 +41,31 @@ export class AuthService {
       token,
       usuario: user,
     } as LoginResponse;
+  }
+
+  /**
+   * Busca os dados completos do usuário incluindo perfil e permissões
+   */
+  public async buscarDadosCompletosUsuario(usuarioId: number) {
+    const resultUsuario = await this.usuariosService.buscarUsuario({
+      id: usuarioId,
+    });
+
+    const usuario: UsuarioEntity = resultUsuario.orElseThrow(
+      () =>
+        new ForbiddenException(MensagensHelper.Usuario.USUARIO_NAO_ENCONTRADO),
+    );
+
+    return {
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+      perfil: {
+        codigo: usuario.perfil?.codigo,
+        nome: usuario.perfil?.nome,
+        permissoes: usuario.perfil?.permissoes.map((p) => p.codigo),
+      },
+    };
   }
 
   /**

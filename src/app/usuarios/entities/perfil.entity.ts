@@ -26,7 +26,9 @@ export class PerfilEntity {
   @Column({ type: 'text', nullable: true })
   descricao: string;
 
-  @ManyToMany(() => PermissaoEntity, (permissao) => permissao.perfis)
+  @ManyToMany(() => PermissaoEntity, (permissao) => permissao.perfis, {
+    eager: true,
+  })
   @JoinTable({
     name: 'perfil_permissao',
     joinColumn: { name: 'id_perfil', referencedColumnName: 'id' },

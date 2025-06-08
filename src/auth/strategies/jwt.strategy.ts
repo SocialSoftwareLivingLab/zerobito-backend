@@ -17,15 +17,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<UsuarioAutenticadoDto> {
-    const resultado: UsuarioEntity = await this.authService.validarUsuarioPorId(
+    // Se o payload já contém os dados do perfil, usa eles
+    if (payload.perfil) {
+      return {
+        id: payload.sub,
+        nome: payload.nome,
+        email: payload.email,
+        perfil: payload.perfil,
+      };
+    }
+
+    // Caso contrário, busca os dados completos (fallback para tokens antigos)
+    const dadosCompletos = await this.authService.buscarDadosCompletosUsuario(
       payload.sub,
     );
 
-    return {
-      id: resultado.id,
-      nome: resultado.nome,
-      email: resultado.email,
-      perfil: resultado.permissao,
-    };
+    return dadosCompletos;
   }
 }

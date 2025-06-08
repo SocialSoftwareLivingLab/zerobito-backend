@@ -4,5 +4,9 @@ export class UsuarioAutenticadoDto {
   id: number;
   nome: string;
   email: string;
-  perfil: PerfilUsuario;
+  perfil?: {
+    codigo: string;
+    nome: string;
+    permissoes: string[];
+  };
 }

@@ -27,10 +27,7 @@ export class UsuarioEntity {
   @Column()
   senha: string;
 
-  @Column({ name: 'perfil_usuario', enum: PerfilUsuario, type: 'enum' })
-  permissao: PerfilUsuario;
-
-  @ManyToOne(() => PerfilEntity)
+  @ManyToOne(() => PerfilEntity, { eager: true })
   @JoinColumn({ name: 'id_perfil' })
   perfil: PerfilEntity;
 
