@@ -1,4 +1,3 @@
-import { PerfilUsuario } from '@/app/usuarios/enums/perfil-usuario.enum';
 import { UsuarioEntity } from '@/app/usuarios/usuarios.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,7 +16,6 @@ export class BuscarCoordenadorUseCase {
     const result = await this.usuarioRepository.find({
       where: {
         nome: ILike(`%${nome || ''}%`),
-        permissao: PerfilUsuario.COORDENADOR,
       },
       select: ['id', 'nome', 'email', 'dataCriacao'],
       take: 20,
@@ -29,7 +27,6 @@ export class BuscarCoordenadorUseCase {
   public async buscarPorId(id: number) {
     const result = await this.usuarioRepository.findOneBy({
       id,
-      permissao: PerfilUsuario.COORDENADOR,
     });
 
     return Optional.ofNullable(result);

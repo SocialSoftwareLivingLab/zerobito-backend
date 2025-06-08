@@ -64,7 +64,6 @@ export class UsuariosController {
       nome: usuario.nome,
       email: usuario.email,
       perfil: usuario.perfil,
-      perfilDetalhado: usuario.perfilDetalhado,
     };
   }
 
