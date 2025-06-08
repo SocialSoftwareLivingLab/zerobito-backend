@@ -45,11 +45,11 @@ Utilizamos o relacionamento `@ManyToMany` nativo do TypeORM, que cria automatica
 2. **PermissoesSeed**: Cria permissões básicas do sistema
 3. **PerfilPermissoesSeed**: Associa permissões aos perfis
 
-### Mapeamento Inicial de Permissões
+### Mapeamento de Permissões por Perfil
 
-- **ROOT**: Todas as permissões
-- **ADMIN**: Permissões administrativas (menos DELETE de usuários)
-- **COORDENADOR**: Permissões de coordenação de casos
+- **ROOT**: Todas as permissões do sistema (acesso total)
+- **ADMIN**: Permissões administrativas completas (exceto criar outros admins)
+- **COORDENADOR**: Permissões de coordenação e gestão de casos
 - **USER**: Permissões básicas de visualização e criação de ocorrências
 
 ## Serviços
@@ -63,10 +63,12 @@ Utilizamos o relacionamento `@ManyToMany` nativo do TypeORM, que cria automatica
 ## Guards e Decorators
 
 ### @Permissao
-Novo decorator para verificar permissões específicas:
+Novo decorator para verificar permissões específicas com type safety:
 
 ```typescript
-@Permissao('USERS_CREATE', 'USERS_UPDATE')
+import { PermissaoEnum } from './enums/permissoes.enum';
+
+@Permissao(PermissaoEnum.USUARIOS_CRIAR, PermissaoEnum.USUARIOS_ATUALIZAR)
 async criarUsuario() {
   // Só executa se o usuário tiver uma das permissões
 }
@@ -74,6 +76,50 @@ async criarUsuario() {
 
 ### PermissaoGuard
 Guard que valida se o usuário autenticado possui as permissões necessárias baseado no seu perfil.
+
+## Sistema de Permissões RBAC
+
+### Formato das Permissões
+As permissões seguem o padrão RBAC: `recurso:acao-especifica`
+- Exemplos específicos do sistema:
+  - `sistema:criar-admin`
+  - `ocorrencias:visualizar`, `ocorrencias:aceitar`, `ocorrencias:nao-incorporar`
+  - `casos:visualizar-todos`, `casos:alterar-data-obito`, `casos:definir-causa-primaria`
+  - `casos:ver-notificacoes`, `casos:enviar-convite-membro`
+
+### Permissões Implementadas
+**Sistema/Administração:**
+- `sistema:criar-admin`
+
+**Ocorrências:**
+- `ocorrencias:visualizar`, `ocorrencias:criar`, `ocorrencias:aceitar`, `ocorrencias:nao-incorporar`
+
+**Casos - Dados Básicos:**
+- `casos:visualizar-todos`
+- `casos:alterar-data-obito`, `casos:alterar-data-acidente`
+- `casos:definir-causa-primaria`, `casos:definir-causa-secundaria`
+- `casos:definir-diagnostico`, `casos:definir-comentarios`, `casos:definir-localizacao`
+
+**Casos - Configuração:**
+- `casos:cadastrar-causas`, `casos:cadastrar-diagnosticos`
+
+**Casos - Notificações:**
+- `casos:ver-notificacoes`, `casos:registrar-notificacao`, `casos:cadastrar-tipos-notificacao`
+
+**Casos - Membros:**
+- `casos:enviar-convite-membro`
+
+### Enums e Type Safety
+- **PermissaoEnum**: Enum com todas as permissões específicas do sistema
+
+```typescript
+// Exemplo de uso com type safety
+import { PermissaoEnum } from './enums/permissoes.enum';
+
+// Uso direto do enum
+@Permissao(PermissaoEnum.CASOS_ALTERAR_DATA_OBITO)
+@Permissao(PermissaoEnum.OCORRENCIAS_ACEITAR, PermissaoEnum.OCORRENCIAS_NAO_INCORPORAR)
+```
 
 ## Compatibilidade
 

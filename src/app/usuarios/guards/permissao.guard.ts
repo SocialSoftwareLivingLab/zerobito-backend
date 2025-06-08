@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { PERMISSAO_KEY } from '../decorators/permissao.decorator';
 import { PerfisService } from '../services/perfis.service';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { PermissaoEnum } from '../enums/permissoes.enum';
 
 @Injectable()
 export class PermissaoGuard implements CanActivate {
@@ -12,10 +13,9 @@ export class PermissaoGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredPermissions = this.reflector.getAllAndOverride<string[]>(
-      PERMISSAO_KEY,
-      [context.getHandler(), context.getClass()],
-    );
+    const requiredPermissions = this.reflector.getAllAndOverride<
+      PermissaoEnum[]
+    >(PERMISSAO_KEY, [context.getHandler(), context.getClass()]);
 
     if (!requiredPermissions) {
       return true;
@@ -28,7 +28,6 @@ export class PermissaoGuard implements CanActivate {
       return false;
     }
 
-    // Buscar o perfil do usuário para obter o ID
     const perfilOptional = await this.perfisService.buscarPerfilPorCodigo(
       user.perfil,
     );
@@ -38,7 +37,6 @@ export class PermissaoGuard implements CanActivate {
 
     const perfil = perfilOptional.get();
 
-    // Verificar se o usuário tem pelo menos uma das permissões requeridas
     for (const permission of requiredPermissions) {
       const hasPermission = await this.perfisService.verificarPermissao(
         perfil.id,

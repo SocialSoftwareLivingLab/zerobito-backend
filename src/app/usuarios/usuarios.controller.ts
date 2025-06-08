@@ -6,6 +6,8 @@ import {
   CriarUsuarioResponseDto,
 } from './dtos/criar-usuario.dto';
 import { PerfilUsuario } from './enums/perfil-usuario.enum';
+import { Permissao } from './decorators/permissao.decorator';
+import { PermissaoEnum } from './enums/permissoes.enum';
 
 // TODO: Adicionar funcionalidade de cadastro quando o admin conseguir criar usuários na plataforma
 // @ApiBearerAuth()
@@ -24,7 +26,8 @@ export class UsuariosController {
     description: 'Usuário criado',
   })
   // @Protegido()
-  // @Perfil(PerfilUsuario.ADMIN)
+  // @Perfil(PerfilUsuario.ADMIN) // Antigo sistema baseado em enum
+  @Permissao(PermissaoEnum.SISTEMA_CRIAR_ADMIN) // Novo sistema RBAC específico
   public async adicionar(
     @Body() body: CriarUsuarioRequestDto,
   ): Promise<CriarUsuarioResponseDto> {
