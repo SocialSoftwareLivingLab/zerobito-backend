@@ -8,6 +8,7 @@ import { PermissaoEntity } from './entities/permissao.entity';
 import PerfisSeed from './seeds/perfis.seed';
 import PermissoesSeed from './seeds/permissoes.seed';
 import PerfilPermissoesSeed from './seeds/perfil-permissoes.seed';
+import PerfisCasoSeed from './seeds/perfis-caso.seed';
 import UsuarioAdministradorSeed from './seeds/usuario-administrador.seed';
 import { PerfisService } from './services/perfis.service';
 import { PermissaoGuard } from '@/auth/guards/permissao.guard';
@@ -23,6 +24,7 @@ import { PermissaoGuard } from '@/auth/guards/permissao.guard';
     PerfisSeed,
     PermissoesSeed,
     PerfilPermissoesSeed,
+    PerfisCasoSeed,
     UsuarioAdministradorSeed,
     PermissaoGuard,
   ],
@@ -32,6 +34,7 @@ import { PermissaoGuard } from '@/auth/guards/permissao.guard';
     PerfisSeed,
     PermissoesSeed,
     PerfilPermissoesSeed,
+    PerfisCasoSeed,
     UsuarioAdministradorSeed,
     PermissaoGuard,
   ],

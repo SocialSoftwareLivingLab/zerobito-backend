@@ -18,6 +18,7 @@ import { eventEmitterConfig } from './config/events.config';
 import { EmailModule } from './shared/email/email.module';
 import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejamento.module';
 import { PermissaoGuard } from './auth/guards/permissao.guard';
+import { PermissaoCasoGuard } from './app/casos/guards/permissao-caso.guard';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { PermissaoGuard } from './auth/guards/permissao.guard';
   providers: [
     { provide: APP_GUARD, useClass: ProtegidoGuard },
     { provide: APP_GUARD, useClass: PermissaoGuard },
+    { provide: APP_GUARD, useClass: PermissaoCasoGuard },
     AppService,
   ],
 })

@@ -1,5 +1,6 @@
 import CasoEntity from '@/app/casos/entities/caso.entity';
 import { UsuarioEntity } from '@/app/usuarios/usuarios.entity';
+import { PerfilEntity } from '@/app/usuarios/entities/perfil.entity';
 import {
   Column,
   CreateDateColumn,
@@ -29,6 +30,12 @@ export default class MembroGrupoTrabalhoEntity {
 
   @ManyToOne(() => StatusMembroGrupoTrabalhoEntity)
   status: StatusMembroGrupoTrabalhoEntity;
+
+  @ManyToOne(() => PerfilEntity, {
+    eager: true,
+    nullable: true,
+  })
+  perfil?: PerfilEntity;
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataVinculo: Date;
