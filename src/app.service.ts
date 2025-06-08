@@ -10,6 +10,7 @@ import StatusConviteGrupoTrabalhoSeed from './app/casos-grupo-trabalho/seeds/sta
 import PerfisSeed from './app/usuarios/seeds/perfis.seed';
 import PermissoesSeed from './app/usuarios/seeds/permissoes.seed';
 import PerfilPermissoesSeed from './app/usuarios/seeds/perfil-permissoes.seed';
+import UsuarioAdministradorSeed from './app/usuarios/seeds/usuario-administrador.seed';
 
 @Injectable()
 export default class AppService implements OnApplicationBootstrap {
@@ -25,6 +26,7 @@ export default class AppService implements OnApplicationBootstrap {
     private readonly perfisSeed: PerfisSeed,
     private readonly permissoesSeed: PermissoesSeed,
     private readonly perfilPermissoesSeed: PerfilPermissoesSeed,
+    private readonly usuarioAdministradorSeed: UsuarioAdministradorSeed,
   ) {}
 
   async onApplicationBootstrap() {
@@ -40,6 +42,7 @@ export default class AppService implements OnApplicationBootstrap {
       this.perfisSeed,
       this.permissoesSeed,
       this.perfilPermissoesSeed,
+      this.usuarioAdministradorSeed,
     ];
 
     runners.forEach((runner) => runner.run());
