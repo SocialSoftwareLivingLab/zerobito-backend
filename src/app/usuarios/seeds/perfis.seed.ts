@@ -42,17 +42,67 @@ export default class PerfisSeed implements SeedRunner {
   ) {}
 
   async run() {
-    this.logger.log('Seed da tabela "perfil"...');
+    this.logger.log('Sincronizando perfis com o enum...');
 
-    const quantidade = await this.perfilRepository.count();
-    if (quantidade > 0) return;
+    // Buscar perfis existentes na base
+    const perfisExistentes = await this.perfilRepository.find();
 
-    this.logger.log('Criando perfis iniciais baseados no enum');
+    let perfisCriados = 0;
+    let perfisAtualizados = 0;
 
+    // Processar cada perfil do mapeamento
     for (const perfilData of perfis) {
-      const perfil = this.perfilRepository.create(perfilData);
-      await this.perfilRepository.save(perfil);
-      this.logger.log(`Perfil "${perfilData.nome}" criado com sucesso`);
+      const perfilExistente = perfisExistentes.find(
+        (p) => p.codigo === perfilData.codigo,
+      );
+
+      if (perfilExistente) {
+        // Atualizar se necessário
+        let precisaAtualizar = false;
+
+        if (perfilExistente.nome !== perfilData.nome) {
+          perfilExistente.nome = perfilData.nome;
+          precisaAtualizar = true;
+        }
+
+        if (perfilExistente.descricao !== perfilData.descricao) {
+          perfilExistente.descricao = perfilData.descricao;
+          precisaAtualizar = true;
+        }
+
+        if (perfilExistente.isPerfilCaso !== perfilData.isPerfilCaso) {
+          perfilExistente.isPerfilCaso = perfilData.isPerfilCaso;
+          precisaAtualizar = true;
+        }
+
+        if (precisaAtualizar) {
+          await this.perfilRepository.save(perfilExistente);
+          perfisAtualizados++;
+          this.logger.log(`Perfil "${perfilData.nome}" atualizado`);
+        }
+      } else {
+        // Criar novo perfil
+        const novoPerfil = this.perfilRepository.create(perfilData);
+        await this.perfilRepository.save(novoPerfil);
+        perfisCriados++;
+        this.logger.log(`Perfil "${perfilData.nome}" criado com sucesso`);
+      }
     }
+
+    // Verificar perfis órfãos (existem na base mas não no enum)
+    const codigosMapeamento = new Set(perfis.map((p) => p.codigo));
+    const perfisOrfaos = perfisExistentes.filter(
+      (p) => !codigosMapeamento.has(p.codigo as any),
+    );
+
+    if (perfisOrfaos.length > 0) {
+      this.logger.warn(
+        `${perfisOrfaos.length} perfis órfãos encontrados na base: ${perfisOrfaos.map((p) => p.codigo).join(', ')}`,
+      );
+    }
+
+    this.logger.log(
+      `Sincronização concluída: ${perfisCriados} criados, ${perfisAtualizados} atualizados`,
+    );
   }
 }
