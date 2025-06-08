@@ -17,10 +17,8 @@ import { PerfilGuard } from './guards/perfil.guard';
     UsuariosModule,
     PassportModule,
     JwtModule.register({
-      privateKey: process.env.JWT_SECRET,
-      signOptions: {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
   providers: [

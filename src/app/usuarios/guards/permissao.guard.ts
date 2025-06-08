@@ -28,6 +28,17 @@ export class PermissaoGuard implements CanActivate {
       return false;
     }
 
+    // Usar dados do perfil do JWT se disponíveis
+    if (user.perfilDetalhado?.permissoes) {
+      for (const permission of requiredPermissions) {
+        if (user.perfilDetalhado.permissoes.includes(permission)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Fallback: buscar no banco de dados
     const perfilOptional = await this.perfisService.buscarPerfilPorCodigo(
       user.perfil,
     );

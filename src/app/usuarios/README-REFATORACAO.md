@@ -1,56 +1,63 @@
 # Refatoração do Sistema de Usuários
 
+Este documento descreve a refatoração implementada para o sistema de usuários, introduzindo perfis e permissões estruturados.
+
 ## Visão Geral
 
-Esta refatoração implementa um sistema de perfis e permissões mais flexível, mantendo compatibilidade com o enum `PerfilUsuario` existente.
+A refatoração implementa um sistema RBAC (Role-Based Access Control) completo mantendo compatibilidade com o sistema anterior baseado em enum.
 
-## Estrutura Implementada
+## Estrutura do Banco de Dados
 
-### Entidades
+### Tabelas Criadas
+- `perfil`: Perfis de usuário (ROOT, ADMIN, USER, COORDENADOR)
+- `permissao`: Permissões específicas do sistema
+- `perfil_permissao`: Relacionamento Many-to-Many entre perfis e permissões (criada automaticamente pelo TypeORM)
 
-1. **PerfilEntity** (`perfil`)
-   - `id`: Chave primária
-   - `codigo`: Código único (corresponde aos valores do enum `PerfilUsuario`)
-   - `isPerfilCaso`: Booleano indicando se é um perfil específico para casos
-   - `nome`: Nome descritivo do perfil
-   - `descricao`: Descrição detalhada (opcional)
-   - `permissoes`: Relacionamento many-to-many com permissões
+### Tabela Atualizada
+- `usuario`: Adicionado campo `id_perfil` (opcional, mantendo `perfil_usuario` enum para compatibilidade)
 
-2. **PermissaoEntity** (`permissao`)
-   - `id`: Chave primária
-   - `codigo`: Código único da permissão
-   - `nome`: Nome descritivo
-   - `descricao`: Descrição detalhada (opcional)
-   - `perfis`: Relacionamento many-to-many com perfis
+## Entidades
 
-3. **UsuarioEntity** (atualizada)
-   - Mantém o campo `permissao` (enum) para compatibilidade
-   - Adiciona campo `perfil` (relacionamento com PerfilEntity)
+### PerfilEntity
+Representa os perfis de usuário no sistema:
+- `id`: Identificador único
+- `codigo`: Código do perfil (baseado no enum PerfilUsuario)
+- `nome`: Nome descritivo do perfil
+- `descricao`: Descrição detalhada
+- `isPerfilCaso`: Indica se é um perfil específico para casos
+- `permissoes`: Relacionamento Many-to-Many com PermissaoEntity
 
-### Relacionamento Many-to-Many
+### PermissaoEntity
+Representa as permissões específicas:
+- `id`: Identificador único
+- `codigo`: Código da permissão no formato RBAC (ex: `usuarios:criar`)
+- `nome`: Nome descritivo
+- `descricao`: Descrição detalhada
+- `perfis`: Relacionamento Many-to-Many com PerfilEntity
 
-Utilizamos o relacionamento `@ManyToMany` nativo do TypeORM, que cria automaticamente a tabela de junção `perfil_permissao` com as colunas:
-- `id_perfil`
-- `id_permissao`
+### UsuarioEntity
+Atualizada para incluir:
+- `perfil`: Relacionamento Many-to-One com PerfilEntity
+- `permissao`: Campo enum mantido para compatibilidade
 
-**Vantagens dessa abordagem:**
-- Não precisamos de uma entidade separada para a tabela de junção
-- O TypeORM gerencia automaticamente o relacionamento
-- Código mais limpo e simples
-- Queries mais eficientes
+## Seeds
 
-## Seeds Implementados
+### PerfisSeed
+Cria os perfis baseados no enum `PerfilUsuario`:
+- ROOT: Privilégios de sistema completos
+- ADMIN: Privilégios administrativos
+- USER: Perfil básico
+- COORDENADOR: Perfil de coordenação de casos
 
-1. **PerfisSeed**: Cria os perfis baseados no enum existente
-2. **PermissoesSeed**: Cria permissões básicas do sistema
-3. **PerfilPermissoesSeed**: Associa permissões aos perfis
+### PermissoesSeed
+Cria as 18 permissões específicas organizadas por módulos funcionais.
 
-### Mapeamento de Permissões por Perfil
-
-- **ROOT**: Todas as permissões do sistema (acesso total)
-- **ADMIN**: Permissões administrativas completas (exceto criar outros admins)
-- **COORDENADOR**: Permissões de coordenação e gestão de casos
-- **USER**: Permissões básicas de visualização e criação de ocorrências
+### PerfilPermissoesSeed
+Associa as permissões aos perfis conforme requisitos específicos:
+- ROOT: 18 permissões (acesso total)
+- ADMIN: 17 permissões (não pode criar outros admins)
+- COORDENADOR: 14 permissões (foco em coordenação)
+- USER: 5 permissões básicas
 
 ## Serviços
 
@@ -112,35 +119,130 @@ As permissões seguem o padrão RBAC: `recurso:acao-especifica`
 ### Enums e Type Safety
 - **PermissaoEnum**: Enum com todas as permissões específicas do sistema
 
-```typescript
-// Exemplo de uso com type safety
-import { PermissaoEnum } from './enums/permissoes.enum';
+## Integração com JWT
 
-// Uso direto do enum
-@Permissao(PermissaoEnum.CASOS_ALTERAR_DATA_OBITO)
-@Permissao(PermissaoEnum.OCORRENCIAS_ACEITAR, PermissaoEnum.OCORRENCIAS_NAO_INCORPORAR)
+### Token JWT Expandido
+O token JWT agora inclui dados completos de perfil e permissões:
+
+```typescript
+{
+  sub: number,
+  email: string,
+  nome: string, 
+  role: string,
+  perfil: {
+    id: number,
+    codigo: string,
+    nome: string,
+    permissoes: string[]
+  }
+}
+```
+
+### UsuarioAutenticadoDto
+O DTO do usuário autenticado foi expandido:
+
+```typescript
+{
+  id: number,
+  nome: string,
+  email: string,
+  perfil: PerfilUsuario,
+  perfilDetalhado: {
+    id: number,
+    codigo: string,
+    nome: string,
+    permissoes: string[]
+  }
+}
+```
+
+### Métodos de Autenticação
+
+#### AuthService.buscarDadosCompletosUsuario()
+Busca dados completos do usuário incluindo perfil e permissões.
+
+#### AuthService.gerarTokenAutenticacao()
+Atualizado para incluir dados de perfil no token JWT.
+
+### Decorators e Helpers
+
+#### @UsuarioAutenticado
+Decorator para extrair o usuário autenticado nos controllers:
+
+```typescript
+@Get('/perfil')
+@Protegido()
+async obterPerfil(@UsuarioAutenticado() usuario: UsuarioAutenticadoDto) {
+  return usuario;
+}
+```
+
+#### usuarioTemPermissao()
+Função helper para verificar permissões:
+
+```typescript
+const podeCrearAdmin = usuarioTemPermissao(usuario, PermissaoEnum.SISTEMA_CRIAR_ADMIN);
+```
+
+#### obterPermissoesUsuario()
+Função helper para obter todas as permissões:
+
+```typescript
+const permissoes = obterPermissoesUsuario(usuario);
+```
+
+### PermissaoGuard Otimizado
+O guard foi otimizado para usar dados do JWT quando disponíveis, evitando consultas desnecessárias ao banco:
+
+1. **Primeira tentativa**: Usa permissões do JWT
+2. **Fallback**: Consulta banco de dados (compatibilidade com tokens antigos)
+
+### Endpoints de Exemplo
+
+```typescript
+// Obter dados do perfil
+GET /api/v1/usuarios/perfil
+
+// Obter permissões do usuário
+GET /api/v1/usuarios/permissoes
+```
+
+### Vantagens da Integração JWT
+
+1. **Performance**: Permissões disponíveis sem consulta ao banco
+2. **Escalabilidade**: Reduz carga no banco de dados
+3. **Compatibilidade**: Funciona com tokens antigos (fallback automático)
+4. **Type Safety**: Tipos TypeScript para todas as estruturas
+5. **Developer Experience**: Helpers e decorators facilitam uso
+
+## Exemplo de Uso Completo
+
+```typescript
+@Controller('casos')
+export class CasosController {
+  @Get()
+  @Protegido()
+  @Permissao(PermissaoEnum.CASOS_VISUALIZAR_TODOS)
+  async listarCasos(@UsuarioAutenticado() usuario: UsuarioAutenticadoDto) {
+    // Verificar permissão específica usando helper
+    if (usuarioTemPermissao(usuario, PermissaoEnum.CASOS_ALTERAR_DATA_OBITO)) {
+      // Usuário pode alterar data de óbito
+    }
+    
+    // Obter todas as permissões
+    const permissoes = obterPermissoesUsuario(usuario);
+    
+    return { casos: [], permissoes };
+  }
+}
 ```
 
 ## Compatibilidade
 
-- O enum `PerfilUsuario` é mantido
-- Todas as funcionalidades existentes continuam funcionando
-- O campo `permissao` na entidade de usuário é preservado
-- Transição gradual possível
+O sistema mantém total compatibilidade com:
+- Enum `PerfilUsuario` existente
+- Guards baseados em perfil (`@Perfil`)
+- Tokens JWT antigos (via fallback automático)
 
-## Estrutura de Banco
-
-### Tabelas Criadas
-- `perfil`
-- `permissao` 
-- `perfil_permissao` (tabela de junção automática)
-
-### Tabela Modificada
-- `usuario` (adiciona campo `id_perfil`)
-
-## Próximos Passos (Opcionais)
-
-1. Migrar gradualmente do uso do enum para o sistema de perfis
-2. Adicionar interface administrativa para gerenciar perfis e permissões
-3. Implementar permissões mais granulares conforme necessário
-4. Eventualmente remover o campo `permissao` (enum) quando não for mais necessário 
+Esta implementação garante transição suave mantendo funcionalidade existente. 
