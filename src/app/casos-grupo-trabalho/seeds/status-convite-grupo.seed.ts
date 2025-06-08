@@ -12,7 +12,6 @@ interface StatusType {
 }
 
 const status: StatusType[] = [
-  // { codigo: 'AGUARDANDO_ACEITE', nome: 'Aguardando aceite', descricao: 'Membro foi convidado e convite está pendente' },
   {
     codigo: 'PENDENTE',
     nome: 'Pendente',

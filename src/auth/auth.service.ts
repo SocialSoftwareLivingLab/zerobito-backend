@@ -23,7 +23,6 @@ export class AuthService {
   public async gerarTokenAutenticacao(req: Request): Promise<LoginResponse> {
     const user = req.user;
 
-    // Buscar dados completos do perfil e permissões
     const dadosUsuarioCompletos = await this.buscarDadosCompletosUsuario(
       user.id,
     );

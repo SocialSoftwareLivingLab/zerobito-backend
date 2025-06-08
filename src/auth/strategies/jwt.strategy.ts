@@ -17,7 +17,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<UsuarioAutenticadoDto> {
-    // Se o payload já contém os dados do perfil, usa eles
     if (payload.perfil) {
       return {
         id: payload.sub,
@@ -27,7 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       };
     }
 
-    // Caso contrário, busca os dados completos (fallback para tokens antigos)
     const dadosCompletos = await this.authService.buscarDadosCompletosUsuario(
       payload.sub,
     );

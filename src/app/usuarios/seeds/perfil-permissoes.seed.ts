@@ -74,8 +74,6 @@ const perfilPermissoes = {
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
     PermissaoEnum.OCORRENCIAS_CRIAR,
     PermissaoEnum.CASOS_VISUALIZAR_TODOS,
-    PermissaoEnum.CASOS_DEFINIR_COMENTARIOS,
-    PermissaoEnum.CASOS_VER_NOTIFICACOES,
   ],
 };
 
