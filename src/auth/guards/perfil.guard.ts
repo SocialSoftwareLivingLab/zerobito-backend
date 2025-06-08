@@ -21,7 +21,7 @@ export class PerfilGuard implements CanActivate {
     const user = request.user as UsuarioAutenticadoDto;
 
     // usuários administradores do sistema podem fazer tudo...
-    if (user.perfil === PerfilUsuario.ROOT) {
+    if (user.perfil.codigo === PerfilUsuario.ROOT) {
       return true;
     }
 
@@ -29,7 +29,7 @@ export class PerfilGuard implements CanActivate {
       return true;
     }
 
-    return perfisNecessarios.some((perfil) => user.perfil === perfil);
+    return perfisNecessarios.some((perfil) => user.perfil.codigo === perfil);
   }
 
   private ehPermissaoUserParaQualquerPerfil(
@@ -37,7 +37,7 @@ export class PerfilGuard implements CanActivate {
     perfisNecessarios: PerfilUsuario[],
   ) {
     return (
-      user.perfil !== PerfilUsuario.USER &&
+      user.perfil.codigo !== PerfilUsuario.USER &&
       perfisNecessarios.includes(PerfilUsuario.USER)
     );
   }

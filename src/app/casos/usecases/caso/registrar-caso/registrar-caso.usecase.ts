@@ -80,8 +80,12 @@ export class RegistrarCasoUseCase {
 
     const casoCriado = this.casosRepository.create({
       nome,
-      coordenador,
-      criador,
+      coordenador: {
+        id: coordenador.id,
+      },
+      criador: {
+        id: criador.id,
+      },
       dataCaso,
       dataCriacao: new Date(),
       ocorrencias,

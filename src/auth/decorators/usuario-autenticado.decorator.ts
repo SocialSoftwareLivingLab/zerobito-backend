@@ -17,11 +17,11 @@ export function usuarioTemPermissao(
   usuario: UsuarioAutenticadoDto,
   permissao: string,
 ): boolean {
-  if (!usuario?.perfilDetalhado?.permissoes) {
+  if (!usuario?.perfil?.permissoes) {
     return false;
   }
 
-  return usuario.perfilDetalhado.permissoes.includes(permissao);
+  return usuario.perfil.permissoes.includes(permissao);
 }
 
 /**
@@ -30,5 +30,5 @@ export function usuarioTemPermissao(
 export function obterPermissoesUsuario(
   usuario: UsuarioAutenticadoDto,
 ): string[] {
-  return usuario?.perfilDetalhado?.permissoes || [];
+  return usuario?.perfil?.permissoes || [];
 }
