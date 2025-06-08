@@ -126,18 +126,63 @@ export default class PermissoesSeed implements SeedRunner {
   ) {}
 
   async run() {
-    this.logger.log('Seed da tabela "permissao"...');
+    this.logger.log('Sincronizando permissões com o enum...');
 
-    const quantidade = await this.permissaoRepository.count();
-    if (quantidade > 0) return;
+    // Buscar permissões existentes na base
+    const permissoesExistentes = await this.permissaoRepository.find();
 
-    this.logger.log('Criando permissões básicas do sistema');
+    let permissoesCriadas = 0;
+    let permissoesAtualizadas = 0;
 
+    // Processar cada permissão do mapeamento
     for (const permissaoData of permissoes) {
-      const permissao = this.permissaoRepository.create(permissaoData);
-      await this.permissaoRepository.save(permissao);
-      this.logger.log(`Permissão "${permissaoData.nome}" criada com sucesso`);
+      const permissaoExistente = permissoesExistentes.find(
+        (p) => p.codigo === permissaoData.codigo,
+      );
+
+      if (permissaoExistente) {
+        // Atualizar se necessário
+        let precisaAtualizar = false;
+
+        if (permissaoExistente.nome !== permissaoData.nome) {
+          permissaoExistente.nome = permissaoData.nome;
+          precisaAtualizar = true;
+        }
+
+        if (permissaoExistente.descricao !== permissaoData.descricao) {
+          permissaoExistente.descricao = permissaoData.descricao;
+          precisaAtualizar = true;
+        }
+
+        if (precisaAtualizar) {
+          await this.permissaoRepository.save(permissaoExistente);
+          permissoesAtualizadas++;
+          this.logger.log(`Permissão "${permissaoData.nome}" atualizada`);
+        }
+      } else {
+        // Criar nova permissão
+        const novaPermissao = this.permissaoRepository.create(permissaoData);
+        await this.permissaoRepository.save(novaPermissao);
+        permissoesCriadas++;
+        this.logger.log(`Permissão "${permissaoData.nome}" criada com sucesso`);
+      }
     }
+
+    // Verificar permissões órfãs (existem na base mas não no enum)
+    const codigosMapeamento = new Set(permissoes.map((p) => p.codigo));
+    const permissoesOrfas = permissoesExistentes.filter(
+      (p) => !codigosMapeamento.has(p.codigo as PermissaoEnum),
+    );
+
+    if (permissoesOrfas.length > 0) {
+      this.logger.warn(
+        `${permissoesOrfas.length} permissões órfãs encontradas na base: ${permissoesOrfas.map((p) => p.codigo).join(', ')}`,
+      );
+    }
+
+    this.logger.log(
+      `Sincronização concluída: ${permissoesCriadas} criadas, ${permissoesAtualizadas} atualizadas`,
+    );
   }
 }
 

@@ -89,31 +89,24 @@ export default class PerfilPermissoesSeed implements SeedRunner {
   ) {}
 
   async run() {
-    this.logger.log('Seed dos relacionamentos perfil-permissão...');
-
-    // Verificar se já existem relacionamentos
-    const perfisComPermissoes = await this.perfilRepository.find({
-      relations: ['permissoes'],
-      where: {},
-    });
-
-    const jaTemRelacionamentos = perfisComPermissoes.some(
-      (p) => p.permissoes.length > 0,
-    );
-    if (jaTemRelacionamentos) return;
-
-    this.logger.log('Criando relacionamentos entre perfis e permissões');
+    this.logger.log('Sincronizando relacionamentos perfil-permissão...');
 
     // Buscar todos os perfis e permissões
-    const perfis = await this.perfilRepository.find();
+    const perfis = await this.perfilRepository.find({
+      relations: ['permissoes'],
+    });
     const permissoes = await this.permissaoRepository.find();
 
     // Criar mapeamento de códigos para facilitar busca
     const perfilMap = new Map(perfis.map((p) => [p.codigo, p]));
     const permissaoMap = new Map(permissoes.map((p) => [p.codigo, p]));
 
-    // Criar relacionamentos
-    for (const [codigoPerfil, codigosPermissoes] of Object.entries(
+    let perfisAtualizados = 0;
+    let relacionamentosAdicionados = 0;
+    let relacionamentosRemovidos = 0;
+
+    // Sincronizar relacionamentos para cada perfil
+    for (const [codigoPerfil, codigosPermissoesDesejadas] of Object.entries(
       perfilPermissoes,
     )) {
       const perfil = perfilMap.get(codigoPerfil);
@@ -122,24 +115,76 @@ export default class PerfilPermissoesSeed implements SeedRunner {
         continue;
       }
 
-      // Buscar as permissões para este perfil
-      const permissoesParaPerfil: PermissaoEntity[] = [];
-      for (const codigoPermissao of codigosPermissoes) {
+      // Buscar permissões que devem estar associadas a este perfil
+      const permissoesDesejadas: PermissaoEntity[] = [];
+      const permissoesNaoEncontradas: string[] = [];
+
+      for (const codigoPermissao of codigosPermissoesDesejadas) {
         const permissao = permissaoMap.get(codigoPermissao);
-        if (!permissao) {
-          this.logger.warn(`Permissão ${codigoPermissao} não encontrada`);
-          continue;
+        if (permissao) {
+          permissoesDesejadas.push(permissao);
+        } else {
+          permissoesNaoEncontradas.push(codigoPermissao);
         }
-        permissoesParaPerfil.push(permissao);
       }
 
-      // Associar as permissões ao perfil
-      perfil.permissoes = permissoesParaPerfil;
-      await this.perfilRepository.save(perfil);
+      if (permissoesNaoEncontradas.length > 0) {
+        this.logger.warn(
+          `Permissões não encontradas para perfil ${codigoPerfil}: ${permissoesNaoEncontradas.join(', ')}`,
+        );
+      }
 
-      this.logger.log(
-        `Relacionamentos criados para perfil: ${perfil.nome} (${permissoesParaPerfil.length} permissões)`,
+      // Verificar se precisa atualizar o perfil
+      const permissoesAtuais = perfil.permissoes || [];
+      const idsPermissoesAtuais = new Set(permissoesAtuais.map((p) => p.id));
+      const idsPermissoesDesejadas = new Set(
+        permissoesDesejadas.map((p) => p.id),
       );
+
+      // Verificar se há diferenças
+      const precisaAtualizar =
+        idsPermissoesAtuais.size !== idsPermissoesDesejadas.size ||
+        !Array.from(idsPermissoesDesejadas).every((id) =>
+          idsPermissoesAtuais.has(id),
+        );
+
+      if (precisaAtualizar) {
+        // Calcular diferenças para logging
+        const adicionadas = permissoesDesejadas.filter(
+          (p) => !idsPermissoesAtuais.has(p.id),
+        );
+        const removidas = permissoesAtuais.filter(
+          (p) => !idsPermissoesDesejadas.has(p.id),
+        );
+
+        relacionamentosAdicionados += adicionadas.length;
+        relacionamentosRemovidos += removidas.length;
+
+        // Atualizar relacionamentos
+        perfil.permissoes = permissoesDesejadas;
+        await this.perfilRepository.save(perfil);
+        perfisAtualizados++;
+
+        this.logger.log(
+          `Perfil ${perfil.nome} atualizado: +${adicionadas.length} -${removidas.length} permissões (total: ${permissoesDesejadas.length})`,
+        );
+
+        if (adicionadas.length > 0) {
+          this.logger.debug(
+            `  Adicionadas: ${adicionadas.map((p) => p.codigo).join(', ')}`,
+          );
+        }
+
+        if (removidas.length > 0) {
+          this.logger.debug(
+            `  Removidas: ${removidas.map((p) => p.codigo).join(', ')}`,
+          );
+        }
+      }
     }
+
+    this.logger.log(
+      `Sincronização concluída: ${perfisAtualizados} perfis atualizados, +${relacionamentosAdicionados} -${relacionamentosRemovidos} relacionamentos`,
+    );
   }
 }
