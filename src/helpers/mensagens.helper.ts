@@ -2,6 +2,7 @@ enum Usuario {
   USUARIO_JA_CADASTRADO = 'Usuário já cadastrado',
   USUARIO_NAO_ENCONTRADO = 'Usuário não foi encontrado',
   LOGIN_USUARIO_NAO_ENCONTRADO = 'E-mail e/ou senha inválidos',
+  PERFIL_NAO_ENCONTRADO = 'Perfil não encontrado',
 }
 
 enum Documentos {
