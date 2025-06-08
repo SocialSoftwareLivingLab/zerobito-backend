@@ -6,10 +6,14 @@ export enum PermissaoEnum {
   SISTEMA_CRIAR_ADMIN = 'sistema:criar-admin',
 
   // Ocorrências
+  OCORRENCIAS_VISUALIZAR_TODOS = 'ocorrencias:visualizar-todos',
   OCORRENCIAS_VISUALIZAR = 'ocorrencias:visualizar',
   OCORRENCIAS_CRIAR = 'ocorrencias:criar',
   OCORRENCIAS_ACEITAR = 'ocorrencias:aceitar',
   OCORRENCIAS_NAO_INCORPORAR = 'ocorrencias:nao-incorporar',
+
+  // Coordenadores
+  COORDENADORES_VISUALIZAR = 'coordenadores:visualizar',
 
   // Casos - Visualização e Listagem
   CASOS_VISUALIZAR_TODOS = 'casos:visualizar-todos',

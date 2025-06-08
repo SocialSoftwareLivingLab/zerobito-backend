@@ -1,9 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { PERMISSAO_KEY } from '../decorators/permissao.decorator';
-import { PerfisService } from '../services/perfis.service';
+import { PERMISSAO_KEY } from '@/app/usuarios/decorators/permissao.decorator';
+import { PermissaoEnum } from '@/app/usuarios/enums/permissoes.enum';
+import { PerfisService } from '@/app/usuarios/services/perfis.service';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
-import { PermissaoEnum } from '../enums/permissoes.enum';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class PermissaoGuard implements CanActivate {
@@ -36,25 +36,6 @@ export class PermissaoGuard implements CanActivate {
         }
       }
       return false;
-    }
-
-    const perfilOptional = await this.perfisService.buscarPerfilPorCodigo(
-      user.perfil.codigo,
-    );
-    if (!perfilOptional.isPresent()) {
-      return false;
-    }
-
-    const perfil = perfilOptional.get();
-
-    for (const permission of requiredPermissions) {
-      const hasPermission = await this.perfisService.verificarPermissao(
-        perfil.id,
-        permission,
-      );
-      if (hasPermission) {
-        return true;
-      }
     }
 
     return false;

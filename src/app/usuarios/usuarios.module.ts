@@ -10,7 +10,7 @@ import PermissoesSeed from './seeds/permissoes.seed';
 import PerfilPermissoesSeed from './seeds/perfil-permissoes.seed';
 import UsuarioAdministradorSeed from './seeds/usuario-administrador.seed';
 import { PerfisService } from './services/perfis.service';
-import { PermissaoGuard } from './guards/permissao.guard';
+import { PermissaoGuard } from '@/auth/guards/permissao.guard';
 
 @Module({
   imports: [
@@ -24,6 +24,7 @@ import { PermissaoGuard } from './guards/permissao.guard';
     PermissoesSeed,
     PerfilPermissoesSeed,
     UsuarioAdministradorSeed,
+    PermissaoGuard,
   ],
   exports: [
     UsuariosService,
@@ -32,6 +33,7 @@ import { PermissaoGuard } from './guards/permissao.guard';
     PermissoesSeed,
     PerfilPermissoesSeed,
     UsuarioAdministradorSeed,
+    PermissaoGuard,
   ],
 })
 export class UsuariosModule {}
