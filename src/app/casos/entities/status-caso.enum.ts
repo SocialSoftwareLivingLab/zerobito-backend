@@ -1,10 +1,5 @@
 export enum StatusCasoEnum {
-  // Ordem 1
   AGUARDANDO_NOTIFICACOES = 'AGUARDANDO_NOTIFICACOES',
-
-  // Ordem 2
   EM_PREPARACAO = 'EM_PREPARACAO',
-
-  // Ordem 3
   EM_PLANEJAMENTO = 'EM_PLANEJAMENTO',
 }

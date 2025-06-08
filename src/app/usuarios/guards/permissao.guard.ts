@@ -38,7 +38,6 @@ export class PermissaoGuard implements CanActivate {
       return false;
     }
 
-    // Fallback: buscar no banco de dados
     const perfilOptional = await this.perfisService.buscarPerfilPorCodigo(
       user.perfil.codigo,
     );
