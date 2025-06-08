@@ -8,6 +8,7 @@ import { PermissaoEntity } from './entities/permissao.entity';
 import PerfisSeed from './seeds/perfis.seed';
 import PermissoesSeed from './seeds/permissoes.seed';
 import PerfilPermissoesSeed from './seeds/perfil-permissoes.seed';
+import UsuarioAdministradorSeed from './seeds/usuario-administrador.seed';
 import { PerfisService } from './services/perfis.service';
 import { PermissaoGuard } from './guards/permissao.guard';
 
@@ -22,6 +23,7 @@ import { PermissaoGuard } from './guards/permissao.guard';
     PerfisSeed,
     PermissoesSeed,
     PerfilPermissoesSeed,
+    UsuarioAdministradorSeed,
   ],
   exports: [
     UsuariosService,
@@ -29,6 +31,7 @@ import { PermissaoGuard } from './guards/permissao.guard';
     PerfisSeed,
     PermissoesSeed,
     PerfilPermissoesSeed,
+    UsuarioAdministradorSeed,
   ],
 })
 export class UsuariosModule {}
