@@ -9,7 +9,12 @@ import BuscarReuniaoUseCase from './usecases/buscar-agendamentos/buscar-agendame
 
 @Module({
   imports: [TypeOrmModule.forFeature([AgendamentoReuniaoEntity]), CasosModule],
-  providers: [CasosPlanejamentoService, AgendarReuniaoUsecase, BuscarReuniaoUseCase],
+  providers: [
+    CasosPlanejamentoService,
+    AgendarReuniaoUsecase,
+    BuscarAgendamentosReuniaoPlanejamentoUseCase,
+    BuscarReuniaoUseCase
+  ],
   controllers: [CasosPlanejamentoController]
 })
 export class CasosPlanejamentoModule { }
