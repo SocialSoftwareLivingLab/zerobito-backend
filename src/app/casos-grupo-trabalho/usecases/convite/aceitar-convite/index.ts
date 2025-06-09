@@ -72,6 +72,9 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
       .andWhere('id_status = :statusPendenteId', {
         statusPendenteId: statusPendente.id,
       })
+      .andWhere('id_caso = :idCaso', {
+        idCaso: convite.caso.id
+      })
       .execute();
 
     await this.registrarMembroAoGrupo.registrar({
