@@ -24,6 +24,7 @@ export class AtualizarPrazoAtrasado {
         this.logger.debug('Called every day 1 a.m or when the module starts.');
         const statusAtrasado = 'ATRASADO';
         const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
 
         const tarefas = await this.tarefaRepository.find({relations: ['status']});
 

@@ -12,7 +12,6 @@ import BuscarReuniaoUseCase from './usecases/buscar-agendamentos/buscar-agendame
   providers: [
     CasosPlanejamentoService,
     AgendarReuniaoUsecase,
-    BuscarAgendamentosReuniaoPlanejamentoUseCase,
     BuscarReuniaoUseCase
   ],
   controllers: [CasosPlanejamentoController]

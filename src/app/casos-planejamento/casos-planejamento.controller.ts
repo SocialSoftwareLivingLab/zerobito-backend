@@ -57,15 +57,4 @@ export class CasosPlanejamentoController {
     );
   }
 
-  @ApiOperation({
-    summary: "Buscar agendamentos marcados",
-    description: "Retorna a lista de reuniões agendadas para o caso. A ordenação está definida pela data da reunião, em ordem crescente."
-  })
-  @Get('/casos/:id/planejamento/reunioes')
-  async buscarReunioesAgendadas(
-    @Param('id') idCaso: number,
-  ) {
-    return await this.casosPlanejamentoService.buscarAgendamentos(idCaso);
-  }
-
 }

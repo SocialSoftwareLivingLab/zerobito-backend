@@ -10,7 +10,7 @@ export class CasosPlanejamentoService {
 
   constructor(
     private readonly agendarReuniaoUsecase: AgendarReuniaoUsecase,
-    private readonly buscarReuniaoUseCase: BuscarReuniaoUseCase
+    private readonly buscarReuniaoUseCase: BuscarReuniaoUseCase,
     private readonly buscarAgendamentosUsecase: BuscarAgendamentosReuniaoPlanejamentoUseCase,
   ) {
   }
@@ -30,21 +30,6 @@ export class CasosPlanejamentoService {
     })
 
     return reunioes;
-  public async buscarAgendamentos(idCaso: number): Promise<ReuniaoAgendadaResponse[]> {
-    const reunioesAgendadas = await this.buscarAgendamentosUsecase.buscarTodos({ idCaso });
-
-    return reunioesAgendadas.map(reuniao => {
-      const reuniaoPayloadResponse = new ReuniaoAgendadaResponse();
-      reuniaoPayloadResponse.id = reuniao.id;
-      reuniaoPayloadResponse.dataReuniao = reuniao.data;
-      reuniaoPayloadResponse.dataCriacao = reuniao.dataCriacao;
-
-      reuniaoPayloadResponse.solicitante = {
-        nome: reuniao.solicitante.nome,
-        email: reuniao.solicitante.email,
-      }
-
-      return reuniaoPayloadResponse;
-    })
   }
+
 }
