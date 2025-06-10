@@ -130,6 +130,27 @@ export class CasosGrupoTrabalhoController {
       usuarioAutenticado,
     );
   }
+
+  @ApiOperation({
+    summary: 'Recusar um convite para o grupo de trabalho',
+    description:
+      'Recusa um convite para ingressar no grupo de trabalho de um caso específico',
+  })
+  @ApiNoContentResponse({
+    description: 'Convite recusado com sucesso',
+  })
+  @Protegido()
+  @Post('/grupo-trabalho/convite/:identificador/recusar')
+  public async recusarConvite(
+    @Param('identificador')
+    identificadorConvite: string,
+    @UsuarioAutenticado() usuarioAutenticado: UsuarioAutenticadoDto,
+  ) {
+    await this.casoGrupoTrabalhoService.recusarConvite(
+      identificadorConvite,
+      usuarioAutenticado,
+    );
+  }
   
   @ApiOperation({
     summary: 'Iniciar Planejamento',

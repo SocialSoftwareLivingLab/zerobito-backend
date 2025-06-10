@@ -8,6 +8,7 @@ import { Transactional } from 'typeorm-transactional';
 import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
 import RegistrarAtaReuniaoUseCase from './usecases/salvar-ata-reuniao';
 import EmailConviteMembroGrupoTrabalhoUsecase from './usecases/convite/get-email-convite';
+import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar-convite';
 
 @Injectable()
 export class CasosGrupoTrabalhoService {
@@ -18,6 +19,7 @@ export class CasosGrupoTrabalhoService {
     private readonly iniciarPlanejamentoUseCase: IniciarPlanejamentoUsecase,
     private readonly registrarAtaReuniaoUseCase: RegistrarAtaReuniaoUseCase,
     private readonly emailConviteUsecase: EmailConviteMembroGrupoTrabalhoUsecase,
+    private readonly recusarConviteUseCase: RecusarConviteMembroGrupoTrabalhoUsecase,
   ) {}
 
   public async listar(idCaso: number) {
@@ -66,6 +68,17 @@ export class CasosGrupoTrabalhoService {
     usuarioAutenticado: UsuarioAutenticadoDto,
   ) {
     await this.aceitarConviteUsecase.aceitarConvite({
+      identificadorConvite,
+      usuarioAutenticado,
+    });
+  }
+
+  @Transactional()
+  public async recusarConvite(
+    identificadorConvite: string,
+    usuarioAutenticado: UsuarioAutenticadoDto,
+  ) {
+    await this.recusarConviteUseCase.recusarConvite({
       identificadorConvite,
       usuarioAutenticado,
     });
