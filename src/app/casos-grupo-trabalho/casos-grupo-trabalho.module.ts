@@ -20,6 +20,7 @@ import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
 import AtaReuniaoEntity from './entities/ata-reuniao/ata-reuniao.entity';
 import RegistrarAtaReuniaoUseCase from './usecases/salvar-ata-reuniao';
 import EmailConviteMembroGrupoTrabalhoUsecase from './usecases/convite/get-email-convite';
+import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar-convite';
 
 @Module({
   imports: [
@@ -45,7 +46,8 @@ import EmailConviteMembroGrupoTrabalhoUsecase from './usecases/convite/get-email
     AceitarConviteMembroGrupoTrabalhoUsecase,
     VincularCoordenadorGrupoTrabalhoListener,
     IniciarPlanejamentoUsecase,
-    EmailConviteMembroGrupoTrabalhoUsecase
+    EmailConviteMembroGrupoTrabalhoUsecase,
+    RecusarConviteMembroGrupoTrabalhoUsecase
   ],
   exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed, TypeOrmModule.forFeature([MembroGrupoTrabalhoEntity])],
   controllers: [CasosGrupoTrabalhoController],
