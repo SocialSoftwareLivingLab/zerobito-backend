@@ -3,7 +3,6 @@ import { UsuariosController } from './usuarios.controller';
 import { UsuariosService } from './usuarios.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioEntity } from './usuarios.entity';
-<<<<<<< HEAD
 import { PerfilEntity } from './entities/perfil.entity';
 import { PermissaoEntity } from './entities/permissao.entity';
 import PerfisSeed from './seeds/perfis.seed';
