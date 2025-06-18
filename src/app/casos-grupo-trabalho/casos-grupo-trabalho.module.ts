@@ -21,6 +21,10 @@ import AceitarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/aceitar
 import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
 import { CasosPermissaoService } from '../casos/services/casos-permissao.service';
 import { PerfilEntity } from '../usuarios/entities/perfil.entity';
+import AtaReuniaoEntity from './entities/ata-reuniao/ata-reuniao.entity';
+import RegistrarAtaReuniaoUseCase from './usecases/salvar-ata-reuniao';
+import EmailConviteMembroGrupoTrabalhoUsecase from './usecases/convite/get-email-convite';
+import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar-convite';
 
 @Module({
   imports: [
@@ -30,6 +34,7 @@ import { PerfilEntity } from '../usuarios/entities/perfil.entity';
       MembroGrupoTrabalhoEntity,
       ConviteGrupoTrabalhoEntity,
       PerfilEntity,
+      AtaReuniaoEntity,
     ]),
     CasosModule,
     EmailModule,
@@ -39,15 +44,18 @@ import { PerfilEntity } from '../usuarios/entities/perfil.entity';
     StatusMembroGrupoTrabalhoSeed,
     StatusConviteGrupoTrabalhoSeed,
     RegistrarMembroGrupoUseCase,
+    RegistrarAtaReuniaoUseCase,
     RegistrarConviteParaGrupoUsecase,
     EnviarEmailConviteGrupoUsecase,
     ListarMembrosGrupoUsecase,
     AceitarConviteMembroGrupoTrabalhoUsecase,
     VincularCoordenadorGrupoTrabalhoListener,
     IniciarPlanejamentoUsecase,
+    EmailConviteMembroGrupoTrabalhoUsecase,
+    RecusarConviteMembroGrupoTrabalhoUsecase,
     CasosPermissaoService,
   ],
-  exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed],
+  exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed, TypeOrmModule.forFeature([MembroGrupoTrabalhoEntity])],
   controllers: [CasosGrupoTrabalhoController, MembrosPerfilController],
 })
 export class CasosGrupoTrabalhoModule {}

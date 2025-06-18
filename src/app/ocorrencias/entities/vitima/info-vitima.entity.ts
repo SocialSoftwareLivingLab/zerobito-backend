@@ -2,6 +2,9 @@ import { Column, JoinColumn, ManyToOne } from 'typeorm';
 import { CondicaoVitimaEntity } from './condicao-vitima.entity';
 
 export class InformacoesVitima {
+  @Column({ name: 'info_vitima_quantidade', nullable: true})
+  numero: string;
+  
   @Column({ name: 'info_vitima_nome' })
   nome: string;
 

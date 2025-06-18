@@ -3,6 +3,7 @@ export class MembroGrupoTrabalhoResponse {
   identificador: string;
   nome: string;
   email: string;
+  instituicao: string;
   status: {
     codigo: string;
     nome: string;

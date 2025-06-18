@@ -57,8 +57,30 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
 
     await this.conviteRepository.save(convite);
 
-    // Registrar o membro no grupo de trabalho
-    const novoMembro = await this.registrarMembroAoGrupo.registrar({
+
+    const statusPendente = await this.statusConviteRepository.findOne({
+      where: { codigo: StatusConviteGrupoTrabalhoEnum.PENDENTE },
+    });
+
+
+    // Remove todos os outros convites pendentes para o mesmo email
+    await this.conviteRepository
+      .createQueryBuilder()
+      .delete()
+      .from(ConviteGrupoTrabalhoEntity)
+      .where('emailConvidado = :email', { email: usuarioAutenticado.email })
+      .andWhere('identificador != :identificador', {
+        identificador: convite.identificador,
+      })
+      .andWhere('id_status = :statusPendenteId', {
+        statusPendenteId: statusPendente.id,
+      })
+      .andWhere('id_caso = :idCaso', {
+        idCaso: convite.caso.id
+      })
+      .execute();
+
+    const novoMembro =await this.registrarMembroAoGrupo.registrar({
       idCaso: convite.caso.id,
       membro: {
         id: usuarioAutenticado.id,
@@ -66,6 +88,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
       solicitante: {
         id: convite.criador.id,
       },
+      instituicao: convite.instituicaoConvidado,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
     });
 

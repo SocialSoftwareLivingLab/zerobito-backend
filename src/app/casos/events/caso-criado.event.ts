@@ -9,4 +9,5 @@ export interface CasoCriadoEvent {
   entity: CasoEntity;
   criador: UsuarioAutenticadoDto;
   dataCriacao: Date;
+  instituicao: string;
 }

@@ -6,12 +6,12 @@ import { EmailService } from './email.service';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: process.env.EMAIL_HOST,
-        port: Number(process.env.EMAIL_PORT),
+        host: "sandbox.smtp.mailtrap.io",
+        port: 2525,
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
-        },
+          user: "c398b59713a6ff",
+          pass: "b9c884a27236ac",
+        }
       },
     }),
   ],

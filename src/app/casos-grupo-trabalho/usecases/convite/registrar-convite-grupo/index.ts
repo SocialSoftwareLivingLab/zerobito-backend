@@ -21,6 +21,7 @@ export interface RegistrarConviteParaGrupoUsecaseRequest {
   convidado: {
     nome: string;
     email: string;
+    instituicao: string;
   };
   criador: UsuarioAutenticadoDto;
 }
@@ -58,7 +59,6 @@ export default class RegistrarConviteParaGrupoUsecase {
       emailConvidado: convidado.email,
       status: {
         codigo: In([
-          StatusConviteGrupoTrabalhoEnum.PENDENTE,
           StatusConviteGrupoTrabalhoEnum.ACEITADO,
         ]),
       },
@@ -87,6 +87,7 @@ export default class RegistrarConviteParaGrupoUsecase {
       dataCriacao: new Date(),
       emailConvidado: convidado.email,
       nomeConvidado: convidado.nome,
+      instituicaoConvidado: convidado.instituicao,
       motivo,
       status: statusPendente,
       identificador: uuid(),

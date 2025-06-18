@@ -5,6 +5,10 @@ enum Usuario {
   PERFIL_NAO_ENCONTRADO = 'Perfil não encontrado',
 }
 
+enum Token {
+  TOKEN_INVALIDO = 'O token é inválido e/ou expirou.'
+}
+
 enum Documentos {
   CNPJ_INVALIDO = 'CNPJ inválido',
 }
@@ -54,4 +58,5 @@ export const MensagensHelper = {
   CasosConviteGrupoTrabalho,
   CasosAgendamentoReuniaoPreparacao,
   Notificacoes,
+  Token
 };
