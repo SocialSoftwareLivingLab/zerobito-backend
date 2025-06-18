@@ -22,6 +22,7 @@ export function entityToOcorrenciaResponse(entity: OcorrenciaEntity) {
     sigla: StatusOcorrenciaEnum[entity.status.sigla],
   };
   resultado.vitima = {
+    numero: entity.vitima.numero,
     condicao: CondicaoVitimaOcorrenciaEnum[entity.vitima.condicao.sigla],
     nome: entity.vitima.nome,
     vinculo: entity.vitima.vinculo,

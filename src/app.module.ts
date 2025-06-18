@@ -10,7 +10,7 @@ import { ProtegidoGuard } from './auth/guards/protegido.guard';
 import { CoordenadoresModule } from './app/coordenadores/coordenadores.module';
 import { CasosModule } from './app/casos/casos.module';
 import AppService from './app.service';
-import { addTransactionalDataSource } from 'typeorm-transactional';
+import { addTransactionalDataSource, getDataSourceByName } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { CasosNotificacoesModule } from './app/casos-notificacoes/casos-notificacoes.module';
 import { CasosGrupoTrabalhoModule } from './app/casos-grupo-trabalho/casos-grupo-trabalho.module';
@@ -18,11 +18,14 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { eventEmitterConfig } from './config/events.config';
 import { EmailModule } from './shared/email/email.module';
 import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejamento.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CasosTarefasGrupoTrabalhoModule } from './app/caso-tarefas/tarefas.module';
 
 @Module({
   imports: [
     DiscoveryModule,
     ConfigModule.forRoot(),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory() {
         return {
@@ -38,11 +41,11 @@ import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejam
         } as TypeOrmModuleOptions;
       },
       async dataSourceFactory(options) {
-        if (!options) {
-          throw new Error('Invalid options passed');
+        const dataSource = new DataSource(options);
+        if (!getDataSourceByName('default')) {
+          addTransactionalDataSource(dataSource);
         }
-
-        return addTransactionalDataSource(new DataSource(options));
+        return dataSource.initialize();
       },
     }),
     EventEmitterModule.forRoot(eventEmitterConfig),
@@ -55,6 +58,7 @@ import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejam
     CasosGrupoTrabalhoModule,
     EmailModule,
     CasosPlanejamentoModule,
+    CasosTarefasGrupoTrabalhoModule,
   ],
   controllers: [],
   providers: [
