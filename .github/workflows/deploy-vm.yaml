@@ -33,10 +33,10 @@ jobs:
       - name: Baixar repositório na branch atual
         uses: actions/checkout@v2
 
-      - name: Configurar NodeJS na versão 18
+      - name: Configurar NodeJS na versão 20
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Instalar Dependências
         run: yarn install
@@ -55,7 +55,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
           port: ${{ secrets.SSH_PORT }}
           timeout: 240s
-          source: 'dist/*,package.json'
+          source: 'dist/*,package.json,.nvmrc'
           target: ${{ secrets.SSH_OUTPUT_APP_FOLDER }}
 
       - name: Reinicializar o backend
@@ -68,9 +68,10 @@ jobs:
           script: |
             cd /opt/apps/backend  
             ls -la
-            sudo cp -i package.json ./dist/package.json
+            sudo cp -i package.json ./dist/package.json .nvmrc
             sudo cp -i .env ./dist/.env
             cd /dist
             source ~/.nvm/nvm.sh
+            nvm use 
             yarn
             pm2 restart all

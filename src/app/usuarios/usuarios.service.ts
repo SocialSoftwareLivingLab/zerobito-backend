@@ -15,7 +15,9 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import { PerfilUsuario } from './enums/perfil-usuario.enum';
 import { PerfisService } from './services/perfis.service';
 import AppException from '@/shared/exceptions/app-exception';
-
+import { EnviarEmailRedefinicaoSenhaUsecase } from './usecase';
+import { CriptografiaHelper } from '@/helpers/criptografia.helper';
+import { TokenRedefinicaoSenhaEntity } from './token-redefinicao.entity';
 @Injectable()
 export class UsuariosService {
   private readonly logger = new Logger(UsuariosService.name);
@@ -24,6 +26,11 @@ export class UsuariosService {
     @InjectRepository(UsuarioEntity)
     private readonly usuarioRepository: Repository<UsuarioEntity>,
     private readonly perfisService: PerfisService,
+
+    @InjectRepository(TokenRedefinicaoSenhaEntity)
+    private readonly tokenRepository: Repository<TokenRedefinicaoSenhaEntity>,
+    
+    private readonly enviarEmailRedefinicaoSenhaUsecase: EnviarEmailRedefinicaoSenhaUsecase,
   ) {}
 
   public async adicionar(
@@ -62,5 +69,30 @@ export class UsuariosService {
     const usuario = await this.usuarioRepository.findOneBy(options);
 
     return Optional.ofNullable(usuario);
+  }
+
+  public async enviarEmailRedefinicaoSenha(email: string): Promise<void> {
+    await this.enviarEmailRedefinicaoSenhaUsecase.enviarEmail({ email });
+  }
+
+  public async redefinirSenha(token: string, novaSenha: string): Promise<boolean> {
+    const tokenEntidade = await this.tokenRepository.findOne({
+      where: { token },
+      relations: ['usuario'],
+    });
+
+    if (!tokenEntidade || tokenEntidade.expiracao < new Date()) {
+      throw new PreconditionFailedException(
+        MensagensHelper.Token.TOKEN_INVALIDO,
+      );
+    }
+
+    const usuario = tokenEntidade.usuario;
+    usuario.senha = CriptografiaHelper.gerarHash(novaSenha);
+
+    await this.usuarioRepository.save(usuario);
+    await this.tokenRepository.delete({ id: tokenEntidade.id });
+
+    return true;
   }
 }

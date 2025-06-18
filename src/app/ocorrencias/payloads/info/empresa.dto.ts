@@ -18,6 +18,12 @@ export class EmpresaDto {
   cnpj: string;
 
   @ApiProperty({
+    description: 'CNAE da empresa (sem máscaras)',
+    example: '0000100',
+  })
+  cnae: string;
+
+  @ApiProperty({
     description: 'Informações da empresa tomadora de serviço',
     type: () => TomadoraServicoDto,
   })

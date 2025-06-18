@@ -10,6 +10,7 @@ export class RegistrarCasoRequest {
   local: LocalOcorrencia;
   dataCaso: Date
   ocorrencias: OcorrenciaEntity[];
+  instituicao: string;
 }
 
 export class RegistrarCasoResponse {

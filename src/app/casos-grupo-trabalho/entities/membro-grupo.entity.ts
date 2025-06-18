@@ -19,6 +19,9 @@ export default class MembroGrupoTrabalhoEntity {
   @Column({ name: 'identificador', type: 'uuid' })
   identificador: string;
 
+  @Column({ name: 'instituicao', nullable: true})
+  instituicao: string;
+
   @ManyToOne(() => CasoEntity)
   caso: CasoEntity;
 

@@ -26,7 +26,7 @@ export default class VincularCoordenadorGrupoTrabalhoListener {
 
   @OnEvent(CasoCriadoEventKey)
   public async realizarVinculo(payload: CasoCriadoEvent) {
-    const { id, criador, dataCriacao, entity } = payload;
+    const { id, criador, dataCriacao, entity, instituicao } = payload;
 
     this.logger.log(
       `Vinculando coordenador do caso ${id} para o grupo de trabalho`,
@@ -36,6 +36,7 @@ export default class VincularCoordenadorGrupoTrabalhoListener {
       idCaso: id,
       membro: entity.coordenador,
       solicitante: criador,
+      instituicao: instituicao,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
     });
   }

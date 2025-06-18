@@ -37,6 +37,9 @@ export default class ConviteGrupoTrabalhoEntity {
   @Column({ name: 'convidado_email' })
   emailConvidado: string;
 
+  @Column({ name: 'convidado_instituicao', nullable: true })
+  instituicaoConvidado: string;
+
   @Column()
   motivo: string;
 

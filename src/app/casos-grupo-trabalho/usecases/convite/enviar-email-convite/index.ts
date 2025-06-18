@@ -43,6 +43,7 @@ export default class EnviarEmailConviteGrupoUsecase {
       destinatario: {
         nome: convite.nomeConvidado,
         email: convite.emailConvidado,
+        instituicao: convite.instituicaoConvidado,
       },
       mensagem: `
         Caro(a) ${convite.nomeConvidado},
