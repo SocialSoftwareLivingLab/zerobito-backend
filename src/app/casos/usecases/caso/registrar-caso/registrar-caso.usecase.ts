@@ -28,12 +28,13 @@ export class RegistrarCasoUseCase {
   public async executar(
     request: RegistrarCasoRequest,
   ): Promise<RegistrarCasoResponse> {
-    const { criador } = request;
+    const { criador, instituicao } = request;
 
     const casoSalvo = await this.criarCaso(request);
 
     const eventoCasoCriado: CasoCriadoEvent = {
       criador,
+      instituicao,
       entity: casoSalvo,
       id: casoSalvo.id,
       dataCriacao: casoSalvo.dataCriacao,

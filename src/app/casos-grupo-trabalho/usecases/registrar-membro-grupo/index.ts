@@ -16,6 +16,7 @@ export interface Request {
   solicitante: {
     id: number;
   };
+  instituicao: string;
   statusMembro: StatusMembroGrupoTrabalhoEnum;
 }
 
@@ -32,6 +33,7 @@ export default class RegistrarMembroGrupoUseCase {
     idCaso,
     membro,
     solicitante,
+    instituicao,
     statusMembro,
   }: Request) {
     const identificador = uuid();
@@ -51,6 +53,7 @@ export default class RegistrarMembroGrupoUseCase {
       },
       dataVinculo: new Date(),
       identificador,
+      instituicao,
       membro,
       status,
     });
