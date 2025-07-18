@@ -90,6 +90,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
       },
       instituicao: convite.instituicaoConvidado,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
+      perfilId: 3,
     });
 
     // Atribuir automaticamente o perfil MEMBRO ao novo membro

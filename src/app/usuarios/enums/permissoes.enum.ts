@@ -5,6 +5,7 @@ export enum PermissaoEnum {
   // Sistema/Administração
   SISTEMA_CRIAR_ADMIN = 'sistema:criar-admin',
 
+
   // Ocorrências
   OCORRENCIAS_VISUALIZAR_TODOS = 'ocorrencias:visualizar-todos',
   OCORRENCIAS_VISUALIZAR = 'ocorrencias:visualizar',

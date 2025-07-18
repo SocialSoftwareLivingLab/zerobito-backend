@@ -13,6 +13,7 @@ const perfilPermissoes = {
     // Todas as permissões do sistema (ROOT tem acesso total)
     PermissaoEnum.SISTEMA_CRIAR_ADMIN,
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
+    PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_CRIAR,
     PermissaoEnum.OCORRENCIAS_ACEITAR,
     PermissaoEnum.OCORRENCIAS_NAO_INCORPORAR,
@@ -34,6 +35,7 @@ const perfilPermissoes = {
   [PerfilUsuario.ADMIN]: [
     // Permissões administrativas (sem criar outros admins)
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
+    PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_CRIAR,
     PermissaoEnum.OCORRENCIAS_ACEITAR,
     PermissaoEnum.OCORRENCIAS_NAO_INCORPORAR,
@@ -51,10 +53,12 @@ const perfilPermissoes = {
     PermissaoEnum.CASOS_REGISTRAR_NOTIFICACAO,
     PermissaoEnum.CASOS_CADASTRAR_TIPOS_NOTIFICACAO,
     PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
+    PermissaoEnum.COORDENADORES_VISUALIZAR,
   ],
 
   [PerfilUsuario.USER]: [
     // Permissões básicas de usuário
+    PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
     PermissaoEnum.OCORRENCIAS_CRIAR,
     PermissaoEnum.CASOS_VISUALIZAR_TODOS,
