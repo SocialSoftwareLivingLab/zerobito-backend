@@ -38,7 +38,8 @@ export class AuthService {
 
     return {
       token,
-      usuario: user,
+      usuario: dadosUsuarioCompletos,
+      id: user.id
     } as LoginResponse;
   }
 
