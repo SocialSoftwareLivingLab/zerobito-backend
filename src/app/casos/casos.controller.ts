@@ -64,18 +64,20 @@ export class CasosController {
   }
 
   @ApiOperation({
-    summary: 'Buscar todos os casos sumarizados',
-    description:
-      'Retorna a listagem atual de casos sem paginação e com dados básicos',
+  summary: 'Buscar todos os casos sumarizados por membro',
+  description:
+    'Retorna a listagem de casos onde o usuário informado está vinculado como membro de grupo de trabalho',
   })
-  @Get()
   @ApiOkResponse({
     description: 'Casos encontrados',
     type: CasoResponse,
     isArray: true,
   })
-  public async buscarTodosSumarizados() {
-    return this.casosService.buscarTodosSumarizado();
+  @Get('/membro/:membroId')
+  public async buscarCasosPorMembro(
+    @Param('membroId') membroId: number,
+  ) {
+    return this.casosService.buscarTodosSumarizado(membroId);
   }
 
   @ApiOperation({

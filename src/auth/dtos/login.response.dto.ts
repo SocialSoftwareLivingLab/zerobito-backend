@@ -7,4 +7,7 @@ export class LoginResponse {
 
   @ApiProperty({ description: 'Dados do usuário autenticado na plataforma' })
   usuario: UsuarioAutenticadoDto;
+
+  @ApiProperty({ description: "id do user logado "})
+  id: number
 }
