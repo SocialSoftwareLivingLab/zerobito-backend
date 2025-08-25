@@ -122,7 +122,7 @@ export class CasosPermissaoService {
   async atribuirPerfilMembroAutomatico(idMembro: number): Promise<void> {
     // Buscar o perfil MEMBRO
     const perfilMembro = await this.perfilRepository.findOne({
-      where: { codigo: 'MEMBRO', isPerfilCaso: true },
+      where: { codigo: 'MEMBRO_CASO'},
     });
 
     if (!perfilMembro) {

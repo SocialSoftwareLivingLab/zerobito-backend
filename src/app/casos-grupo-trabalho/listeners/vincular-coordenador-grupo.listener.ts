@@ -38,7 +38,7 @@ export default class VincularCoordenadorGrupoTrabalhoListener {
       solicitante: criador,
       instituicao: instituicao,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
-      perfilId: 2,
+      perfilId: 5,
     });
   }
 }

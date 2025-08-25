@@ -31,6 +31,8 @@ import { ExcluirPalavraChaveUsecase } from './usecases/palavra-chave/excluir-pal
 import AtualizarDataObitoCasoUsecase from './usecases/caso/atualizar-data-obito/atualizar-data-obito.usecase';
 import AtualizarDataCasoUsecase from './usecases/caso/atualizar-data/atualizar-data.usecase';
 import AtualizarStatusCasoUsecase from './usecases/caso/atualizar-status/atualizar-status.usecase';
+import { PerfisService } from '../usuarios/services/perfis.service';
+import { PermissaoEntity } from '../usuarios/entities';
 
 @Module({
   imports: [
@@ -42,12 +44,15 @@ import AtualizarStatusCasoUsecase from './usecases/caso/atualizar-status/atualiz
       OcorrenciaEntity,
       MembroGrupoTrabalhoEntity,
       PerfilEntity,
+      PermissaoEntity,
+      PerfisService,
     ]),
     CoordenadoresModule,
     forwardRef(() => OcorrenciasModule),
   ],
   providers: [
     CausaSeeds,
+    PerfisService,
     DiagnosticosSeeds,
     CasosService,
     PalavraChaveService,
