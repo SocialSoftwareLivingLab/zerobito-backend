@@ -13,6 +13,12 @@ const perfis = [
     isPerfilCaso: false,
   },
   {
+    codigo: PerfilUsuario.ANALISTA_CEREST,
+    nome: 'Analista Cerest',
+    descricao: "Perfil com privilégios de analista",
+    isPerfilCaso: false,
+  },
+  {
     codigo: PerfilUsuario.ROOT,
     nome: 'Root',
     descricao: 'Perfil com privilégios de sistema completos',
@@ -24,6 +30,20 @@ const perfis = [
     descricao: 'Perfil básico de usuário',
     isPerfilCaso: false,
   },
+  {
+    codigo: PerfilUsuario.COORDENADOR_DE_CASO,
+    nome: "Coordenador de caso",
+    descricao: "Perfil de coordenador de caso",
+    isPerfilCaso: true,
+  },
+  {
+    codigo: PerfilUsuario.MEMBRO_CASO,
+    nome: "Membro de caso",
+    descricao: "Perfil de membro de caso",
+    isPerfilCaso: true,
+  },
+
+  
 ];
 
 @Injectable()

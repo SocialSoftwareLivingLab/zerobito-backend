@@ -18,6 +18,7 @@ export enum PermissaoEnum {
 
   // Casos - Visualização e Listagem
   CASOS_VISUALIZAR_TODOS = 'casos:visualizar-todos',
+  CASOS_VISUALIZAR = 'casos:visualizar',
 
   // Casos - Dados Básicos
   CASOS_ALTERAR_DATA_OBITO = 'casos:alterar-data-obito',

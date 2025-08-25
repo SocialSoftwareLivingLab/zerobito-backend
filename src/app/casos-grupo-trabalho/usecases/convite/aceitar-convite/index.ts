@@ -90,12 +90,12 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
       },
       instituicao: convite.instituicaoConvidado,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
-      perfilId: 3,
+      perfilId: 6,
     });
 
     // Atribuir automaticamente o perfil MEMBRO ao novo membro
     await this.casosPermissaoService.atribuirPerfilMembroAutomatico(
-      novoMembro.id,
+      novoMembro.id
     );
   }
 }

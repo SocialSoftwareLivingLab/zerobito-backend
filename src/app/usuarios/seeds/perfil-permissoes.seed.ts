@@ -17,6 +17,7 @@ const perfilPermissoes = {
     PermissaoEnum.OCORRENCIAS_CRIAR,
     PermissaoEnum.OCORRENCIAS_ACEITAR,
     PermissaoEnum.OCORRENCIAS_NAO_INCORPORAR,
+    PermissaoEnum.COORDENADORES_VISUALIZAR,
     PermissaoEnum.CASOS_VISUALIZAR_TODOS,
     PermissaoEnum.CASOS_ALTERAR_DATA_OBITO,
     PermissaoEnum.CASOS_ALTERAR_DATA_ACIDENTE,
@@ -34,6 +35,7 @@ const perfilPermissoes = {
   ],
   [PerfilUsuario.ADMIN]: [
     // Permissões administrativas (sem criar outros admins)
+    PermissaoEnum.SISTEMA_CRIAR_ADMIN,
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
     PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_CRIAR,
@@ -55,14 +57,40 @@ const perfilPermissoes = {
     PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
     PermissaoEnum.COORDENADORES_VISUALIZAR,
   ],
-
   [PerfilUsuario.USER]: [
     // Permissões básicas de usuário
     PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
-    PermissaoEnum.OCORRENCIAS_CRIAR,
     PermissaoEnum.CASOS_VISUALIZAR_TODOS,
   ],
+  [PerfilUsuario.ANALISTA_CEREST]: [
+    PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
+    PermissaoEnum.OCORRENCIAS_VISUALIZAR,
+    PermissaoEnum.OCORRENCIAS_CRIAR,
+    PermissaoEnum.CASOS_VISUALIZAR_TODOS,
+    PermissaoEnum.OCORRENCIAS_ACEITAR,
+    PermissaoEnum.OCORRENCIAS_NAO_INCORPORAR,
+  ],
+  [PerfilUsuario.COORDENADOR_DE_CASO]: [
+    PermissaoEnum.CASOS_VISUALIZAR,
+    PermissaoEnum.CASOS_ALTERAR_DATA_OBITO,
+    PermissaoEnum.CASOS_ALTERAR_DATA_ACIDENTE,
+    PermissaoEnum.CASOS_DEFINIR_CAUSA_PRIMARIA,
+    PermissaoEnum.CASOS_DEFINIR_CAUSA_SECUNDARIA,
+    PermissaoEnum.CASOS_DEFINIR_DIAGNOSTICO,
+    PermissaoEnum.CASOS_DEFINIR_COMENTARIOS,
+    PermissaoEnum.CASOS_DEFINIR_LOCALIZACAO,
+    PermissaoEnum.CASOS_CADASTRAR_CAUSAS,
+    PermissaoEnum.CASOS_CADASTRAR_DIAGNOSTICOS,
+    PermissaoEnum.CASOS_VER_NOTIFICACOES,
+    PermissaoEnum.CASOS_REGISTRAR_NOTIFICACAO,
+    PermissaoEnum.CASOS_CADASTRAR_TIPOS_NOTIFICACAO,
+    PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
+  ],
+  [PerfilUsuario.MEMBRO_CASO]: [
+    PermissaoEnum.CASOS_VISUALIZAR,
+  ]
+
 };
 
 @Injectable()

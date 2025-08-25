@@ -20,9 +20,19 @@ const permissoes = [
     descricao: 'Permissão para visualizar ocorrências do sistema',
   },
   {
+    codigo: PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
+    nome: 'Visualizar Ocorrências',
+    descricao: 'Permissão para visualizar ocorrências do sistema',
+  },
+  {
     codigo: PermissaoEnum.OCORRENCIAS_CRIAR,
     nome: 'Criar Ocorrência',
     descricao: 'Permissão para criar novas ocorrências',
+  },
+  {
+    codigo: PermissaoEnum.COORDENADORES_VISUALIZAR,
+    nome: 'Visualizar Coordenadores',
+    descricao: 'Permissão para visualizar cordenadores do caso',
   },
   {
     codigo: PermissaoEnum.OCORRENCIAS_ACEITAR,
@@ -41,7 +51,6 @@ const permissoes = [
     nome: 'Visualizar Todos os Casos',
     descricao: 'Permissão para visualizar todos os casos criados',
   },
-
   // Casos - Dados Básicos
   {
     codigo: PermissaoEnum.CASOS_ALTERAR_DATA_OBITO,
@@ -114,6 +123,12 @@ const permissoes = [
     nome: 'Enviar Convite para Membro',
     descricao: 'Permissão para enviar convite para um novo membro do caso',
   },
+    {
+    codigo: PermissaoEnum.CASOS_VISUALIZAR,
+    nome: 'Visualizar algum caso',
+    descricao: 'Permissão para visualizar alguns dos casos criados',
+  },
+
 ];
 
 @Injectable()
