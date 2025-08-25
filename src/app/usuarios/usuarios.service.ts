@@ -5,15 +5,19 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { CriarUsuarioRequestDto } from './dtos/criar-usuario.dto';
+import {
+  CriarUsuarioAdminRequestDto,
+  CriarUsuarioComumRequestDto,
+} from './dtos/criar-usuario.dto';
 import { UsuarioEntity } from './usuarios.entity';
 import { Optional } from 'typescript-optional';
 import { MensagensHelper } from '@/helpers/mensagens.helper';
 import { PerfilUsuario } from './enums/perfil-usuario.enum';
+import { PerfisService } from './services/perfis.service';
+import AppException from '@/shared/exceptions/app-exception';
 import { EnviarEmailRedefinicaoSenhaUsecase } from './usecase';
 import { CriptografiaHelper } from '@/helpers/criptografia.helper';
 import { TokenRedefinicaoSenhaEntity } from './token-redefinicao.entity';
-
 @Injectable()
 export class UsuariosService {
   private readonly logger = new Logger(UsuariosService.name);
@@ -21,6 +25,7 @@ export class UsuariosService {
   constructor(
     @InjectRepository(UsuarioEntity)
     private readonly usuarioRepository: Repository<UsuarioEntity>,
+    private readonly perfisService: PerfisService,
 
     @InjectRepository(TokenRedefinicaoSenhaEntity)
     private readonly tokenRepository: Repository<TokenRedefinicaoSenhaEntity>,
@@ -29,7 +34,7 @@ export class UsuariosService {
   ) {}
 
   public async adicionar(
-    body: CriarUsuarioRequestDto,
+    body: CriarUsuarioComumRequestDto | CriarUsuarioAdminRequestDto,
     perfil: PerfilUsuario = PerfilUsuario.USER,
   ): Promise<UsuarioEntity> {
     this.logger.log(`Adicionando usuário ${body}`);
@@ -41,9 +46,16 @@ export class UsuariosService {
       );
     }
 
+    const perfilResult = await this.perfisService.buscarPerfilPorCodigo(perfil);
+    const perfilEntity = perfilResult.orElseThrow(
+      () => new AppException(MensagensHelper.Usuario.PERFIL_NAO_ENCONTRADO),
+    );
+
     const usuario = this.usuarioRepository.create({
       ...body,
-      permissao: perfil,
+      perfil: {
+        id: perfilEntity.id,
+      },
     });
 
     return await this.usuarioRepository.save(usuario);

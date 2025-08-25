@@ -6,8 +6,8 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { Perfil } from '../usuarios/decorators/perfil.decorator';
-import { PerfilUsuario } from '../usuarios/enums/perfil-usuario.enum';
+import { Permissao } from '../usuarios/decorators/permissao.decorator';
+import { PermissaoEnum } from '../usuarios/enums/permissoes.enum';
 import { CoordenadoresService } from './coordenadores.service';
 import ConsultarCoordenadoresResponseDto from './payloads/consulta/consultar-coordenadores.response';
 
@@ -28,7 +28,7 @@ export class CoordenadoresController {
     description: 'Nome do coordenador',
     required: false,
   })
-  @Perfil(PerfilUsuario.USER, PerfilUsuario.COORDENADOR)
+  @Permissao(PermissaoEnum.COORDENADORES_VISUALIZAR)
   public async buscarCoordenadores(
     @Query('nome')
     nome: string,

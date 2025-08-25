@@ -22,6 +22,8 @@ import { EditarInformacoesBasicasRequest } from './payloads/caso/informacoes-bas
 import { DiagnosticoApiResponse } from './payloads/caso/diagnostico.payload';
 import { CausaApiResponse } from './payloads/caso/causa.payload';
 import { EditarLocalizacaoRequest } from './payloads/caso/localizacao.payload';
+import { PermissaoCaso } from './decorators/permissao-caso.decorator';
+import { PermissaoEnum } from '../usuarios/enums/permissoes.enum';
 
 @Protegido()
 @ApiBearerAuth()
@@ -62,18 +64,20 @@ export class CasosController {
   }
 
   @ApiOperation({
-    summary: 'Buscar todos os casos sumarizados',
-    description:
-      'Retorna a listagem atual de casos sem paginação e com dados básicos',
+  summary: 'Buscar todos os casos sumarizados por membro',
+  description:
+    'Retorna a listagem de casos onde o usuário informado está vinculado como membro de grupo de trabalho',
   })
-  @Get()
   @ApiOkResponse({
     description: 'Casos encontrados',
     type: CasoResponse,
     isArray: true,
   })
-  public async buscarTodosSumarizados() {
-    return this.casosService.buscarTodosSumarizado();
+  @Get('/membro/:membroId')
+  public async buscarCasosPorMembro(
+    @Param('membroId') membroId: number,
+  ) {
+    return this.casosService.buscarTodosSumarizado(membroId);
   }
 
   @ApiOperation({
@@ -91,7 +95,7 @@ export class CasosController {
 
   @ApiOperation({
     summary: 'Atualiza data de Óbito',
-    description: 'Edita a data de óbito de um caso'
+    description: 'Edita a data de óbito de um caso',
   })
   @Put('/:id/data-obito')
   public async atualizarDataObito(
@@ -103,13 +107,10 @@ export class CasosController {
 
   @ApiOperation({
     summary: 'Atualiza data',
-    description: 'Edita a data de um caso'
+    description: 'Edita a data de um caso',
   })
   @Put('/:id/data-caso')
-  public async atualizarData(
-    @Param('id') id: number,
-    @Body() payload: Date,
-  ) {
+  public async atualizarData(@Param('id') id: number, @Body() payload: Date) {
     await this.casosService.editarData(id, payload);
   }
 
@@ -118,6 +119,11 @@ export class CasosController {
     description: 'Edita informações básicas de um caso',
   })
   @Put('/:id/informacoes-basicas')
+  @PermissaoCaso(
+    PermissaoEnum.CASOS_DEFINIR_CAUSA_PRIMARIA,
+    PermissaoEnum.CASOS_DEFINIR_CAUSA_SECUNDARIA,
+    PermissaoEnum.CASOS_DEFINIR_DIAGNOSTICO,
+  )
   public async editarInformacoesBasicas(
     @Param('id') id: number,
     @Body() payload: EditarInformacoesBasicasRequest,
@@ -187,7 +193,7 @@ export class CasosController {
 
   @ApiOperation({
     summary: 'Buscar ocorrências',
-    description: 'Busca todas ocorrências de um caso'
+    description: 'Busca todas ocorrências de um caso',
   })
   @Get('/:id/ocorrencias')
   public async listarOcorrenciasCaso(@Param('id') id: number) {

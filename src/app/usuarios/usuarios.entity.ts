@@ -5,10 +5,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { PerfilUsuario } from './enums/perfil-usuario.enum';
+import { PerfilEntity } from './entities/perfil.entity';
 
 @Entity({ name: 'usuario' })
 export class UsuarioEntity {
@@ -24,8 +27,9 @@ export class UsuarioEntity {
   @Column()
   senha: string;
 
-  @Column({ name: 'perfil_usuario', enum: PerfilUsuario, type: 'enum' })
-  permissao: PerfilUsuario;
+  @ManyToOne(() => PerfilEntity, { eager: true })
+  @JoinColumn({ name: 'id_perfil' })
+  perfil: PerfilEntity;
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataCriacao: Date;

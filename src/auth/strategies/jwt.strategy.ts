@@ -1,10 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthService } from '../auth.service';
-import { UsuarioAutenticadoDto } from '../dtos/usuario-autenticado.dto';
-import { UsuarioEntity } from '@/app/usuarios/usuarios.entity';
 import { JwtPayload } from '../dtos/jwt-payload.dto';
-import { Injectable } from '@nestjs/common';
+import { UsuarioAutenticadoDto } from '../dtos/usuario-autenticado.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,15 +16,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<UsuarioAutenticadoDto> {
-    const resultado: UsuarioEntity = await this.authService.validarUsuarioPorId(
+    const dadosCompletos = await this.authService.buscarDadosCompletosUsuario(
       payload.sub,
     );
-
     return {
-      id: resultado.id,
-      nome: resultado.nome,
-      email: resultado.email,
-      perfil: resultado.permissao,
+      id: payload.sub,
+      nome: payload.nome,
+      email: payload.email,
+      perfil: dadosCompletos.perfil,
     };
   }
 }

@@ -61,8 +61,8 @@ export class CasosService {
     await this.atualizarStatusUseCase.executar({ idCaso, status });
   }
 
-  public async buscarTodosSumarizado() {
-    const resultado = await this.consultarCasoUseCase.buscarTodosSumarizado();
+  public async buscarTodosSumarizado(id_membro) {
+    const resultado = await this.consultarCasoUseCase.buscarTodosSumarizado(id_membro);
     return resultado.map((caso) => this.toResponse(caso));
   }
 
