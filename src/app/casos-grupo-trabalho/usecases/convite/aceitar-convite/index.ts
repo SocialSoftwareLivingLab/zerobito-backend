@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import RegistrarMembroGrupoUseCase from '../../registrar-membro-grupo';
 import { StatusMembroGrupoTrabalhoEnum } from '@/app/casos-grupo-trabalho/enum/status-membro.enum';
 import StatusConviteGrupoTrabalhoEntity from '@/app/casos-grupo-trabalho/entities/convite/status-convite-membro.entity';
+import { CasosPermissaoService } from '@/app/casos/services/casos-permissao.service';
 
 export interface AceitarConviteMembroGrupoTrabalhoUsecaseRequest {
   identificadorConvite: string;
@@ -23,6 +24,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
     @InjectRepository(StatusConviteGrupoTrabalhoEntity)
     private readonly statusConviteRepository: Repository<StatusConviteGrupoTrabalhoEntity>,
     private readonly registrarMembroAoGrupo: RegistrarMembroGrupoUseCase,
+    private readonly casosPermissaoService: CasosPermissaoService,
   ) {}
 
   public async aceitarConvite({
@@ -55,6 +57,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
 
     await this.conviteRepository.save(convite);
 
+
     const statusPendente = await this.statusConviteRepository.findOne({
       where: { codigo: StatusConviteGrupoTrabalhoEnum.PENDENTE },
     });
@@ -77,7 +80,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
       })
       .execute();
 
-    await this.registrarMembroAoGrupo.registrar({
+    const novoMembro =await this.registrarMembroAoGrupo.registrar({
       idCaso: convite.caso.id,
       membro: {
         id: usuarioAutenticado.id,
@@ -87,6 +90,12 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
       },
       instituicao: convite.instituicaoConvidado,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
+      perfilId: 6,
     });
+
+    // Atribuir automaticamente o perfil MEMBRO ao novo membro
+    await this.casosPermissaoService.atribuirPerfilMembroAutomatico(
+      novoMembro.id
+    );
   }
 }

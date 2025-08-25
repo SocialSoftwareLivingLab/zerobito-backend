@@ -8,6 +8,10 @@ import CasoEntity from './entities/caso.entity';
 import CausaEntity from './entities/info-basicas/causa.entity';
 import DiagnosticoEntity from './entities/info-basicas/diagnostico.entity';
 import PalavraChaveEntity from './entities/palavra-chave.entity';
+import MembroGrupoTrabalhoEntity from '../casos-grupo-trabalho/entities/membro-grupo.entity';
+import { PerfilEntity } from '../usuarios/entities/perfil.entity';
+import { CasosPermissaoService } from './services/casos-permissao.service';
+import { PermissaoCasoGuard } from './guards/permissao-caso.guard';
 import CausaSeeds from './seeds/causas.seed';
 import DiagnosticosSeeds from './seeds/diagnosticos.seed';
 import { CasosService } from './services/casos.service';
@@ -27,6 +31,8 @@ import { ExcluirPalavraChaveUsecase } from './usecases/palavra-chave/excluir-pal
 import AtualizarDataObitoCasoUsecase from './usecases/caso/atualizar-data-obito/atualizar-data-obito.usecase';
 import AtualizarDataCasoUsecase from './usecases/caso/atualizar-data/atualizar-data.usecase';
 import AtualizarStatusCasoUsecase from './usecases/caso/atualizar-status/atualizar-status.usecase';
+import { PerfisService } from '../usuarios/services/perfis.service';
+import { PermissaoEntity } from '../usuarios/entities';
 
 @Module({
   imports: [
@@ -36,12 +42,17 @@ import AtualizarStatusCasoUsecase from './usecases/caso/atualizar-status/atualiz
       CausaEntity,
       DiagnosticoEntity,
       OcorrenciaEntity,
+      MembroGrupoTrabalhoEntity,
+      PerfilEntity,
+      PermissaoEntity,
+      PerfisService,
     ]),
     CoordenadoresModule,
     forwardRef(() => OcorrenciasModule),
   ],
   providers: [
     CausaSeeds,
+    PerfisService,
     DiagnosticosSeeds,
     CasosService,
     PalavraChaveService,
@@ -60,12 +71,16 @@ import AtualizarStatusCasoUsecase from './usecases/caso/atualizar-status/atualiz
     AtualizarDataObitoCasoUsecase,
     AtualizarDataCasoUsecase,
     AtualizarStatusCasoUsecase,
+    CasosPermissaoService,
+    PermissaoCasoGuard,
   ],
   exports: [
     CasosService,
     CausaSeeds,
     DiagnosticosSeeds,
     ConsultarCasoPorIdUsecase,
+    CasosPermissaoService,
+    PermissaoCasoGuard,
   ],
   controllers: [CasosController],
 })

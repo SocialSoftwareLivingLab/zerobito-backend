@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, Matches } from 'class-validator';
 import { RegexHelper } from 'src/helpers/regex.helper';
 
-export class CriarUsuarioRequestDto {
+export class CriarUsuarioComumRequestDto {
   @ApiProperty({ example: 'Fulano da Silva', description: 'Nome do usuário' })
   @IsNotEmpty({ message: 'Nome é obrigatório' })
   nome: string;
@@ -26,6 +26,15 @@ export class CriarUsuarioRequestDto {
       'Precisa ter 8 dígitos, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial',
   })
   senha: string;
+}
+
+export class CriarUsuarioAdminRequestDto extends CriarUsuarioComumRequestDto {
+  @ApiProperty({
+    example: 'ADMIN',
+    description: 'Perfil do usuário',
+  })
+  @IsNotEmpty({ message: 'Perfil é obrigatório' })
+  perfil: string;
 }
 
 export class CriarUsuarioResponseDto {

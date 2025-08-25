@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { Protegido } from './decorators/protegido.decorator';
 import { LoginDto } from './dtos/login.request.dto';
 import { LoginResponse } from './dtos/login.response.dto';
+import { UsuarioAutenticadoDto } from './dtos/usuario-autenticado.dto';
+import { UsuarioAutenticado } from './decorators/usuario-autenticado.decorator';
 
 @Controller('/api/v1/auth')
 @ApiTags('Autenticacao')
@@ -30,7 +32,7 @@ export class AuthController {
   @Get('/perfil')
   @ApiBearerAuth()
   @ApiOperation({ description: 'Retorna o perfil do usuário autenticado' })
-  public async meuPerfil() {
-    return 'meu perfil';
+  public async meuPerfil(@UsuarioAutenticado() user: UsuarioAutenticadoDto) {
+    return user.perfil;
   }
 }

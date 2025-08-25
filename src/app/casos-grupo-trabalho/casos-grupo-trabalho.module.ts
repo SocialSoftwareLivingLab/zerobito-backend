@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CasosGrupoTrabalhoController } from './casos-grupo-trabalho.controller';
+import { MembrosPerfilController } from './controllers/membros-perfil.controller';
 import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import MembroGrupoTrabalhoEntity from './entities/membro-grupo.entity';
+
 import StatusConviteGrupoTrabalhoEntity from './entities/convite/status-convite-membro.entity';
 import StatusMembroGrupoTrabalhoEntity from './entities/status-membro.entity';
 import VincularCoordenadorGrupoTrabalhoListener from './listeners/vincular-coordenador-grupo.listener';
@@ -17,6 +19,8 @@ import EnviarEmailConviteGrupoUsecase from './usecases/convite/enviar-email-conv
 import { EmailModule } from '@/shared/email/email.module';
 import AceitarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/aceitar-convite';
 import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
+import { CasosPermissaoService } from '../casos/services/casos-permissao.service';
+import { PerfilEntity } from '../usuarios/entities/perfil.entity';
 import AtaReuniaoEntity from './entities/ata-reuniao/ata-reuniao.entity';
 import RegistrarAtaReuniaoUseCase from './usecases/salvar-ata-reuniao';
 import EmailConviteMembroGrupoTrabalhoUsecase from './usecases/convite/get-email-convite';
@@ -29,6 +33,7 @@ import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar
       StatusConviteGrupoTrabalhoEntity,
       MembroGrupoTrabalhoEntity,
       ConviteGrupoTrabalhoEntity,
+      PerfilEntity,
       AtaReuniaoEntity,
     ]),
     CasosModule,
@@ -47,9 +52,10 @@ import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar
     VincularCoordenadorGrupoTrabalhoListener,
     IniciarPlanejamentoUsecase,
     EmailConviteMembroGrupoTrabalhoUsecase,
-    RecusarConviteMembroGrupoTrabalhoUsecase
+    RecusarConviteMembroGrupoTrabalhoUsecase,
+    CasosPermissaoService,
   ],
   exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed, TypeOrmModule.forFeature([MembroGrupoTrabalhoEntity])],
-  controllers: [CasosGrupoTrabalhoController],
+  controllers: [CasosGrupoTrabalhoController, MembrosPerfilController],
 })
 export class CasosGrupoTrabalhoModule {}

@@ -9,6 +9,8 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Permissao } from '../usuarios/decorators/permissao.decorator';
+import { PermissaoEnum } from '../usuarios/enums/permissoes.enum';
 import { OcorrenciasService } from './ocorrencias.service';
 import { AceitarOcorrenciaRequest } from './payloads/aceitar/aceitar-ocorrencia.dto';
 import { CriarOcorrenciaRequest } from './payloads/criar-ocorrencia.dto';
@@ -31,6 +33,7 @@ export class OcorrenciasController {
     description: 'Ocorrência registrada',
   })
   @Post()
+  @Permissao(PermissaoEnum.OCORRENCIAS_CRIAR)
   public async criarOcorrencia(
     @Body() ocorrencia: CriarOcorrenciaRequest,
     @UsuarioAutenticado() usuarioAutenticado: UsuarioAutenticadoDto,
@@ -48,6 +51,7 @@ export class OcorrenciasController {
     description: 'Ocorrências encontradas',
   })
   @Get()
+  @Permissao(PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS)
   public consultarPorFiltro(
     @Query() filtro: FiltroConsultarOcorrenciasDto,
   ): Promise<OcorrenciaDto[]> {
@@ -63,6 +67,7 @@ export class OcorrenciasController {
     description: 'Ocorrência encontrada',
   })
   @Get('/:id')
+  @Permissao(PermissaoEnum.OCORRENCIAS_VISUALIZAR)
   public consultarPorId(@Param('id') id: number): Promise<OcorrenciaDto> {
     return this.ocorrenciasService.consultarPorId(id);
   }
@@ -72,6 +77,7 @@ export class OcorrenciasController {
     description: 'Aceita uma ocorrência',
   })
   @Post('/:id/aceitar')
+  @Permissao(PermissaoEnum.OCORRENCIAS_ACEITAR)
   public aceitar(
     @Param('id') id: number,
     @UsuarioAutenticado() usuario: UsuarioAutenticadoDto,
@@ -85,6 +91,7 @@ export class OcorrenciasController {
     description: 'Vincula uma ocorrência a um caso existente',
   })
   @Post('/:id/vincular')
+  @Permissao(PermissaoEnum.OCORRENCIAS_ACEITAR)
   public async vincular(
     @Param('id') idOcorrencia: number,
     @Body() payload: VincularOcorrenciaCasoPayload,

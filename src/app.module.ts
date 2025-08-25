@@ -5,7 +5,6 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { OcorrenciasModule } from './app/ocorrencias/ocorrencias.module';
 import { UsuariosModule } from './app/usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
-import { PerfilGuard } from './auth/guards/perfil.guard';
 import { ProtegidoGuard } from './auth/guards/protegido.guard';
 import { CoordenadoresModule } from './app/coordenadores/coordenadores.module';
 import { CasosModule } from './app/casos/casos.module';
@@ -18,6 +17,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { eventEmitterConfig } from './config/events.config';
 import { EmailModule } from './shared/email/email.module';
 import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejamento.module';
+import { PermissaoGuard } from './auth/guards/permissao.guard';
+import { PermissaoCasoGuard } from './app/casos/guards/permissao-caso.guard';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CasosTarefasGrupoTrabalhoModule } from './app/caso-tarefas/tarefas.module';
 
@@ -63,7 +64,8 @@ import { CasosTarefasGrupoTrabalhoModule } from './app/caso-tarefas/tarefas.modu
   controllers: [],
   providers: [
     { provide: APP_GUARD, useClass: ProtegidoGuard },
-    { provide: APP_GUARD, useClass: PerfilGuard },
+    { provide: APP_GUARD, useClass: PermissaoGuard },
+    { provide: APP_GUARD, useClass: PermissaoCasoGuard },
     AppService,
   ],
 })
