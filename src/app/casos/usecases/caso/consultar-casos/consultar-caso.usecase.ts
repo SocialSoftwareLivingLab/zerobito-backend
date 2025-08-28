@@ -18,29 +18,30 @@ export class ConsultarCasoUseCase {
 
   // TODO: Criar retorno paginado
   public async buscarTodosSumarizado(membroId: number): Promise<CasoEntity[]> {
-    // 1. Buscar o membro e pegar o perfilId
+    // 1. Buscar o membro e pegar o perfil do USUÁRIO (não o perfil de membro)
     const membro = await this.membroRepoistory.findOne({
       where: { membro: { id: membroId } },
-      relations: ['perfil'],
+      relations: ['membro', 'membro.perfil']
     });
 
-    if (!membro) {
-      return [];
-    }
+    const perfilId = membro.membro.perfil.id;
 
-    const perfilId = membro.perfil.id;
 
-    // 2. Verificar permissões do perfil
+    // 2. Verificar permissões do perfil do usuário
     const permissoes = await this.perfisService.buscarPermissoesDoPerfil(perfilId);
-    
 
     let casos: CasoEntity[];
 
     const nomesPermissoes = permissoes.map((p) => p.codigo);
-    this.logger.debug(`🔑 Permissões do perfil=${perfilId}: ${JSON.stringify(nomesPermissoes)}`);
+    this.logger.debug(
+      `🔑 Permissões do usuário=${membroId}, perfil=${perfilId}: ${JSON.stringify(nomesPermissoes)}`,
+    );
 
     if (nomesPermissoes.includes('casos:visualizar-todos')) {
-      this.logger.log(`✅ Permissão "casos:visualizar-todos" encontrada → buscando TODOS os casos`);
+      this.logger.log(
+        `✅ Permissão "casos:visualizar-todos" encontrada → buscando TODOS os casos`,
+      );
+
       // traz todos os casos
       casos = await this.casoRepository.find({
         order: { id: 'asc' },
@@ -82,9 +83,10 @@ export class ConsultarCasoUseCase {
         select: { caso: { id: true } },
       });
 
-      const casoIds = relacoes.map(r => r.caso.id);
+      const casoIds = relacoes.map((r) => r.caso.id);
 
       if (casoIds.length === 0) {
+        this.logger.debug(`⚠️ Nenhum caso associado ao membroId=${membroId}`);
         return [];
       }
 

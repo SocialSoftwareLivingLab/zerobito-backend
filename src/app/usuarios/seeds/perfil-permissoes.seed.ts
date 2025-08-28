@@ -61,7 +61,6 @@ const perfilPermissoes = {
     // Permissões básicas de usuário
     PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
-    PermissaoEnum.CASOS_VISUALIZAR_TODOS,
   ],
   [PerfilUsuario.ANALISTA_CEREST]: [
     PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
