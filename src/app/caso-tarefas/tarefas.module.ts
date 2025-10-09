@@ -12,12 +12,17 @@ import AtualizarStatusTarefaUsecase from "./usecases/atualizar-status.ts";
 import { CasosTarefasService } from "./tarefas.service";
 import { AtualizarPrazoAtrasado } from "./listeners/verificar-validade-prazo.listener";
 import ListarTarefasCasoUseCase from "./usecases/todas-tarefas";
+import MembroGrupoTrabalhoEntity from "../casos-grupo-trabalho/entities/membro-grupo.entity";
+import EditarTarefaUseCase from "./usecases/editar-tarefa";
+import StatusConclusaoTarefaEntity from "./entities/status-conclusao-tarefa.entity";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
             StatusTarefaEntity,
+            StatusConclusaoTarefaEntity,
             TarefaEntity,
+            MembroGrupoTrabalhoEntity,
         ]),
         CasosGrupoTrabalhoModule,
     ],
@@ -28,6 +33,7 @@ import ListarTarefasCasoUseCase from "./usecases/todas-tarefas";
         ListarTarefasMembrosGrupoUseCase,
         ListarTarefasCasoUseCase,
         AtualizarStatusTarefaUsecase,
+        EditarTarefaUseCase,
         AtualizarPrazoAtrasado,
     ],
     exports: [StatusTarefaSeed],

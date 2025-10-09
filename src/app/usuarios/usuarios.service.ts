@@ -18,6 +18,8 @@ import AppException from '@/shared/exceptions/app-exception';
 import { EnviarEmailRedefinicaoSenhaUsecase } from './usecase';
 import { CriptografiaHelper } from '@/helpers/criptografia.helper';
 import { TokenRedefinicaoSenhaEntity } from './token-redefinicao.entity';
+import UsuarioPerfilEntity from '../usuario-perfil/entities/usuario-perfil.entity';
+import { UsuarioPerfilService } from '../usuario-perfil/entities/usuario-perfil.service';
 @Injectable()
 export class UsuariosService {
   private readonly logger = new Logger(UsuariosService.name);
@@ -26,6 +28,7 @@ export class UsuariosService {
     @InjectRepository(UsuarioEntity)
     private readonly usuarioRepository: Repository<UsuarioEntity>,
     private readonly perfisService: PerfisService,
+    private readonly usuarioPerfilService: UsuarioPerfilService,
 
     @InjectRepository(TokenRedefinicaoSenhaEntity)
     private readonly tokenRepository: Repository<TokenRedefinicaoSenhaEntity>,
@@ -53,12 +56,16 @@ export class UsuariosService {
 
     const usuario = this.usuarioRepository.create({
       ...body,
-      perfil: {
-        id: perfilEntity.id,
-      },
     });
 
-    return await this.usuarioRepository.save(usuario);
+    const user = await this.usuarioRepository.save(usuario)
+
+    await this.usuarioPerfilService.criarPerfilUsuario(
+      usuario.id,
+      perfilEntity.id
+    )
+
+    return user;
   }
 
   public async buscarUsuario(
@@ -66,7 +73,9 @@ export class UsuariosService {
       | FindOptionsWhere<UsuarioEntity>
       | FindOptionsWhere<UsuarioEntity>[],
   ): Promise<Optional<UsuarioEntity>> {
-    const usuario = await this.usuarioRepository.findOneBy(options);
+    const usuario = await this.usuarioRepository.findOne({
+    where: options
+  });
 
     return Optional.ofNullable(usuario);
   }

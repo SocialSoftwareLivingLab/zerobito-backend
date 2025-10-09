@@ -77,7 +77,6 @@ export default class ListarMembrosGrupoUsecase {
         email: membro.membro.email,
         nome: membro.membro.nome,
         instituicao: membro.instituicao,
-        identificador: membro.identificador,
         status: {
           codigo: membro.status.codigo,
           nome: membro.status.nome,

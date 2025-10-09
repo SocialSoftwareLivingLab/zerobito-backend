@@ -83,14 +83,32 @@ export class CasosGrupoTrabalhoController {
       description: 'Registra ata de uma reunião.',
     })
   @Protegido()
-  @Post('/:idCaso/grupo-trabalho/ata')
+  @Post('/:idCaso/grupo-trabalho/ata/:dataReuniao')
   public async registrarAta(
     @Param('idCaso') idCaso: number,
+    @Param('dataReuniao') dataReuniao: string,
     @Body() payload: RegistarAtaRequest,
   ) {
     await this.casoGrupoTrabalhoService.registrarAta(
       idCaso,
+      dataReuniao,
       payload.conteudo,
+    );
+  }
+
+  @ApiOperation({
+      summary: 'Obter ata',
+      description: 'Obtêm ata de uma reunião.',
+    })
+  @Protegido()
+  @Post('/:idCaso/grupo-trabalho/ata/:dataReuniao/obter')
+  public async obterAta(
+    @Param('idCaso') idCaso: number,
+    @Param('dataReuniao') dataReuniao: string,
+  ) {
+    return await this.casoGrupoTrabalhoService.obterAta(
+      idCaso,
+      dataReuniao,
     );
   }
 

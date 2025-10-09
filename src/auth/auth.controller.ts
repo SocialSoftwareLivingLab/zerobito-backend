@@ -33,6 +33,6 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ description: 'Retorna o perfil do usuário autenticado' })
   public async meuPerfil(@UsuarioAutenticado() user: UsuarioAutenticadoDto) {
-    return user.perfil;
+    return user.perfis ?? [];
   }
 }

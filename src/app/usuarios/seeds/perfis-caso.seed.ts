@@ -38,6 +38,7 @@ const perfisCaso = [
       PermissaoEnum.CASOS_REGISTRAR_NOTIFICACAO,
       PermissaoEnum.CASOS_CADASTRAR_TIPOS_NOTIFICACAO,
       PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
+      PermissaoEnum.CASOS_EDITAR_ATA,
     ],
   },
 ];

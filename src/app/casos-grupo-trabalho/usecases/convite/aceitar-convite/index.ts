@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import RegistrarMembroGrupoUseCase from '../../registrar-membro-grupo';
 import { StatusMembroGrupoTrabalhoEnum } from '@/app/casos-grupo-trabalho/enum/status-membro.enum';
 import StatusConviteGrupoTrabalhoEntity from '@/app/casos-grupo-trabalho/entities/convite/status-convite-membro.entity';
-import { CasosPermissaoService } from '@/app/casos/services/casos-permissao.service';
+import { UsuarioPerfilService } from '@/app/usuario-perfil/entities/usuario-perfil.service';
 
 export interface AceitarConviteMembroGrupoTrabalhoUsecaseRequest {
   identificadorConvite: string;
@@ -24,7 +24,7 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
     @InjectRepository(StatusConviteGrupoTrabalhoEntity)
     private readonly statusConviteRepository: Repository<StatusConviteGrupoTrabalhoEntity>,
     private readonly registrarMembroAoGrupo: RegistrarMembroGrupoUseCase,
-    private readonly casosPermissaoService: CasosPermissaoService,
+    private readonly casosPermissaoService: UsuarioPerfilService,
   ) {}
 
   public async aceitarConvite({
@@ -89,13 +89,14 @@ export default class AceitarConviteMembroGrupoTrabalhoUsecase {
         id: convite.criador.id,
       },
       instituicao: convite.instituicaoConvidado,
-      statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
-      perfilId: 6,
+      statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO
     });
 
     // Atribuir automaticamente o perfil MEMBRO ao novo membro
-    await this.casosPermissaoService.atribuirPerfilMembroAutomatico(
-      novoMembro.id
+    await this.casosPermissaoService.criarPerfilUsuario(
+      novoMembro.membro.id,
+      6,
+      novoMembro.caso.id
     );
   }
 }

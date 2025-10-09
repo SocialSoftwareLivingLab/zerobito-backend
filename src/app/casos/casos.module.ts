@@ -10,7 +10,6 @@ import DiagnosticoEntity from './entities/info-basicas/diagnostico.entity';
 import PalavraChaveEntity from './entities/palavra-chave.entity';
 import MembroGrupoTrabalhoEntity from '../casos-grupo-trabalho/entities/membro-grupo.entity';
 import { PerfilEntity } from '../usuarios/entities/perfil.entity';
-import { CasosPermissaoService } from './services/casos-permissao.service';
 import { PermissaoCasoGuard } from './guards/permissao-caso.guard';
 import CausaSeeds from './seeds/causas.seed';
 import DiagnosticosSeeds from './seeds/diagnosticos.seed';
@@ -33,6 +32,8 @@ import AtualizarDataCasoUsecase from './usecases/caso/atualizar-data/atualizar-d
 import AtualizarStatusCasoUsecase from './usecases/caso/atualizar-status/atualizar-status.usecase';
 import { PerfisService } from '../usuarios/services/perfis.service';
 import { PermissaoEntity } from '../usuarios/entities';
+import { UsuarioPerfilService } from '../usuario-perfil/entities/usuario-perfil.service';
+import { UsuarioPerfilModule } from '../usuario-perfil/entities/usuario-perfil.module';
 
 @Module({
   imports: [
@@ -46,8 +47,10 @@ import { PermissaoEntity } from '../usuarios/entities';
       PerfilEntity,
       PermissaoEntity,
       PerfisService,
+      UsuarioPerfilService,
     ]),
     CoordenadoresModule,
+    UsuarioPerfilModule,
     forwardRef(() => OcorrenciasModule),
   ],
   providers: [
@@ -71,15 +74,14 @@ import { PermissaoEntity } from '../usuarios/entities';
     AtualizarDataObitoCasoUsecase,
     AtualizarDataCasoUsecase,
     AtualizarStatusCasoUsecase,
-    CasosPermissaoService,
     PermissaoCasoGuard,
+    UsuarioPerfilService,
   ],
   exports: [
     CasosService,
     CausaSeeds,
     DiagnosticosSeeds,
     ConsultarCasoPorIdUsecase,
-    CasosPermissaoService,
     PermissaoCasoGuard,
   ],
   controllers: [CasosController],

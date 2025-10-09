@@ -19,7 +19,6 @@ export interface Request {
   };
   instituicao: string;
   statusMembro: StatusMembroGrupoTrabalhoEnum;
-  perfilId: Number;
 }
 
 @Injectable()
@@ -39,19 +38,12 @@ export default class RegistrarMembroGrupoUseCase {
     solicitante,
     instituicao,
     statusMembro,
-    perfilId
   }: Request) {
     const identificador = uuid();
 
     const status = await this.statusMembroGrupoRepository.findOne({
       where: {
         codigo: statusMembro.toString(),
-      },
-    });
-
-    const perfil =  await this.perfilRepository.findOne({
-      where: {
-        id: Number(perfilId)
       },
     });
 
@@ -63,12 +55,12 @@ export default class RegistrarMembroGrupoUseCase {
         id: idCaso,
       },
       dataVinculo: new Date(),
-      identificador,
       instituicao,
       membro,
       status,
-      perfil
     });
+
+    //TODO: REGISTRAR PEFIL USUARIO
 
     return this.membroGrupoRepository.save(novoMembro);
   }
