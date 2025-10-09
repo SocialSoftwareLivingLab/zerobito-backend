@@ -15,15 +15,19 @@ import { PermissaoGuard } from '@/auth/guards/permissao.guard';
 import { TokenRedefinicaoSenhaEntity } from './token-redefinicao.entity';
 import { EmailModule } from '@/shared/email/email.module';
 import { EnviarEmailRedefinicaoSenhaUsecase } from './usecase';
+import UsuarioPerfilEntity from '../usuario-perfil/entities/usuario-perfil.entity';
+import { UsuarioPerfilService } from '../usuario-perfil/entities/usuario-perfil.service';
+import CasoEntity from '../casos/entities/caso.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UsuarioEntity, PerfilEntity, PermissaoEntity, TokenRedefinicaoSenhaEntity]),
+    TypeOrmModule.forFeature([UsuarioEntity, PerfilEntity, PermissaoEntity, TokenRedefinicaoSenhaEntity, UsuarioPerfilEntity, CasoEntity]),
     EmailModule
   ],
   controllers: [UsuariosController],
   providers: [
     UsuariosService,
+    UsuarioPerfilService,
     PerfisService,
     PerfisSeed,
     PermissoesSeed,
@@ -32,9 +36,11 @@ import { EnviarEmailRedefinicaoSenhaUsecase } from './usecase';
     UsuarioAdministradorSeed,
     PermissaoGuard,
     EnviarEmailRedefinicaoSenhaUsecase,
+    UsuarioPerfilService,
   ],
   exports: [
     UsuariosService,
+    UsuarioPerfilService,
     PerfisService,
     PerfisSeed,
     PermissoesSeed,

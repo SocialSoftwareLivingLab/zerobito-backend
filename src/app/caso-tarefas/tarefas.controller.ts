@@ -1,5 +1,5 @@
 import { Protegido } from "@/auth/decorators/protegido.decorator";
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CasosTarefasService } from "./tarefas.service";
 import { RegistrarTarefaRequest, TarefaResponse } from "./payloads/tarefa.payload";
@@ -18,62 +18,57 @@ export class CasosTarefasController {
         description: 'Retorna uma lista de tarefas para um membro em determinado grupo de trabalho',
     })
     @ApiOkResponse({
-        description: 'Tarefas de um mebro para o grupo disponíveis.',
+        description: 'Tarefas de um membro do grupo disponíveis.',
         type: TarefaResponse,
         isArray: true,
     })
     @Get('/:idCaso/grupo-trabalho/membros/tarefas/:membroGrupoTrabalhoId')
     public async listarTarefas(
-        @Param('idCaso')
-        idCaso: number,
-        @Param('membroGrupoTrabalhoId')
-        membroGrupoTrabalhoId: number,
+        @Param('idCaso') idCaso: number,
+        @Param('membroGrupoTrabalhoId') membroGrupoTrabalhoId: number,
     ) {
         const response = await this.casoTarefaService.listarTarefa(idCaso, membroGrupoTrabalhoId);
 
         return response.tarefas.map((tarefa) => {
             const tarefaResponse = new TarefaResponse();
             tarefaResponse.comentario = tarefa.comentario;
-            tarefaResponse.identificador = tarefa.identificador;
+            tarefaResponse.id = tarefa.id;
             tarefaResponse.nome = tarefa.nome;
             tarefaResponse.prazo = tarefa.prazo;
             tarefaResponse.status = tarefa.status;
-
             return tarefaResponse;
         });
     }
 
     @ApiOperation({
-        summary: 'Listar todas as tarefas para um membro de um grupo de trabalho',
-        description: 'Retorna uma lista de tarefas para um membro em determinado grupo de trabalho',
+        summary: 'Listar todas as tarefas de um caso',
+        description: 'Retorna uma lista de todas as tarefas associadas a um caso',
     })
     @ApiOkResponse({
-        description: 'Tarefas de um mebro para o grupo disponíveis.',
+        description: 'Tarefas do caso disponíveis.',
         type: TarefaResponse,
         isArray: true,
     })
     @Get('/:idCaso/grupo-trabalho/membros/tarefas')
     public async listarTarefasCaso(
-        @Param('idCaso')
-        idCaso: number,
+        @Param('idCaso') idCaso: number,
     ) {
         const response = await this.casoTarefaService.listarTarefaCaso(idCaso);
 
         return response.tarefas.map((tarefa) => {
             const tarefaResponse = new TarefaResponse();
             tarefaResponse.comentario = tarefa.comentario;
-            tarefaResponse.identificador = tarefa.identificador;
+            tarefaResponse.id = tarefa.id;
             tarefaResponse.nome = tarefa.nome;
             tarefaResponse.prazo = tarefa.prazo;
             tarefaResponse.status = tarefa.status;
-
             return tarefaResponse;
         });
     }
 
     @ApiOperation({
         summary: 'Registrar uma tarefa',
-        description: 'Registra um pedido de tarefa para um membro do grupo de trabalho',
+        description: 'Registra uma nova tarefa para um membro do grupo de trabalho',
     })
     @ApiOkResponse({
         description: 'Tarefa registrada com sucesso.'
@@ -92,5 +87,28 @@ export class CasosTarefasController {
         );
     }
 
-    
+    @ApiOperation({
+        summary: 'Editar uma tarefa existente',
+        description: 'Permite atualizar nome, comentário, prazo, status e responsável de uma tarefa existente.',
+    })
+    @ApiOkResponse({
+        description: 'Tarefa editada com sucesso.'
+    })
+    @Put('/:idCaso/grupo-trabalho/membros/tarefas/editar/:idTarefa')
+    public async editarTarefa(
+        @Param('idCaso') idCaso: number,
+        @Param('idTarefa') idTarefa: number,
+        @Body() payload: Partial<RegistrarTarefaRequest> & { statusCodigo?: string } & { statusConclusaoCodigo?: string},
+    ) {
+        return await this.casoTarefaService.editarTarefa(
+            idTarefa,
+            payload.nome,
+            payload.comentario,
+            payload.prazo,
+            payload.statusCodigo,
+            payload.statusConclusaoCodigo,
+            payload.nomeMembro,
+            idCaso,
+        );
+    }
 }

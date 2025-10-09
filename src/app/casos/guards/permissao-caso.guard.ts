@@ -1,15 +1,15 @@
 import { PERMISSAO_CASO_KEY } from '@/app/casos/decorators/permissao-caso.decorator';
+import { UsuarioPerfilService } from '@/app/usuario-perfil/entities/usuario-perfil.service';
 import { PermissaoEnum } from '@/app/usuarios/enums/permissoes.enum';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CasosPermissaoService } from '../services/casos-permissao.service';
 
 @Injectable()
 export class PermissaoCasoGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private casosPermissaoService: CasosPermissaoService,
+    private casosPermissaoService: UsuarioPerfilService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

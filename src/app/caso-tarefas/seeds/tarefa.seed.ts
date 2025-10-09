@@ -4,6 +4,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import StatusTarefaEntity from "../entities/status-tarefa.entity";
 import { Repository } from "typeorm";
 import { Seed } from "@/shared/seeds/seed.decorator";
+import { StatusConclusaoTarefa } from "../enum/status-conclusao-tarefa.enum";
+import StatusConclusaoTarefaEntity from "../entities/status-conclusao-tarefa.entity";
 
 interface StatusType{
     codigo: string;
@@ -29,6 +31,24 @@ const statusTarefa: StatusType[] = [
     }
 ];
 
+const statusConclusao: StatusType[] = [
+    {
+        codigo: 'EXITO',
+        nome: "exito",
+        descricao: 'Ação concluída com êxito.'
+    },
+    {
+        codigo: 'SATISFATORIO',
+        nome: "satisfatorio",
+        descricao: 'Ação concluída de forma satisfatória.'
+    },
+    {
+        codigo: 'SEM_PREVISAO',
+        nome: "sem previsao",
+        descricao: 'Ação sem previsão de conclusão'
+    },
+]
+
 @Seed()
 @Injectable()
 export default class StatusTarefaSeed implements SeedRunner {
@@ -37,6 +57,8 @@ export default class StatusTarefaSeed implements SeedRunner {
     constructor(
         @InjectRepository(StatusTarefaEntity)
         private readonly statusTarefaRepository: Repository<StatusTarefaEntity>,
+        @InjectRepository(StatusConclusaoTarefaEntity)
+        private readonly statusConclusaoTarefaRepository: Repository<StatusConclusaoTarefaEntity>,
     ) {}
 
     public async run() {
@@ -46,20 +68,37 @@ export default class StatusTarefaSeed implements SeedRunner {
 
     private async seedStatus() {
         const quantidade = await this.statusTarefaRepository.count();
+        const quantidade_conc = await this.statusConclusaoTarefaRepository.count();
 
-        if (quantidade > 0) return;
+        if (quantidade <= 0){
 
-        this.logger.log(
-            'Criando primeira listagem de status para as tarefas do grupo de trabalho',
-        );
+            this.logger.log(
+                'Criando primeira listagem de status para as tarefas do grupo de trabalho',
+            );
 
-        for( const statusMapeado of statusTarefa) {
-            const statusEntity = this.statusTarefaRepository.create();
-            statusEntity.codigo = statusMapeado.codigo;
-            statusEntity.nome = statusMapeado.nome;
-            statusEntity.descricao = statusMapeado.descricao;
+            for( const statusMapeado of statusTarefa) {
+                const statusEntity = this.statusTarefaRepository.create();
+                statusEntity.codigo = statusMapeado.codigo;
+                statusEntity.nome = statusMapeado.nome;
+                statusEntity.descricao = statusMapeado.descricao;
 
-            await this.statusTarefaRepository.save(statusEntity);
+                await this.statusTarefaRepository.save(statusEntity);
+            }
+        }
+
+        if (quantidade_conc <= 0){
+            this.logger.log(
+                'Criando primeira listagem de status de conclusão para as tarefas do grupo de trabalho',
+            );
+
+            for( const statusMapeado of statusConclusao) {
+                const statusEntity = this.statusConclusaoTarefaRepository.create();
+                statusEntity.codigo = statusMapeado.codigo;
+                statusEntity.nome = statusMapeado.nome;
+                statusEntity.descricao = statusMapeado.descricao;
+
+                await this.statusConclusaoTarefaRepository.save(statusEntity);
+            }
         }
     }
 

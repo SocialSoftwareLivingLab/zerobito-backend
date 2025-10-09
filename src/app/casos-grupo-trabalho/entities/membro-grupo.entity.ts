@@ -16,9 +16,6 @@ export default class MembroGrupoTrabalhoEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
 
-  @Column({ name: 'identificador', type: 'uuid' })
-  identificador: string;
-
   @Column({ name: 'instituicao', nullable: true})
   instituicao: string;
 
@@ -28,17 +25,12 @@ export default class MembroGrupoTrabalhoEntity {
   @ManyToOne(() => UsuarioEntity)
   membro: UsuarioEntity;
 
+  //TODO: verificar se está sendo utilizado na aplicação.
   @ManyToOne(() => UsuarioEntity)
   criador: UsuarioEntity;
 
   @ManyToOne(() => StatusMembroGrupoTrabalhoEntity)
   status: StatusMembroGrupoTrabalhoEntity;
-
-  @ManyToOne(() => PerfilEntity, {
-    eager: true,
-    nullable: true,
-  })
-  perfil?: PerfilEntity;
 
   @CreateDateColumn({ name: 'data_criacao' })
   dataVinculo: Date;

@@ -9,6 +9,7 @@ import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
 import RegistrarAtaReuniaoUseCase from './usecases/salvar-ata-reuniao';
 import EmailConviteMembroGrupoTrabalhoUsecase from './usecases/convite/get-email-convite';
 import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar-convite';
+import ObterAtaReuniaoUseCase from './usecases/obter-ata-reuniao';
 
 @Injectable()
 export class CasosGrupoTrabalhoService {
@@ -20,6 +21,7 @@ export class CasosGrupoTrabalhoService {
     private readonly registrarAtaReuniaoUseCase: RegistrarAtaReuniaoUseCase,
     private readonly emailConviteUsecase: EmailConviteMembroGrupoTrabalhoUsecase,
     private readonly recusarConviteUseCase: RecusarConviteMembroGrupoTrabalhoUsecase,
+    private readonly obterAtaReuniaoUseCase: ObterAtaReuniaoUseCase,
   ) {}
 
   public async listar(idCaso: number) {
@@ -32,11 +34,23 @@ export class CasosGrupoTrabalhoService {
 
   public async registrarAta(
     idCaso: number,
+    dataReuniao: string,
     payload: string
   ) {
     await this.registrarAtaReuniaoUseCase.registrar({
       idCaso : idCaso,
+      dataReuniao,
       conteudo: payload
+    })
+  }
+
+  public async obterAta(
+    idCaso: number,
+    dataReuniao: string,
+  ){
+    return await this.obterAtaReuniaoUseCase.executar({
+      idCaso: idCaso,
+      dataReuniao: dataReuniao
     })
   }
 
