@@ -10,6 +10,7 @@ import OcorrenciaSeeds from './seeds/ocorrencias.seeds';
 import { AceitarOcorrenciaUseCase } from './usecases/aceitar-ocorrencia/aceitar-ocorrencia.usecase';
 import { BuscarOcorrenciaUseCase } from './usecases/buscar-ocorrencia/buscar-ocorrencia.usecase';
 import { TrocarStatusOcorrenciaUseCase } from './usecases/trocar-status-ocorrencia/trocar-status-ocorrencia.usecase';
+import { AtualizarOcorrenciaUseCase } from './usecases/editar-ocorrencia/editar-ocorrencia.usecase';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TrocarStatusOcorrenciaUseCase } from './usecases/trocar-status-ocorrenc
     AceitarOcorrenciaUseCase,
     BuscarOcorrenciaUseCase,
     TrocarStatusOcorrenciaUseCase,
+    AtualizarOcorrenciaUseCase,
   ],
   controllers: [OcorrenciasController],
   exports: [OcorrenciaSeeds],
