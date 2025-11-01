@@ -68,6 +68,7 @@ const perfilPermissoes = {
     PermissaoEnum.OCORRENCIAS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_VISUALIZAR,
     PermissaoEnum.OCORRENCIAS_CRIAR,
+    PermissaoEnum.OCORRENCIAS_EDITAR,
     PermissaoEnum.CASOS_VISUALIZAR_TODOS,
     PermissaoEnum.OCORRENCIAS_ACEITAR,
     PermissaoEnum.OCORRENCIAS_NAO_INCORPORAR,

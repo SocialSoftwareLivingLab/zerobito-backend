@@ -109,6 +109,7 @@ export class OcorrenciasController {
     description: 'Ocorrência atualizada com sucesso',
   })
   @Patch('/:id')
+  @Permissao(PermissaoEnum.OCORRENCIAS_EDITAR)
   public async atualizarOcorrencia(
     @Param('id') idOcorrencia: number,
     @Body() dadosAtualizacao: AtualizarOcorrenciaRequest,
