@@ -59,6 +59,10 @@ export class VitimaStrategy extends EditarCampoStrategy {
     valor: any,
     repositories: DependenciasRepository,
   ): Promise<void> {
+    if (valor.numero !== undefined) {
+      entity.vitima.numero = String(valor.numero);
+    }
+
     if (valor.nome !== undefined) {
       entity.vitima.nome = valor.nome;
     }
