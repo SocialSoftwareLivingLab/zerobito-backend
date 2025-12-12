@@ -32,6 +32,7 @@ const perfilPermissoes = {
     PermissaoEnum.CASOS_REGISTRAR_NOTIFICACAO,
     PermissaoEnum.CASOS_CADASTRAR_TIPOS_NOTIFICACAO,
     PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
+    PermissaoEnum.CASOS_ALTERAR_MAPA,
   ],
   [PerfilUsuario.ADMIN]: [
     // Permissões administrativas (sem criar outros admins)
@@ -56,6 +57,7 @@ const perfilPermissoes = {
     PermissaoEnum.CASOS_CADASTRAR_TIPOS_NOTIFICACAO,
     PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
     PermissaoEnum.COORDENADORES_VISUALIZAR,
+    PermissaoEnum.CASOS_ALTERAR_MAPA,
   ],
   [PerfilUsuario.USER]: [
     // Permissões básicas de usuário
@@ -86,6 +88,7 @@ const perfilPermissoes = {
     PermissaoEnum.CASOS_CADASTRAR_TIPOS_NOTIFICACAO,
     PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
     PermissaoEnum.CASOS_EDITAR_ATA,
+    PermissaoEnum.CASOS_ALTERAR_MAPA,
   ],
   [PerfilUsuario.MEMBRO_CASO]: [
     PermissaoEnum.CASOS_VISUALIZAR,
