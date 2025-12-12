@@ -4,12 +4,14 @@ import { Expose } from 'class-transformer';
 export class UsuarioAutenticadoDto {
   @Expose()
   id: number;
-  
+
   nome: string;
   email: string;
-  perfil?: {
+
+  @Expose()
+  perfis?: {
     codigo: string;
     nome: string;
     permissoes: string[];
-  };
+  }[];
 }

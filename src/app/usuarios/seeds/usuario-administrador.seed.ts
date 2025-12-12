@@ -60,6 +60,8 @@ export default class UsuarioAdministradorSeed implements SeedRunner {
         PerfilUsuario.ROOT,
       );
 
+      
+
       this.logger.log(
         `Usuário administrador criado com sucesso: ${usuarioAdmin.email}`,
       );

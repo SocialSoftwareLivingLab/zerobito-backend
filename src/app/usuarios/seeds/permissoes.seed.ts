@@ -128,6 +128,17 @@ const permissoes = [
     nome: 'Visualizar algum caso',
     descricao: 'Permissão para visualizar alguns dos casos criados',
   },
+  {
+    codigo: PermissaoEnum.CASOS_EDITAR_ATA,
+    nome: 'Editar ata já existente',
+    descricao: 'Permissão para editar ata já existente.',
+  },
+  {
+    codigo: PermissaoEnum.CASOS_ALTERAR_MAPA,
+    nome: 'EDitar mapa de investigação',
+    descricao: 'Permissão para alterar mapa de investigação'
+  }
+
 
 ];
 

@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import StatusTarefaEntity from "../../entities/status-tarefa.entity";
 import MembroGrupoTrabalhoEntity from "@/app/casos-grupo-trabalho/entities/membro-grupo.entity";
+import StatusConclusaoTarefaEntity from "../../entities/status-conclusao-tarefa.entity";
 
 export interface Request {
     idCaso: number;
@@ -21,6 +22,8 @@ export default class RegistrarTarefaUseCase {
         private readonly tarefaRepository: Repository<TarefaEntity>,
         @InjectRepository(StatusTarefaEntity)
         private readonly statusTarefaRepository: Repository<StatusTarefaEntity>,
+        @InjectRepository(StatusConclusaoTarefaEntity)
+        private readonly statusConclusaoTarefaRepository: Repository<StatusConclusaoTarefaEntity>,
         @InjectRepository(MembroGrupoTrabalhoEntity)
         private readonly membroGrupoTrabalhoRepository: Repository<MembroGrupoTrabalhoEntity>,
     ) {}
@@ -46,6 +49,16 @@ export default class RegistrarTarefaUseCase {
             throw new NotFoundException('Status "EM_ANDAMENTO" não encontrado.');
         }
 
+        const status_conclusao = await this.statusConclusaoTarefaRepository.findOne({
+            where: {
+                codigo: 'SEM_PREVISAO',
+            }
+        })
+
+        if(!status_conclusao){
+            throw new NotFoundException('Status "SEM_PREVISAO" não encontrado.')
+        }
+
         const membroGrupoTrabalho = await this.membroGrupoTrabalhoRepository.findOne({
             where: {
                 caso: { id: idCaso },
@@ -60,11 +73,11 @@ export default class RegistrarTarefaUseCase {
 
         const novaTarefa = this.tarefaRepository.create({
             dataVinculo: new Date(),
-            identificador,
             comentario,
             nome,
             prazo,
             status,
+            status_conclusao,
             membroGrupoTrabalho,
         });
 

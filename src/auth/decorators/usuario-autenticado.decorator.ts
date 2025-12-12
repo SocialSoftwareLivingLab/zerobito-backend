@@ -11,24 +11,31 @@ export const UsuarioAutenticado = createParamDecorator(
 );
 
 /**
- * Função helper para verificar se o usuário possui uma permissão específica
+ * Verifica se o usuário possui uma permissão em **algum dos perfis**
  */
 export function usuarioTemPermissao(
   usuario: UsuarioAutenticadoDto,
   permissao: string,
 ): boolean {
-  if (!usuario?.perfil?.permissoes) {
+  if (!usuario?.perfis?.length) {
     return false;
   }
 
-  return usuario.perfil.permissoes.includes(permissao);
+  return usuario.perfis.some((perfil) =>
+    perfil.permissoes?.includes(permissao),
+  );
 }
 
 /**
- * Função helper para obter todas as permissões do usuário
+ * Obtém todas as permissões do usuário (de todos os perfis, sem duplicadas)
  */
 export function obterPermissoesUsuario(
   usuario: UsuarioAutenticadoDto,
 ): string[] {
-  return usuario?.perfil?.permissoes || [];
+  if (!usuario?.perfis?.length) {
+    return [];
+  }
+
+  const permissoes = usuario.perfis.flatMap((perfil) => perfil.permissoes || []);
+  return [...new Set(permissoes)]; // remove duplicadas
 }

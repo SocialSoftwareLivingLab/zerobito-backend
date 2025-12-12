@@ -29,7 +29,7 @@ export default class ListarTarefasCasoUseCase {
             where: {
                 membroGrupoTrabalho: { caso: {id: idCaso}},
             },
-            relations: ['status'],
+            relations: ['status', 'status_conclusao'],
         });
 
         const [tarefasEncontradas] = await Promise.all([
@@ -37,11 +37,15 @@ export default class ListarTarefasCasoUseCase {
         ]);
 
         const tarefas: TarefaResponse[] = tarefasEncontradas.map((tarefa) => ({
-                identificador: tarefa.identificador,
+                id: tarefa.id,
                 nome: tarefa.nome,
                 status: {
                     codigo: tarefa.status.codigo,
                     nome: tarefa.status.nome,
+                },
+                status_conclusao: {
+                    codigo: tarefa.status_conclusao.codigo,
+                    nome: tarefa.status_conclusao.nome
                 },
                 prazo: tarefa.prazo,
                 comentario: tarefa.comentario,

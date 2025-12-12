@@ -9,12 +9,16 @@ export interface Request {
 }
 
 export interface TarefaResponse {
-    identificador: string;
+    id: number;
     nome: string;
     status: {
         codigo: string;
         nome: string;
     };
+    status_conclusao: {
+        codigo: string;
+        nome: string;
+    }
     prazo: Date;
     comentario: string;   
 }
@@ -44,7 +48,7 @@ export default class ListarTarefasMembrosGrupoUseCase {
             where: {
                 membroGrupoTrabalho: { caso: {id: idCaso}, id: membroGrupoTrabalhoId},
             },
-            relations: ['membroGrupoTrabalho', 'status'],
+            relations: ['membroGrupoTrabalho', 'status', 'status_conclusao'],
         });
 
         const [tarefasEncontradas] = await Promise.all([
@@ -52,11 +56,15 @@ export default class ListarTarefasMembrosGrupoUseCase {
         ]);
 
         const tarefas: TarefaResponse[] = tarefasEncontradas.map((tarefa) => ({
-                identificador: tarefa.identificador,
+                id: tarefa.id,
                 nome: tarefa.nome,
                 status: {
                     codigo: tarefa.status.codigo,
                     nome: tarefa.status.nome,
+                },
+                status_conclusao: {
+                    codigo: tarefa.status_conclusao.codigo,
+                    nome: tarefa.status_conclusao.nome
                 },
                 prazo: tarefa.prazo,
                 comentario: tarefa.comentario,
