@@ -21,11 +21,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       id: resultado.id,
       nome: resultado.nome,
       email: resultado.email,
-      perfil: {
-        codigo: resultado.perfil?.codigo,
-        nome: resultado.perfil?.nome,
-        permissoes: resultado.perfil?.permissoes.map((p) => p.codigo),
-      },
     };
   }
 }

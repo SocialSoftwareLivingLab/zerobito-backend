@@ -6,6 +6,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import RegistrarMembroGrupoUseCase from '../usecases/registrar-membro-grupo';
 import { StatusMembroGrupoTrabalhoEnum } from '../enum/status-membro.enum';
+import { UsuarioPerfilService } from '@/app/usuario-perfil/entities/usuario-perfil.service';
 
 /**
  * Quando um caso é criado, é preciso registrar o coordenador como 
@@ -22,6 +23,7 @@ export default class VincularCoordenadorGrupoTrabalhoListener {
 
   constructor(
     private readonly registrarMembroUsecase: RegistrarMembroGrupoUseCase,
+    private readonly perfilUsuarioService: UsuarioPerfilService,
   ) {}
 
   @OnEvent(CasoCriadoEventKey)
@@ -38,7 +40,12 @@ export default class VincularCoordenadorGrupoTrabalhoListener {
       solicitante: criador,
       instituicao: instituicao,
       statusMembro: StatusMembroGrupoTrabalhoEnum.ACEITO,
-      perfilId: 5,
     });
+
+    await this.perfilUsuarioService.criarPerfilUsuario(
+      entity.coordenador.id,
+      5,
+      id
+    )
   }
 }

@@ -6,6 +6,7 @@ import { MensagensHelper } from '@/helpers/mensagens.helper';
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -15,12 +16,14 @@ import { LoginResponse } from './dtos/login.response.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly logger =  new Logger(AuthService.name);
   constructor(
     private readonly usuariosService: UsuariosService,
     private readonly jwtService: JwtService,
   ) {}
 
   public async gerarTokenAutenticacao(req: Request): Promise<LoginResponse> {
+    this.logger.log("gerando token do user");
     const user = req.user;
 
     const dadosUsuarioCompletos = await this.buscarDadosCompletosUsuario(
@@ -31,7 +34,6 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       nome: user.nome,
-      perfil: dadosUsuarioCompletos.perfil,
     };
 
     const token = this.jwtService.sign(jwtPayload);
@@ -43,30 +45,26 @@ export class AuthService {
     } as LoginResponse;
   }
 
-  /**
-   * Busca os dados completos do usuário incluindo perfil e permissões
+    /**
+   * Busca os dados completos do usuário incluindo perfis e permissões
    */
   public async buscarDadosCompletosUsuario(usuarioId: number) {
-    const resultUsuario = await this.usuariosService.buscarUsuario({
-      id: usuarioId,
-    });
+    this.logger.log("buscando dados completos do user");
+    const resultUsuario = await this.usuariosService.buscarUsuario({ id: usuarioId });
 
     const usuario: UsuarioEntity = resultUsuario.orElseThrow(
       () =>
         new ForbiddenException(MensagensHelper.Usuario.USUARIO_NAO_ENCONTRADO),
     );
 
+
     return {
       id: usuario.id,
       nome: usuario.nome,
       email: usuario.email,
-      perfil: {
-        codigo: usuario.perfil?.codigo,
-        nome: usuario.perfil?.nome,
-        permissoes: usuario.perfil?.permissoes.map((p) => p.codigo),
-      },
     };
   }
+
 
   /**
    * Validar a autenticação de um usuário na plataforma

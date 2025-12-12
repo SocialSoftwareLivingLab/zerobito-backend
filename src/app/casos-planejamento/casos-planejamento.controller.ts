@@ -57,4 +57,19 @@ export class CasosPlanejamentoController {
     );
   }
 
+  @ApiOperation({
+    summary: 'Iniciar Investigação',
+    description:
+      'Inicia a investigação de um caso específico',
+  })
+  @Protegido()
+  @Post('casos/:idCaso/investigacao/iniciar')
+  public async iniciarPlanejamento(
+    @Param('idCaso')
+    idCaso: number,
+  ) {
+    await this.casosPlanejamentoService.iniciarInvestigacao(idCaso);
+  }
+
+
 }

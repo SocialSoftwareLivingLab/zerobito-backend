@@ -1,16 +1,14 @@
+import { UsuarioPerfilService } from '@/app/usuario-perfil/entities/usuario-perfil.service';
 import { PERMISSAO_KEY } from '@/app/usuarios/decorators/permissao.decorator';
 import { PermissaoEnum } from '@/app/usuarios/enums/permissoes.enum';
-import { PerfisService } from '@/app/usuarios/services/perfis.service';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class PermissaoGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private perfisService: PerfisService,
-  ) {}
+  constructor(private reflector: Reflector, private readonly usuarioPerfilService: UsuarioPerfilService) {}
+  private readonly logger = new Logger(PermissaoGuard.name);
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredPermissions = this.reflector.getAllAndOverride<
@@ -24,20 +22,24 @@ export class PermissaoGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user: UsuarioAutenticadoDto = request.user;
 
-    if (!user || !user.perfil) {
+
+    if (!user) {
+      this.logger.log(user);
       return false;
     }
 
-    // Usar dados do perfil do JWT se disponíveis
-    if (user.perfil?.permissoes) {
-      for (const permission of requiredPermissions) {
-        if (user.perfil.permissoes.includes(permission)) {
-          return true;
-        }
-      }
-      return false;
-    }
+    const perfis = await this.usuarioPerfilService.listarPerfisDoUsuario(user.id);
 
-    return false;
+    const permissoes = perfis.flatMap((up) => up.perfil.permissoes.map((p) => p.codigo));
+
+    this.logger.log(user.perfis);
+
+    // Checa se algum dos requiredPermissions está nas permissoes do usuário
+    const possuiPermissao = requiredPermissions.some((perm) =>
+      permissoes.includes(perm),
+    );
+
+    return possuiPermissao;
   }
+
 }

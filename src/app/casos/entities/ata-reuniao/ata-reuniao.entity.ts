@@ -1,3 +1,4 @@
+import AgendamentoReuniaoEntity from '@/app/casos-planejamento/entities/agendamento-reuniao.entity';
 import CasoEntity from '@/app/casos/entities/caso.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,6 +25,9 @@ export default class AtaReuniaoEntity {
   @JoinColumn({ name: 'id_caso' })
   caso: CasoEntity;
 
+  @OneToOne(() => AgendamentoReuniaoEntity)
+  @JoinColumn({ name: 'id_reuniao' })
+  reuniao: AgendamentoReuniaoEntity;
 
   @CreateDateColumn({ name: 'data_criacao' })
   data: Date;

@@ -1,7 +1,6 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CasosGrupoTrabalhoController } from './casos-grupo-trabalho.controller';
-import { MembrosPerfilController } from './controllers/membros-perfil.controller';
 import { CasosGrupoTrabalhoService } from './casos-grupo-trabalho.service';
 import MembroGrupoTrabalhoEntity from './entities/membro-grupo.entity';
 
@@ -19,12 +18,14 @@ import EnviarEmailConviteGrupoUsecase from './usecases/convite/enviar-email-conv
 import { EmailModule } from '@/shared/email/email.module';
 import AceitarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/aceitar-convite';
 import IniciarPlanejamentoUsecase from './usecases/iniciar-planejamento';
-import { CasosPermissaoService } from '../casos/services/casos-permissao.service';
 import { PerfilEntity } from '../usuarios/entities/perfil.entity';
-import AtaReuniaoEntity from './entities/ata-reuniao/ata-reuniao.entity';
+import AtaReuniaoEntity from '../casos/entities/ata-reuniao/ata-reuniao.entity';
 import RegistrarAtaReuniaoUseCase from './usecases/salvar-ata-reuniao';
 import EmailConviteMembroGrupoTrabalhoUsecase from './usecases/convite/get-email-convite';
 import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar-convite';
+import { UsuarioPerfilModule } from '../usuario-perfil/entities/usuario-perfil.module';
+import AgendamentoReuniaoEntity from '../casos-planejamento/entities/agendamento-reuniao.entity';
+import ObterAtaReuniaoUseCase from './usecases/obter-ata-reuniao';
 
 @Module({
   imports: [
@@ -35,9 +36,11 @@ import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar
       ConviteGrupoTrabalhoEntity,
       PerfilEntity,
       AtaReuniaoEntity,
+      AgendamentoReuniaoEntity
     ]),
     CasosModule,
     EmailModule,
+    forwardRef(() => UsuarioPerfilModule)
   ],
   providers: [
     CasosGrupoTrabalhoService,
@@ -45,6 +48,7 @@ import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar
     StatusConviteGrupoTrabalhoSeed,
     RegistrarMembroGrupoUseCase,
     RegistrarAtaReuniaoUseCase,
+    ObterAtaReuniaoUseCase,
     RegistrarConviteParaGrupoUsecase,
     EnviarEmailConviteGrupoUsecase,
     ListarMembrosGrupoUsecase,
@@ -53,9 +57,8 @@ import RecusarConviteMembroGrupoTrabalhoUsecase from './usecases/convite/recusar
     IniciarPlanejamentoUsecase,
     EmailConviteMembroGrupoTrabalhoUsecase,
     RecusarConviteMembroGrupoTrabalhoUsecase,
-    CasosPermissaoService,
   ],
   exports: [StatusMembroGrupoTrabalhoSeed, StatusConviteGrupoTrabalhoSeed, TypeOrmModule.forFeature([MembroGrupoTrabalhoEntity])],
-  controllers: [CasosGrupoTrabalhoController, MembrosPerfilController],
+  controllers: [CasosGrupoTrabalhoController],
 })
 export class CasosGrupoTrabalhoModule {}

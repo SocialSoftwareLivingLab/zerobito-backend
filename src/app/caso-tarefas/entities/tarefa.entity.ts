@@ -1,14 +1,12 @@
 import MembroGrupoTrabalhoEntity from "@/app/casos-grupo-trabalho/entities/membro-grupo.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import StatusTarefaEntity from "./status-tarefa.entity";
+import StatusConclusaoTarefaEntity from "./status-conclusao-tarefa.entity";
 
 @Entity({ name: 'caso_tarefas'})
 export default class TarefaEntity {
     @PrimaryGeneratedColumn('increment', {type: 'bigint' })
     id: number;
-
-    @Column({ name: 'identificador', type: 'uuid' })
-    identificador: string;
 
     @Column({ name: 'nome', type: 'varchar', length: 255})
     nome: string;
@@ -16,8 +14,12 @@ export default class TarefaEntity {
     @ManyToOne(() => MembroGrupoTrabalhoEntity)
     membroGrupoTrabalho: MembroGrupoTrabalhoEntity;
 
+
     @ManyToOne(() => StatusTarefaEntity)
     status: StatusTarefaEntity;
+
+    @ManyToOne(() => StatusConclusaoTarefaEntity)
+    status_conclusao: StatusConclusaoTarefaEntity;
 
     @CreateDateColumn({ name: 'data_criacao' })
     dataVinculo: Date;
