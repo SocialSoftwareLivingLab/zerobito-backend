@@ -42,4 +42,7 @@ export enum PermissaoEnum {
 
   // Casos - Membros/Equipe
   CASOS_ENVIAR_CONVITE_MEMBRO = 'casos:enviar-convite-membro',
+
+  // Casos - Investigacao
+  CASOS_ALTERAR_MAPA = 'casos:alterar-mapa'
 }

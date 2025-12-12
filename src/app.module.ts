@@ -45,6 +45,8 @@ import AgendamentoReuniaoEntity from './app/casos-planejamento/entities/agendame
 import AtaReuniaoEntity from './app/casos/entities/ata-reuniao/ata-reuniao.entity';
 import StatusConclusaoTarefaEntity from './app/caso-tarefas/entities/status-conclusao-tarefa.entity';
 import NotificacaoCasoEntity from './app/casos-notificacoes/entities/notificacao.entity';
+import CasoMapaEtapaEntity from './app/casos-investigacao/entities/mapa-etapa.entity';
+import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investigacao.module';
 
 @Module({
   imports: [
@@ -86,6 +88,7 @@ import NotificacaoCasoEntity from './app/casos-notificacoes/entities/notificacao
             AtaReuniaoEntity,
             StatusConclusaoTarefaEntity,
             NotificacaoCasoEntity,
+            CasoMapaEtapaEntity,
             ],
           synchronize: true,
           // logging: ['query'],
@@ -108,9 +111,10 @@ import NotificacaoCasoEntity from './app/casos-notificacoes/entities/notificacao
     CasosNotificacoesModule,
     CasosGrupoTrabalhoModule,
     EmailModule,
+    CasosInvestigacaoModule,
     CasosPlanejamentoModule,
     CasosTarefasGrupoTrabalhoModule,
-    UsuarioPerfilModule
+    CasosInvestigacaoModule,
   ],
   controllers: [],
   providers: [
