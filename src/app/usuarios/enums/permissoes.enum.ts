@@ -10,6 +10,7 @@ export enum PermissaoEnum {
   OCORRENCIAS_VISUALIZAR_TODOS = 'ocorrencias:visualizar-todos',
   OCORRENCIAS_VISUALIZAR = 'ocorrencias:visualizar',
   OCORRENCIAS_CRIAR = 'ocorrencias:criar',
+  OCORRENCIAS_EDITAR = 'ocorrencias:editar',
   OCORRENCIAS_ACEITAR = 'ocorrencias:aceitar',
   OCORRENCIAS_NAO_INCORPORAR = 'ocorrencias:nao-incorporar',
 
