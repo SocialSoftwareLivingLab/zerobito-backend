@@ -30,6 +30,11 @@ const permissoes = [
     descricao: 'Permissão para criar novas ocorrências',
   },
   {
+    codigo: PermissaoEnum.OCORRENCIAS_EDITAR,
+    nome: 'Editar Ocorrência',
+    descricao: 'Permissão para editar ocorrências do sistema',
+  },
+  {
     codigo: PermissaoEnum.COORDENADORES_VISUALIZAR,
     nome: 'Visualizar Coordenadores',
     descricao: 'Permissão para visualizar cordenadores do caso',

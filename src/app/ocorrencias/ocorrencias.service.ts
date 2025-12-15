@@ -16,6 +16,8 @@ import { FiltroConsultarOcorrenciasDto } from './payloads/filtro-ocorrencias.dto
 import { OcorrenciaDto } from './payloads/ocorrencia.dto';
 import { AceitarOcorrenciaUseCase } from './usecases/aceitar-ocorrencia/aceitar-ocorrencia.usecase';
 import { BuscarOcorrenciaUseCase } from './usecases/buscar-ocorrencia/buscar-ocorrencia.usecase';
+import { AtualizarOcorrenciaRequest } from './payloads/editar-ocorrencia.dto';
+import { AtualizarOcorrenciaUseCase } from './usecases/editar-ocorrencia/editar-ocorrencia.usecase';
 
 @Injectable()
 export class OcorrenciasService {
@@ -31,6 +33,7 @@ export class OcorrenciasService {
     private readonly aceitarOcorrenciaUseCase: AceitarOcorrenciaUseCase,
     @Inject(forwardRef(() => CasosService))
     private readonly casoService: CasosService,
+    private readonly atualizarOcorrenciaUseCase: AtualizarOcorrenciaUseCase,
   ) {}
 
   public async registrar(
@@ -58,6 +61,18 @@ export class OcorrenciasService {
     });
 
     await this.ocorrenciaRepository.save(ocorrencia);
+  }
+
+  public async atualizar(
+    id: number,
+    dadosAtualizacao: AtualizarOcorrenciaRequest,
+  ): Promise<OcorrenciaDto> {
+    const ocorrenciaAtualizada = await this.atualizarOcorrenciaUseCase.execute({
+      id,
+      dadosAtualizacao,
+    });
+
+    return entityToOcorrenciaResponse(ocorrenciaAtualizada);
   }
 
   public async consultarPorIdAsEntity(id: number): Promise<OcorrenciaEntity> {

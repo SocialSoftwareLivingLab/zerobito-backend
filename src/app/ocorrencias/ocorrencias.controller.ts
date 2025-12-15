@@ -1,7 +1,7 @@
 import { Protegido } from '@/auth/decorators/protegido.decorator';
 import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
 import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Patch } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -17,6 +17,7 @@ import { CriarOcorrenciaRequest } from './payloads/criar-ocorrencia.dto';
 import { FiltroConsultarOcorrenciasDto } from './payloads/filtro-ocorrencias.dto';
 import { OcorrenciaDto } from './payloads/ocorrencia.dto';
 import { VincularOcorrenciaCasoPayload } from './payloads/vincular/vincular-ocorrencia-caso.payload';
+import { AtualizarOcorrenciaRequest } from './payloads/editar-ocorrencia.dto';
 
 @Protegido()
 @ApiBearerAuth()
@@ -97,5 +98,22 @@ export class OcorrenciasController {
     @Body() payload: VincularOcorrenciaCasoPayload,
   ) {
     return this.ocorrenciasService.vincular(idOcorrencia, payload.idCaso);
+  }
+
+  @ApiOperation({
+    summary: 'Atualizar ocorrência',
+    description: 'Atualiza os dados de uma ocorrência existente',
+  })
+  @ApiOkResponse({
+    type: OcorrenciaDto,
+    description: 'Ocorrência atualizada com sucesso',
+  })
+  @Patch('/:id')
+  @Permissao(PermissaoEnum.OCORRENCIAS_EDITAR)
+  public async atualizarOcorrencia(
+    @Param('id') idOcorrencia: number,
+    @Body() dadosAtualizacao: AtualizarOcorrenciaRequest,
+  ): Promise<OcorrenciaDto> {
+    return this.ocorrenciasService.atualizar(idOcorrencia, dadosAtualizacao);
   }
 }
