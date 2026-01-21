@@ -23,6 +23,7 @@ import { UsuarioPerfilService } from '../usuario-perfil/entities/usuario-perfil.
 @Injectable()
 export class UsuariosService {
   private readonly logger = new Logger(UsuariosService.name);
+  private readonly loggera = new Logger();
 
   constructor(
     @InjectRepository(UsuarioEntity)
