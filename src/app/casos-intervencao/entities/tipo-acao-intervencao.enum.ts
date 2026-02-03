@@ -1,0 +1,8 @@
+export enum TipoAcaoIntervencaoEnum {
+    FORMACAO = 'FORMACAO',
+    AJUDA_CASO = 'AJUDA_CASO',
+    MONITORAMENTO = 'MONITORAMENTO',
+    REUNIAO = 'REUNIAO',
+    VISITA_TECNICA = 'VISITA_TECNICA',
+    OUTRO = 'OUTRO'
+}
