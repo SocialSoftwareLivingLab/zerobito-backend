@@ -17,6 +17,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { eventEmitterConfig } from './config/events.config';
 import { EmailModule } from './shared/email/email.module';
 import { CasosPlanejamentoModule } from './app/casos-planejamento/casos-planejamento.module';
+import { CasosIntervencaoModule } from './app/casos-intervencao/casos-intervencao.module';
 import { PermissaoGuard } from './auth/guards/permissao.guard';
 import { PermissaoCasoGuard } from './app/casos/guards/permissao-caso.guard';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -47,6 +48,11 @@ import StatusConclusaoTarefaEntity from './app/caso-tarefas/entities/status-conc
 import NotificacaoCasoEntity from './app/casos-notificacoes/entities/notificacao.entity';
 import CasoMapaEtapaEntity from './app/casos-investigacao/entities/mapa-etapa.entity';
 import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investigacao.module';
+import AcaoIntervencaoEntity from './app/casos-intervencao/entities/acao-intervencao.entity';
+import StatusAcaoIntervencaoEntity from './app/casos-intervencao/entities/status-acao-intervencao.entity';
+import StatusConclusaoAcaoIntervencaoEntity from './app/casos-intervencao/entities/status-conclusao-acao-intervencao.entity';
+import TipoAcaoIntervencaoEntity from './app/casos-intervencao/entities/tipo-acao-intervencao.entity';
+import AgendamentoReuniaoIntervencaoEntity from './app/casos-intervencao/entities/agendamento-reuniao.entity';
 
 @Module({
   imports: [
@@ -89,6 +95,11 @@ import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investiga
             StatusConclusaoTarefaEntity,
             NotificacaoCasoEntity,
             CasoMapaEtapaEntity,
+            AcaoIntervencaoEntity,
+            StatusAcaoIntervencaoEntity,
+            StatusConclusaoAcaoIntervencaoEntity,
+            TipoAcaoIntervencaoEntity,
+            AgendamentoReuniaoIntervencaoEntity,
             ],
           synchronize: true,
           // logging: ['query'],
@@ -113,6 +124,7 @@ import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investiga
     EmailModule,
     CasosInvestigacaoModule,
     CasosPlanejamentoModule,
+    CasosIntervencaoModule,
     CasosTarefasGrupoTrabalhoModule,
     CasosInvestigacaoModule,
   ],

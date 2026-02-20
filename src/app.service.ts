@@ -12,6 +12,9 @@ import PermissoesSeed from './app/usuarios/seeds/permissoes.seed';
 import PerfilPermissoesSeed from './app/usuarios/seeds/perfil-permissoes.seed';
 import UsuarioAdministradorSeed from './app/usuarios/seeds/usuario-administrador.seed';
 import StatusTarefaSeed from './app/caso-tarefas/seeds/tarefa.seed';
+import StatusAcaoIntervencaoSeed from './app/casos-intervencao/seeds/status-acao-intervencao.seed';
+import TipoAcaoIntervencaoSeed from './app/casos-intervencao/seeds/tipo-acao-intervencao.seed';
+import StatusConclusaoAcaoIntervencaoSeed from './app/casos-intervencao/seeds/status-conclusao-acao-intervencao.seed';
 
 @Injectable()
 export default class AppService implements OnApplicationBootstrap {
@@ -29,6 +32,9 @@ export default class AppService implements OnApplicationBootstrap {
     private readonly perfilPermissoesSeed: PerfilPermissoesSeed,
     private readonly usuarioAdministradorSeed: UsuarioAdministradorSeed,
     private readonly tarefaStatusSeed: StatusTarefaSeed,
+    private readonly statusAcaoIntervencaoSeed: StatusAcaoIntervencaoSeed,
+    private readonly tipoAcaoIntervencaoSeed: TipoAcaoIntervencaoSeed,
+    private readonly statusConclusaoAcaoIntervencaoSeed: StatusConclusaoAcaoIntervencaoSeed,
   ) {}
 
   async onApplicationBootstrap() {
@@ -45,7 +51,10 @@ export default class AppService implements OnApplicationBootstrap {
       this.permissoesSeed,
       this.perfilPermissoesSeed,
       this.usuarioAdministradorSeed,
-      this.tarefaStatusSeed
+      this.tarefaStatusSeed,
+      this.statusAcaoIntervencaoSeed,
+      this.tipoAcaoIntervencaoSeed,
+      this.statusConclusaoAcaoIntervencaoSeed,
     ];
 
     runners.forEach((runner) => runner.run());
