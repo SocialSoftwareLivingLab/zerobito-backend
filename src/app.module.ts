@@ -47,6 +47,11 @@ import StatusConclusaoTarefaEntity from './app/caso-tarefas/entities/status-conc
 import NotificacaoCasoEntity from './app/casos-notificacoes/entities/notificacao.entity';
 import CasoMapaEtapaEntity from './app/casos-investigacao/entities/mapa-etapa.entity';
 import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investigacao.module';
+import CasoIntervencaoEntity from './app/caso-intervencao/entities/acoes-intervencao.entity';
+import { ArquivoEntity } from './app/arquivos/entities/arquivo.entity';
+import { ArquivoVinculoEntity } from './app/arquivos/entities/arquivo.vinculo.entity';
+import { CasoIntervencaoModule } from './app/caso-intervencao/caso-intervencao.module';
+import { ArquivoModule } from './app/arquivos/arquivo.module';
 
 @Module({
   imports: [
@@ -66,6 +71,8 @@ import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investiga
           entities: [
             UsuarioEntity,
             PerfilEntity,
+            ArquivoEntity,
+            ArquivoVinculoEntity,
             PermissaoEntity,
             OcorrenciaEntity,
             StatusOcorrenciaEntity,
@@ -89,6 +96,7 @@ import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investiga
             StatusConclusaoTarefaEntity,
             NotificacaoCasoEntity,
             CasoMapaEtapaEntity,
+            CasoIntervencaoEntity,
             ],
           synchronize: true,
           // logging: ['query'],
@@ -115,6 +123,7 @@ import { CasosInvestigacaoModule } from './app/casos-investigacao/caso-investiga
     CasosPlanejamentoModule,
     CasosTarefasGrupoTrabalhoModule,
     CasosInvestigacaoModule,
+    CasoIntervencaoModule,
   ],
   controllers: [],
   providers: [

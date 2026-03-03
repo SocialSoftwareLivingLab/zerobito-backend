@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   postgres:
     image: postgis/postgis:16-3.4
@@ -7,15 +9,24 @@ services:
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: zerobito
     ports:
-      - '5432:5432'
+      - "5432:5432"
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
     networks:
       - zerobito-network
-  #redis:
-    # image: redis:latest 
-    # environment:
-    #   - ALLOW_EMPTY_PASSWORD=yes
-    # networks:
-    #   - zerobito-network
+
+  backend:
+    image: zerobito-backend:0.5.1
+    container_name: zerobito-backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - zerobito-network
+    restart: unless-stopped
 
 networks:
   zerobito-network:

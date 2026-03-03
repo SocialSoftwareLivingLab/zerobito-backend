@@ -62,7 +62,7 @@ export class CasosController {
   public async buscarTodosDiagnosticos() {
     return this.casosService.listarTodosDiagnosticos();
   }
-
+//teste de deploy
   @ApiOperation({
   summary: 'Buscar todos os casos sumarizados por membro',
   description:
