@@ -1,46 +1,40 @@
-name: Build e Deploy Docker Backend
+name: Build, Push e Deploy - Zerobito Backend
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - develop
       - main
+      - develop
 
 jobs:
-  deploy:
+  build-push-deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
+      # 1️⃣ Checkout do código
       - name: Checkout do repositório
         uses: actions/checkout@v3
 
-      - name: Build da imagem Docker
+      # 2️⃣ Login no GitHub Container Registry
+      - name: Login no GHCR
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # 3️⃣ Build da imagem Docker
+      - name: Build da imagem
         run: |
-          docker build -t zerobito-backend:latest .
+          docker build -t ghcr.io/${{ github.repository_owner }}/zerobito-backend:latest .
 
-      - name: Salvar imagem como tar
+      # 4️⃣ Push da imagem
+      - name: Push da imagem
         run: |
-          docker save zerobito-backend:latest -o zerobito-backend.tar
+          docker push ghcr.io/${{ github.repository_owner }}/zerobito-backend:latest
 
-      - name: Ajustar permissões
-        run: chmod 644 zerobito-backend.tar
-
-      - name: Verificar arquivo gerado
-        run: |
-          ls -lah
-          du -h zerobito-backend.tar
-
-      - name: Enviar imagem para VM
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "./zerobito-backend.tar"
-          target: "/opt/apps/backend"
-
+      # 5️⃣ Deploy na VM
       - name: Deploy na VM
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -51,19 +45,13 @@ jobs:
           script: |
             cd /opt/apps/backend
 
-            echo "Carregando nova imagem..."
-            docker load < zerobito-backend.tar
+            echo "Baixando nova imagem..."
+            docker pull ghcr.io/HenriquePManoel/zerobito-backend:latest
 
-            echo "Parando containers..."
-            docker compose down
-
-            echo "Subindo nova versão..."
+            echo "Subindo containers..."
             docker compose up -d
-
-            echo "Removendo tar..."
-            rm zerobito-backend.tar
 
             echo "Limpando imagens antigas..."
             docker image prune -f
 
-            echo "Deploy finalizado!"
+            echo "Deploy finalizado com sucesso!"
