@@ -23,6 +23,9 @@ jobs:
         run: |
           docker save zerobito-backend:latest -o zerobito-backend.tar
 
+      - name: Ajustar permissões
+        run: chmod 644 zerobito-backend.tar
+
       - name: Verificar arquivo gerado
         run: |
           ls -lah
