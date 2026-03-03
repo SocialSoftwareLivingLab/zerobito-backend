@@ -23,6 +23,11 @@ jobs:
         run: |
           docker save zerobito-backend:latest -o zerobito-backend.tar
 
+      - name: Verificar arquivo gerado
+        run: |
+          ls -lah
+          du -h zerobito-backend.tar
+
       - name: Enviar imagem para VM
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -30,7 +35,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
           port: ${{ secrets.SSH_PORT }}
-          source: "zerobito-backend.tar"
+          source: "./zerobito-backend.tar"
           target: "/opt/apps/backend"
 
       - name: Deploy na VM
@@ -54,5 +59,8 @@ jobs:
 
             echo "Removendo tar..."
             rm zerobito-backend.tar
+
+            echo "Limpando imagens antigas..."
+            docker image prune -f
 
             echo "Deploy finalizado!"
