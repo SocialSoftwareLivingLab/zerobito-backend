@@ -16,7 +16,7 @@ services:
       - zerobito-network
 
   backend:
-    image: zerobito-backend:0.5.1
+    image: zerobito-backend:latest
     container_name: zerobito-backend
     ports:
       - "3001:3001"
