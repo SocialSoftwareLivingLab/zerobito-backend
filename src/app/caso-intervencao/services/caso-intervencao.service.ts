@@ -64,20 +64,24 @@ export class CasoIntervencaoService {
       CRIAR INTERVENÇÃO
   ===================================================== */
 
-  async create(dto: CreateCasoIntervencaoDto) {
+  async create(dto: CreateCasoIntervencaoDto, casoId) {
     const caso = await this.casoRepository.findOne({
-      where: { id: dto.casoId },
+      where: { id: casoId },
     });
 
     if (!caso) {
       throw new NotFoundException('Caso não encontrado');
     }
 
-    const autor = await this.membroRepository.findOne({
-      where: { id: dto.autorId },
+    const membroGrupo = await this.membroRepository.findOne({
+      where: {
+        caso: { id: casoId },
+        membro: { nome: dto.autorNome },
+      },
+      relations: ['membro', 'caso'],
     });
 
-    if (!autor) {
+    if (!membroGrupo) {
       throw new NotFoundException('Responsável não encontrado');
     }
 
@@ -96,7 +100,7 @@ export class CasoIntervencaoService {
       prioridade,
       status: AcoesIntervencaoStatusEnum.SEM_PREVISAO,
       caso,
-      autor,
+      autor: membroGrupo,
     });
 
     return this.intervencaoRepository.save(intervencao);

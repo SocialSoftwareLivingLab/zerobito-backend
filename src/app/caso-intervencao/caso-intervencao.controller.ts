@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Res,
+  Req,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -37,8 +38,7 @@ export class CasoIntervencaoController {
   ) {
     return this.intervencaoService.create({
       ...dto,
-      casoId,
-    });
+    }, casoId);
   }
 
   /* =====================================================

@@ -18,9 +18,9 @@ export class CreateCasoIntervencaoDto {
 
   @IsEnum(AcoesIntervencaoStatusEnum)
   status: AcoesIntervencaoStatusEnum;
-
-  casoId: number;
-  autorId: number;
+    
+  @IsString()
+  autorNome: string;
 }
 
 import { PartialType } from '@nestjs/mapped-types';
