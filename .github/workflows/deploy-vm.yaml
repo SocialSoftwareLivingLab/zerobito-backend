@@ -31,7 +31,7 @@ jobs:
 
       - name: Build da imagem
         run: |
-          docker build -t ghcr.io/$OWNER/zerobito-backend:latest .
+          docker build --no-cache -t ghcr.io/$OWNER/zerobito-backend:latest .
 
       - name: Push da imagem
         run: |
