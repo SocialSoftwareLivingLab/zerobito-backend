@@ -11,7 +11,7 @@ import MembroGrupoTrabalhoEntity from '@/app/casos-grupo-trabalho/entities/membr
 import { AcoesIntervencaoStatusEnum } from '../enum/acao-intervencao-status.enum';
 import { ArquivoEntity } from '@/app/arquivos/entities/arquivo.entity';
 
-@Entity({ name: 'caso_mapa_etapa' })
+@Entity({ name: 'caso_intervencoes' })
 @Check(`"prioridade" >= 0 AND "prioridade" <= 1`)
 export default class CasoIntervencaoEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
