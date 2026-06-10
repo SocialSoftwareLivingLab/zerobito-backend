@@ -21,7 +21,7 @@ import {
   UpdateIntervencaoDto,
 } from './dtos/caso-intervencao.dto';
 
-@Controller('casos/:casoId/intervencoes')
+@Controller('/api/v1/casos/:casoId/intervencoes')
 export class CasoIntervencaoController {
   constructor(
     private readonly intervencaoService: CasoIntervencaoService,
@@ -86,6 +86,28 @@ export class CasoIntervencaoController {
       await this.intervencaoService.podeFinalizarIntervencao(casoId);
 
     return { podeFinalizar: pode };
+  }
+
+  /* =====================================================
+      INICIAR INTERVENÇÃO
+  ===================================================== */
+
+  @Post('iniciar')
+  async iniciar(
+    @Param('casoId', ParseIntPipe) casoId: number,
+  ) {
+    return this.intervencaoService.iniciarIntervencao(casoId);
+  }
+
+  /* =====================================================
+      FINALIZAR INTERVENÇÃO
+  ===================================================== */
+
+  @Post('finalizar')
+  async finalizar(
+    @Param('casoId', ParseIntPipe) casoId: number,
+  ) {
+    return this.intervencaoService.finalizarIntervencao(casoId);
   }
 
   /* =====================================================

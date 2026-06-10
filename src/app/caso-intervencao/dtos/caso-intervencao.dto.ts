@@ -1,5 +1,6 @@
-import { IsDateString, IsEnum, IsNumber, IsString, Max, Min } from 'class-validator';
+import { IsDateString, IsEnum, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import { AcoesIntervencaoStatusEnum } from '../enum/acao-intervencao-status.enum';
+import { NivelIntervencaoEnum } from '../enum/nivel-intervencao.enum';
 
 export class CreateCasoIntervencaoDto {
   @IsString()
@@ -16,9 +17,14 @@ export class CreateCasoIntervencaoDto {
   @Max(1)
   prioridade: number;
 
+  @IsOptional()
   @IsEnum(AcoesIntervencaoStatusEnum)
-  status: AcoesIntervencaoStatusEnum;
+  status?: AcoesIntervencaoStatusEnum;
     
+  @IsOptional()
+  @IsEnum(NivelIntervencaoEnum)
+  nivel?: NivelIntervencaoEnum;
+
   @IsString()
   autorNome: string;
 }

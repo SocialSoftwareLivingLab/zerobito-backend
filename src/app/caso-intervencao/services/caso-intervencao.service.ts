@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
 import CasoEntity from '@/app/casos/entities/caso.entity';
+import { StatusCasoEnum } from '@/app/casos/entities/status-caso.enum';
 import MembroGrupoTrabalhoEntity from '@/app/casos-grupo-trabalho/entities/membro-grupo.entity';
 import CasoIntervencaoEntity from '../entities/acoes-intervencao.entity';
 import { CreateCasoIntervencaoDto, UpdateIntervencaoDto } from '../dtos/caso-intervencao.dto';
@@ -64,7 +65,7 @@ export class CasoIntervencaoService {
       CRIAR INTERVENÇÃO
   ===================================================== */
 
-  async create(dto: CreateCasoIntervencaoDto, casoId) {
+  async create(dto: CreateCasoIntervencaoDto, casoId: number) {
     const caso = await this.casoRepository.findOne({
       where: { id: casoId },
     });
@@ -98,6 +99,7 @@ export class CasoIntervencaoService {
       recursos: dto.recursos,
       prazo: dto.prazo ?? new Date(),
       prioridade,
+      nivel: dto.nivel,
       status: AcoesIntervencaoStatusEnum.SEM_PREVISAO,
       caso,
       autor: membroGrupo,
@@ -140,7 +142,7 @@ export class CasoIntervencaoService {
   async findAllByCaso(casoId: number) {
     return this.intervencaoRepository.find({
       where: { caso: { id: casoId } },
-      relations: ['autor'],
+      relations: ['autor', 'autor.membro'],
       order: { prazo: 'ASC' },
     });
   }
@@ -273,6 +275,51 @@ export class CasoIntervencaoService {
     }
 
     return this.arquivoService.download(arquivoId);
+  }
+
+  /* =====================================================
+      INICIAR INTERVENÇÃO
+  ===================================================== */
+
+  async iniciarIntervencao(casoId: number) {
+    const caso = await this.casoRepository.findOne({ where: { id: casoId } });
+    if (!caso) throw new NotFoundException('Caso não encontrado');
+
+    if (caso.status !== StatusCasoEnum.EM_INVESTIGACAO) {
+      throw new BadRequestException(
+        'O caso deve estar em investigação para iniciar a intervenção.',
+      );
+    }
+
+    caso.status = StatusCasoEnum.EM_INTERVENCAO;
+    await this.casoRepository.save(caso);
+
+    return { message: 'Intervenção iniciada com sucesso' };
+  }
+
+  /* =====================================================
+      FINALIZAR INTERVENÇÃO
+  ===================================================== */
+
+  async finalizarIntervencao(casoId: number) {
+    const pode = await this.podeFinalizarIntervencao(casoId);
+
+    if (!pode) {
+      throw new BadRequestException(
+        'Não é possível finalizar: nenhuma ação concluída com êxito ou satisfatoriamente.',
+      );
+    }
+
+    const caso = await this.casoRepository.findOne({
+      where: { id: casoId },
+    });
+
+    if (!caso) throw new NotFoundException('Caso não encontrado');
+
+    caso.status = StatusCasoEnum.INTERVENCAO_FINALIZADA;
+    await this.casoRepository.save(caso);
+
+    return { message: 'Intervenção finalizada com sucesso' };
   }
 
   /* =====================================================

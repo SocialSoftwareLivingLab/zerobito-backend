@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import MembroGrupoTrabalhoEntity from '@/app/casos-grupo-trabalho/entities/membro-grupo.entity';
 import { AcoesIntervencaoStatusEnum } from '../enum/acao-intervencao-status.enum';
+import { NivelIntervencaoEnum } from '../enum/nivel-intervencao.enum';
 import { ArquivoEntity } from '@/app/arquivos/entities/arquivo.entity';
 
 @Entity({ name: 'caso_intervencoes' })
@@ -44,6 +45,14 @@ prioridade: number;
               name: 'status',
             default: AcoesIntervencaoStatusEnum.SEM_PREVISAO})
     status: AcoesIntervencaoStatusEnum;
+
+  @Column({
+    type: 'enum',
+    enum: NivelIntervencaoEnum,
+    name: 'nivel',
+    default: NivelIntervencaoEnum.MACRO,
+  })
+  nivel: NivelIntervencaoEnum;
 
   @ManyToOne(() => MembroGrupoTrabalhoEntity)
   autor: MembroGrupoTrabalhoEntity;
