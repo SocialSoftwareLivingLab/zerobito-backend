@@ -178,6 +178,11 @@ export class CasoIntervencaoController {
         arquivoId,
       );
 
+    // res.send(buffer) proxia todos os bytes do arquivo pelo servidor.
+    // Para nuvem, prefira retornar uma pre-signed URL e usar res.redirect(url)
+    // para que o cliente baixe o arquivo direto do bucket, sem consumir memória
+    // ou banda do servidor. Isso exige que StorageService.download (ou um novo
+    // método getPresignedUrl) retorne a URL em vez do Buffer.
     res.set({
       'Content-Type': mimeType,
       'Content-Disposition': `attachment; filename="${filename}"`,
