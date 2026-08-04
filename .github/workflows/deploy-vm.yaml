@@ -39,13 +39,19 @@ jobs:
 
       # 5️⃣ Deploy na VM
       - name: Deploy na VM
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY_VM }}
           port: ${{ secrets.SSH_PORT }}
+          envs: GHCR_TOKEN,GHCR_USER
           script: |
+            echo "$GHCR_TOKEN" | sudo docker login ghcr.io -u "$GHCR_USER" --password-stdin
+
             cd /opt/apps/backend
 
             echo "Derrubando container antigo"
