@@ -48,6 +48,9 @@ jobs:
           script: |
             cd /opt/apps/backend
 
+            echo "Derrubando container antigo"
+            sudo docker compose down
+
             echo "Baixando nova imagem..."
             sudo docker compose pull
 

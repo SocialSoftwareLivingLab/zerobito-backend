@@ -34,6 +34,10 @@ export class ArquivoService {
       throw new BadRequestException('Arquivo não enviado');
     }
 
+    // file.buffer carrega o arquivo inteiro em memória antes de enviar ao storage.
+    // Para nuvem com arquivos grandes, considere habilitar streaming no multer
+    // (remova o FileInterceptor padrão e use um interceptor com storage: multer.memoryStorage
+    // de menor limite, ou substitua por stream via file.stream + PassThrough).
     const { key } = await this.storageService.upload(
       file.buffer,
       file.originalname,
@@ -63,6 +67,10 @@ export class ArquivoService {
       throw new NotFoundException('Arquivo não encontrado');
     }
 
+    // Para nuvem com arquivos grandes, avalie se a implementação de StorageService
+    // deve retornar uma pre-signed URL em vez de um Buffer. Nesse caso, este método
+    // retornaria a URL e o controller redirecionaria o cliente diretamente ao bucket,
+    // eliminando o tráfego de bytes pelo servidor (veja comentário no controller).
     const buffer = await this.storageService.download(
       arquivo.storageId,
     );
