@@ -82,10 +82,7 @@ export class CasoIntervencaoController {
   async podeFinalizar(
     @Param('casoId', ParseIntPipe) casoId: number,
   ) {
-    const pode =
-      await this.intervencaoService.podeFinalizarIntervencao(casoId);
-
-    return { podeFinalizar: pode };
+    return this.intervencaoService.podeFinalizarIntervencao(casoId);
   }
 
   /* =====================================================

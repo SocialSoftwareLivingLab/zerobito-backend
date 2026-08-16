@@ -10,7 +10,6 @@ import { CasoIntervencaoController } from './caso-intervencao.controller';
 import { CasoIntervencaoService } from './services/caso-intervencao.service';
 import { ArquivoVinculoEntity } from '../arquivos/entities/arquivo.vinculo.entity';
 import { ArquivoModule } from '../arquivos/arquivo.module';
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([
