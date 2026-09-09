@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 
 import CasoEntity from '@/app/casos/entities/caso.entity';
 import { StatusCasoEnum } from '@/app/casos/entities/status-caso.enum';
@@ -186,18 +186,35 @@ export class CasoIntervencaoService {
       PODE FINALIZAR
   ===================================================== */
 
-  async podeFinalizarIntervencao(casoId: number): Promise<boolean> {
-    const count = await this.intervencaoRepository.count({
+  async podeFinalizarIntervencao(
+    casoId: number,
+  ): Promise<{ podeFinalizar: boolean; mensagem?: string }> {
+    const total = await this.intervencaoRepository.count({
+      where: { caso: { id: casoId } },
+    });
+
+    if (total === 0) {
+      return {
+        podeFinalizar: false,
+        mensagem: 'Para finalizar é necessário ter ao menos uma intervenção registrada.',
+      };
+    }
+
+    const naoConcluidas = await this.intervencaoRepository.count({
       where: {
         caso: { id: casoId },
-        status: In([
-          AcoesIntervencaoStatusEnum.EXITO,
-          AcoesIntervencaoStatusEnum.SATISFATORIA,
-        ]),
+        status: Not(AcoesIntervencaoStatusEnum.EXITO),
       },
     });
 
-    return count > 0;
+    if (naoConcluidas > 0) {
+      return {
+        podeFinalizar: false,
+        mensagem: 'Para finalizar todas as intervenções devem estar com status de êxito.',
+      };
+    }
+
+    return { podeFinalizar: true };
   }
 
   /* =====================================================
@@ -302,12 +319,11 @@ export class CasoIntervencaoService {
   ===================================================== */
 
   async finalizarIntervencao(casoId: number) {
-    const pode = await this.podeFinalizarIntervencao(casoId);
+    const { podeFinalizar, mensagem } =
+      await this.podeFinalizarIntervencao(casoId);
 
-    if (!pode) {
-      throw new BadRequestException(
-        'Não é possível finalizar: nenhuma ação concluída com êxito ou satisfatoriamente.',
-      );
+    if (!podeFinalizar) {
+      throw new BadRequestException(mensagem);
     }
 
     const caso = await this.casoRepository.findOne({
@@ -316,7 +332,7 @@ export class CasoIntervencaoService {
 
     if (!caso) throw new NotFoundException('Caso não encontrado');
 
-    caso.status = StatusCasoEnum.INTERVENCAO_FINALIZADA;
+    caso.status = StatusCasoEnum.EM_FINALIZACAO;
     await this.casoRepository.save(caso);
 
     return { message: 'Intervenção finalizada com sucesso' };

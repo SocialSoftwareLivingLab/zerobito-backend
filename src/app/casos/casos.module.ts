@@ -34,6 +34,7 @@ import { PerfisService } from '../usuarios/services/perfis.service';
 import { PermissaoEntity } from '../usuarios/entities';
 import { UsuarioPerfilService } from '../usuario-perfil/entities/usuario-perfil.service';
 import { UsuarioPerfilModule } from '../usuario-perfil/entities/usuario-perfil.module';
+import { ArquivoModule } from '../arquivos/arquivo.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { UsuarioPerfilModule } from '../usuario-perfil/entities/usuario-perfil.m
     ]),
     CoordenadoresModule,
     UsuarioPerfilModule,
+    ArquivoModule,
     forwardRef(() => OcorrenciasModule),
   ],
   providers: [
