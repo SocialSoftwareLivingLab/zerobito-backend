@@ -1,12 +1,20 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
+import { ArquivoService, ArquivoVinculoService } from '../arquivos/services/arquivo.service';
 import { CasosService } from './services/casos.service';
 import {
   ApiBearerAuth,
@@ -25,6 +33,9 @@ import { EditarLocalizacaoRequest } from './payloads/caso/localizacao.payload';
 import { PermissaoCaso } from './decorators/permissao-caso.decorator';
 import { PermissaoEnum } from '../usuarios/enums/permissoes.enum';
 
+const LIMITE_ARQUIVOS_POR_CASO = 10;
+const LIMITE_TAMANHO_ARQUIVO = 50 * 1024 * 1024; // 50 MB
+
 @Protegido()
 @ApiBearerAuth()
 @ApiTags('Casos')
@@ -33,6 +44,8 @@ export class CasosController {
   constructor(
     private readonly casosService: CasosService,
     private readonly palavraChaveService: PalavraChaveService,
+    private readonly arquivoService: ArquivoService,
+    private readonly vinculoService: ArquivoVinculoService,
   ) {}
 
   @ApiOperation({
@@ -198,5 +211,65 @@ export class CasosController {
   @Get('/:id/ocorrencias')
   public async listarOcorrenciasCaso(@Param('id') id: number) {
     return await this.casosService.listarOcorrenciasCaso(id);
+  }
+
+  /* =====================================================
+      ARQUIVOS DO CASO
+  ===================================================== */
+
+  @Get('/:id/arquivos')
+  async listarArquivos(@Param('id', ParseIntPipe) id: number) {
+    return this.vinculoService.listarPorEntidade('Caso', id.toString());
+  }
+
+  @Post('/:id/arquivos')
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: LIMITE_TAMANHO_ARQUIVO } }))
+  async uploadArquivo(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const total = await this.vinculoService.listarPorEntidade('Caso', id.toString());
+    if (total.length >= LIMITE_ARQUIVOS_POR_CASO) {
+      throw new BadRequestException(
+        `Limite de ${LIMITE_ARQUIVOS_POR_CASO} arquivos por caso atingido.`,
+      );
+    }
+
+    const arquivo = await this.arquivoService.upload(file, 'casos');
+    await this.vinculoService.vincular(arquivo.id, 'Caso', id.toString());
+    return arquivo;
+  }
+
+  @Get('/:id/arquivos/:arquivoId')
+  async downloadArquivo(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('arquivoId') arquivoId: string,
+    @Res() res: Response,
+  ) {
+    const pertence = await this.vinculoService.pertenceAEntidade(arquivoId, 'Caso', id.toString());
+    if (!pertence) throw new BadRequestException('Arquivo não pertence a este caso');
+
+    const { buffer, mimeType, filename } = await this.arquivoService.download(arquivoId);
+    res.set({
+      'Content-Type': mimeType,
+      'Content-Disposition': `attachment; filename="${filename}"`,
+    });
+    res.send(buffer);
+  }
+
+  @Delete('/:id/arquivos/:arquivoId')
+  async removerArquivo(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('arquivoId') arquivoId: string,
+  ) {
+    const pertence = await this.vinculoService.pertenceAEntidade(arquivoId, 'Caso', id.toString());
+    if (!pertence) throw new BadRequestException('Arquivo não pertence a este caso');
+
+    await this.vinculoService.desvincular(arquivoId, 'Caso', id.toString());
+
+    const restantes = await this.vinculoService.contarVinculos(arquivoId);
+    if (restantes === 0) await this.arquivoService.delete(arquivoId);
+
+    return { message: 'Arquivo removido com sucesso' };
   }
 }
