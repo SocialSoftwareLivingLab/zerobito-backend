@@ -52,6 +52,9 @@ import { ArquivoEntity } from './app/arquivos/entities/arquivo.entity';
 import { ArquivoVinculoEntity } from './app/arquivos/entities/arquivo.vinculo.entity';
 import { CasoIntervencaoModule } from './app/caso-intervencao/caso-intervencao.module';
 import { ArquivoModule } from './app/arquivos/arquivo.module';
+import RelatorioFinalizacaoEntity from './app/caso-finalizacao/entities/relatorio-finalizacao.entity';
+import AtorRelatorioFinalizacaoEntity from './app/caso-finalizacao/entities/ator-relatorio-finalizacao.entity';
+import { CasoFinalizacaoModule } from './app/caso-finalizacao/caso-finalizacao.module';
 
 @Module({
   imports: [
@@ -97,6 +100,8 @@ import { ArquivoModule } from './app/arquivos/arquivo.module';
             NotificacaoCasoEntity,
             CasoMapaEtapaEntity,
             CasoIntervencaoEntity,
+            RelatorioFinalizacaoEntity,
+            AtorRelatorioFinalizacaoEntity,
             ],
           synchronize: true,
           // logging: ['query'],
@@ -124,6 +129,7 @@ import { ArquivoModule } from './app/arquivos/arquivo.module';
     CasosTarefasGrupoTrabalhoModule,
     CasosInvestigacaoModule,
     CasoIntervencaoModule,
+    CasoFinalizacaoModule,
   ],
   controllers: [],
   providers: [
