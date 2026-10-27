@@ -45,5 +45,10 @@ export enum PermissaoEnum {
   CASOS_ENVIAR_CONVITE_MEMBRO = 'casos:enviar-convite-membro',
 
   // Casos - Investigacao
-  CASOS_ALTERAR_MAPA = 'casos:alterar-mapa'
+  CASOS_ALTERAR_MAPA = 'casos:alterar-mapa',
+
+  // Casos - Finalização
+  CASOS_VISUALIZAR_RELATORIO_FINALIZACAO = 'casos:visualizar-relatorio-finalizacao',
+  CASOS_EDITAR_RELATORIO_FINALIZACAO = 'casos:editar-relatorio-finalizacao',
+  CASOS_COMENTAR_RELATORIO_FINALIZACAO = 'casos:comentar-relatorio-finalizacao',
 }

@@ -6,12 +6,23 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
+import { Protegido } from '@/auth/decorators/protegido.decorator';
+import { UsuarioAutenticado } from '@/auth/decorators/usuario-autenticado.decorator';
+import { UsuarioAutenticadoDto } from '@/auth/dtos/usuario-autenticado.dto';
+import { PermissaoCaso } from '@/app/casos/decorators/permissao-caso.decorator';
+import { PermissaoEnum } from '@/app/usuarios/enums/permissoes.enum';
 
 import { CasoFinalizacaoService } from './services/caso-finalizacao.service';
-import { AtualizarAtorRelatorioDto } from './dtos/relatorio-finalizacao.dto';
+import {
+  AtualizarAtorRelatorioDto,
+  SalvarComentarioAtorDto,
+} from './dtos/relatorio-finalizacao.dto';
 
-@Controller('/api/v1/casos/:casoId/finalizacao')
+// O parâmetro se chama idCaso porque é dele que o PermissaoCasoGuard lê o caso.
+@Protegido()
+@Controller('/api/v1/casos/:idCaso/finalizacao')
 export class CasoFinalizacaoController {
   constructor(private readonly finalizacaoService: CasoFinalizacaoService) {}
 
@@ -20,8 +31,12 @@ export class CasoFinalizacaoController {
   ===================================================== */
 
   @Get('relatorio')
-  async buscarRelatorio(@Param('casoId', ParseIntPipe) casoId: number) {
-    return this.finalizacaoService.buscarOuCriarRelatorio(casoId);
+  @PermissaoCaso(PermissaoEnum.CASOS_VISUALIZAR_RELATORIO_FINALIZACAO)
+  async buscarRelatorio(
+    @Param('idCaso', ParseIntPipe) casoId: number,
+    @UsuarioAutenticado() usuario: UsuarioAutenticadoDto,
+  ) {
+    return this.finalizacaoService.buscarOuCriarRelatorio(casoId, usuario.id);
   }
 
   /* =====================================================
@@ -29,8 +44,9 @@ export class CasoFinalizacaoController {
   ===================================================== */
 
   @Patch('relatorio/atores/:atorId')
+  @PermissaoCaso(PermissaoEnum.CASOS_EDITAR_RELATORIO_FINALIZACAO)
   async atualizarAtor(
-    @Param('casoId', ParseIntPipe) casoId: number,
+    @Param('idCaso', ParseIntPipe) casoId: number,
     @Param('atorId', ParseIntPipe) atorId: number,
     @Body() dto: AtualizarAtorRelatorioDto,
   ) {
@@ -42,7 +58,41 @@ export class CasoFinalizacaoController {
   ===================================================== */
 
   @Post('relatorio/submeter-gt')
-  async submeterAoGT(@Param('casoId', ParseIntPipe) casoId: number) {
+  @PermissaoCaso(PermissaoEnum.CASOS_EDITAR_RELATORIO_FINALIZACAO)
+  async submeterAoGT(@Param('idCaso', ParseIntPipe) casoId: number) {
     return this.finalizacaoService.submeterAoGT(casoId);
+  }
+
+  /* =====================================================
+      LISTAR COMENTÁRIOS DO RELATÓRIO
+  ===================================================== */
+
+  @Get('relatorio/comentarios')
+  @PermissaoCaso(PermissaoEnum.CASOS_VISUALIZAR_RELATORIO_FINALIZACAO)
+  async listarComentarios(
+    @Param('idCaso', ParseIntPipe) casoId: number,
+    @UsuarioAutenticado() usuario: UsuarioAutenticadoDto,
+  ) {
+    return this.finalizacaoService.listarComentarios(casoId, usuario.id);
+  }
+
+  /* =====================================================
+      SALVAR MEU COMENTÁRIO EM UM ATOR
+  ===================================================== */
+
+  @Put('relatorio/atores/:atorId/comentario')
+  @PermissaoCaso(PermissaoEnum.CASOS_COMENTAR_RELATORIO_FINALIZACAO)
+  async salvarComentario(
+    @Param('idCaso', ParseIntPipe) casoId: number,
+    @Param('atorId', ParseIntPipe) atorId: number,
+    @UsuarioAutenticado() usuario: UsuarioAutenticadoDto,
+    @Body() dto: SalvarComentarioAtorDto,
+  ) {
+    return this.finalizacaoService.salvarComentario(
+      casoId,
+      atorId,
+      usuario.id,
+      dto,
+    );
   }
 }
