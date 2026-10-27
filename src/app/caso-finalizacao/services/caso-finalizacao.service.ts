@@ -14,8 +14,8 @@ import AtorRelatorioFinalizacaoEntity from '../entities/ator-relatorio-finalizac
 import { AtorFinalizacaoEnum } from '../enum/ator-finalizacao.enum';
 import { StatusRelatorioFinalizacaoEnum } from '../enum/status-relatorio-finalizacao.enum';
 import ComentarioAtorRelatorioEntity from '../entities/comentario-ator-relatorio.entity';
-import UsuarioPerfilEntity from '@/app/usuario-perfil/entities/usuario-perfil.entity';
-import { PerfilUsuario } from '@/app/usuarios/enums/perfil-usuario.enum';
+import { UsuarioPerfilService } from '@/app/usuario-perfil/entities/usuario-perfil.service';
+import { PermissaoEnum } from '@/app/usuarios/enums/permissoes.enum';
 import {
   AtualizarAtorRelatorioDto,
   SalvarComentarioAtorDto,
@@ -41,9 +41,41 @@ export class CasoFinalizacaoService {
     @InjectRepository(ComentarioAtorRelatorioEntity)
     private readonly comentarioRepository: Repository<ComentarioAtorRelatorioEntity>,
 
-    @InjectRepository(UsuarioPerfilEntity)
-    private readonly usuarioPerfilRepository: Repository<UsuarioPerfilEntity>,
+    private readonly usuarioPerfilService: UsuarioPerfilService,
   ) {}
+
+  /* =====================================================
+      MÉTODO INTERNO - QUEM NÃO EDITA SÓ VÊ APÓS A SUBMISSÃO AO GT
+  ===================================================== */
+
+  /**
+   * O acesso às rotas é controlado por @PermissaoCaso. Aqui fica só a regra que
+   * depende do estado do relatório: quem não pode editá-lo (ex.: membros do GT)
+   * só o enxerga depois que ele sai do rascunho.
+   */
+  private async validarVisibilidade(
+    casoId: number,
+    usuarioId: number,
+    relatorio: RelatorioFinalizacaoEntity | null,
+  ) {
+    const permissoes =
+      await this.usuarioPerfilService.obterPermissoesUsuarioNoCaso(
+        usuarioId,
+        casoId,
+      );
+    const podeEditar = permissoes.includes(
+      PermissaoEnum.CASOS_EDITAR_RELATORIO_FINALIZACAO,
+    );
+
+    if (
+      !podeEditar &&
+      (!relatorio || relatorio.status === StatusRelatorioFinalizacaoEnum.RASCUNHO)
+    ) {
+      throw new ForbiddenException(
+        'O relatório de finalização ainda não foi submetido ao grupo de trabalho.',
+      );
+    }
+  }
 
   /* =====================================================
       MÉTODO INTERNO - ORDENAR ATORES CONFORME ENUM
@@ -67,15 +99,7 @@ export class CasoFinalizacaoService {
       relations: ['atores'],
     });
 
-    const ehMembro = await this.ehMembroGrupoTrabalho(casoId, usuarioId);
-    if (
-      ehMembro &&
-      (!existente || existente.status === StatusRelatorioFinalizacaoEnum.RASCUNHO)
-    ) {
-      throw new ForbiddenException(
-        'O relatório de finalização ainda não foi submetido ao grupo de trabalho.',
-      );
-    }
+    await this.validarVisibilidade(casoId, usuarioId, existente);
 
     if (existente) return this.ordenarAtores(existente);
 
@@ -109,11 +133,8 @@ export class CasoFinalizacaoService {
   async atualizarAtor(
     casoId: number,
     atorId: number,
-    usuarioId: number,
     dto: AtualizarAtorRelatorioDto,
   ) {
-    await this.validarCoordenador(casoId, usuarioId);
-
     const ator = await this.atorRepository.findOne({
       where: { id: atorId, relatorio: { caso: { id: casoId } } },
       relations: ['relatorio'],
@@ -140,9 +161,7 @@ export class CasoFinalizacaoService {
       SUBMETER AO GT (RASCUNHO -> REVISÃO)
   ===================================================== */
 
-  async submeterAoGT(casoId: number, usuarioId: number) {
-    await this.validarCoordenador(casoId, usuarioId);
-
+  async submeterAoGT(casoId: number) {
     const relatorio = await this.relatorioRepository.findOne({
       where: { caso: { id: casoId } },
     });
@@ -164,52 +183,6 @@ export class CasoFinalizacaoService {
   }
 
   /* =====================================================
-      MÉTODO INTERNO - VALIDAR MEMBRO DO GRUPO DE TRABALHO
-  ===================================================== */
-
-  private async temPerfilNoCaso(
-    casoId: number,
-    usuarioId: number,
-    perfil: PerfilUsuario,
-  ) {
-    const total = await this.usuarioPerfilRepository.count({
-      where: {
-        usuario: { id: usuarioId },
-        caso: { id: casoId },
-        perfil: { codigo: perfil },
-      },
-    });
-
-    return total > 0;
-  }
-
-  private async ehMembroGrupoTrabalho(casoId: number, usuarioId: number) {
-    return this.temPerfilNoCaso(casoId, usuarioId, PerfilUsuario.MEMBRO_CASO);
-  }
-
-  private async validarCoordenador(casoId: number, usuarioId: number) {
-    const ehCoordenador = await this.temPerfilNoCaso(
-      casoId,
-      usuarioId,
-      PerfilUsuario.COORDENADOR_DE_CASO,
-    );
-
-    if (!ehCoordenador) {
-      throw new ForbiddenException(
-        'Somente o coordenador do caso pode alterar o relatório.',
-      );
-    }
-  }
-
-  private async validarMembroGrupoTrabalho(casoId: number, usuarioId: number) {
-    if (!(await this.ehMembroGrupoTrabalho(casoId, usuarioId))) {
-      throw new ForbiddenException(
-        'Somente membros do grupo de trabalho podem comentar no relatório.',
-      );
-    }
-  }
-
-  /* =====================================================
       MÉTODO INTERNO - FORMATAR COMENTÁRIO (SEM DADOS SENSÍVEIS DO AUTOR)
   ===================================================== */
 
@@ -228,27 +201,10 @@ export class CasoFinalizacaoService {
   ===================================================== */
 
   async listarComentarios(casoId: number, usuarioId: number) {
-    const ehCoordenador = await this.temPerfilNoCaso(
-      casoId,
-      usuarioId,
-      PerfilUsuario.COORDENADOR_DE_CASO,
-    );
-
-    if (!ehCoordenador) {
-      const relatorio = await this.relatorioRepository.findOne({
-        where: { caso: { id: casoId } },
-      });
-      const liberadoParaMembro =
-        !!relatorio &&
-        relatorio.status !== StatusRelatorioFinalizacaoEnum.RASCUNHO &&
-        (await this.ehMembroGrupoTrabalho(casoId, usuarioId));
-
-      if (!liberadoParaMembro) {
-        throw new ForbiddenException(
-          'Somente o coordenador e os membros do grupo de trabalho podem ver os comentários.',
-        );
-      }
-    }
+    const relatorio = await this.relatorioRepository.findOne({
+      where: { caso: { id: casoId } },
+    });
+    await this.validarVisibilidade(casoId, usuarioId, relatorio);
 
     const comentarios = await this.comentarioRepository.find({
       where: { ator: { relatorio: { caso: { id: casoId } } } },
@@ -269,8 +225,6 @@ export class CasoFinalizacaoService {
     usuarioId: number,
     dto: SalvarComentarioAtorDto,
   ) {
-    await this.validarMembroGrupoTrabalho(casoId, usuarioId);
-
     const ator = await this.atorRepository.findOne({
       where: { id: atorId, relatorio: { caso: { id: casoId } } },
       relations: ['relatorio'],

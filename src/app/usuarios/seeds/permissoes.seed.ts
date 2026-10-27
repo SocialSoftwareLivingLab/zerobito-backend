@@ -142,7 +142,22 @@ const permissoes = [
     codigo: PermissaoEnum.CASOS_ALTERAR_MAPA,
     nome: 'EDitar mapa de investigação',
     descricao: 'Permissão para alterar mapa de investigação'
-  }
+  },
+  {
+    codigo: PermissaoEnum.CASOS_VISUALIZAR_RELATORIO_FINALIZACAO,
+    nome: 'Visualizar relatório de finalização',
+    descricao: 'Permissão para visualizar o relatório de finalização e seus comentários',
+  },
+  {
+    codigo: PermissaoEnum.CASOS_EDITAR_RELATORIO_FINALIZACAO,
+    nome: 'Editar relatório de finalização',
+    descricao: 'Permissão para editar os atores do relatório de finalização e submetê-lo ao GT',
+  },
+  {
+    codigo: PermissaoEnum.CASOS_COMENTAR_RELATORIO_FINALIZACAO,
+    nome: 'Comentar relatório de finalização',
+    descricao: 'Permissão para comentar nos itens do relatório de finalização',
+  },
 
 
 ];
