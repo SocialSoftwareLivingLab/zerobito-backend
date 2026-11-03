@@ -92,9 +92,13 @@ const perfilPermissoes = {
     PermissaoEnum.CASOS_ENVIAR_CONVITE_MEMBRO,
     PermissaoEnum.CASOS_EDITAR_ATA,
     PermissaoEnum.CASOS_ALTERAR_MAPA,
+    PermissaoEnum.CASOS_VISUALIZAR_RELATORIO_FINALIZACAO,
+    PermissaoEnum.CASOS_EDITAR_RELATORIO_FINALIZACAO,
   ],
   [PerfilUsuario.MEMBRO_CASO]: [
     PermissaoEnum.CASOS_VISUALIZAR,
+    PermissaoEnum.CASOS_VISUALIZAR_RELATORIO_FINALIZACAO,
+    PermissaoEnum.CASOS_COMENTAR_RELATORIO_FINALIZACAO,
   ]
 
 };

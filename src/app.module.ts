@@ -54,6 +54,7 @@ import { CasoIntervencaoModule } from './app/caso-intervencao/caso-intervencao.m
 import { ArquivoModule } from './app/arquivos/arquivo.module';
 import RelatorioFinalizacaoEntity from './app/caso-finalizacao/entities/relatorio-finalizacao.entity';
 import AtorRelatorioFinalizacaoEntity from './app/caso-finalizacao/entities/ator-relatorio-finalizacao.entity';
+import ComentarioAtorRelatorioEntity from './app/caso-finalizacao/entities/comentario-ator-relatorio.entity';
 import { CasoFinalizacaoModule } from './app/caso-finalizacao/caso-finalizacao.module';
 
 @Module({
@@ -102,6 +103,7 @@ import { CasoFinalizacaoModule } from './app/caso-finalizacao/caso-finalizacao.m
             CasoIntervencaoEntity,
             RelatorioFinalizacaoEntity,
             AtorRelatorioFinalizacaoEntity,
+            ComentarioAtorRelatorioEntity,
             ],
           synchronize: true,
           // logging: ['query'],
